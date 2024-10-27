@@ -1,9 +1,11 @@
 var express = require("express");
 const foodRouter = require('./food.route');
-const foodDetailRouter = require('./fooddetail.route');
+const addressRouter = require('./address.route');
 const router = express.Router();
 
 router.use('/', foodRouter);
-router.use('/fooddetail', foodDetailRouter);
+router.use('/food', foodRouter);
+router.use('/address', addressRouter);
+
 
 module.exports = router;

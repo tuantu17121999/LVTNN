@@ -14,17 +14,17 @@ class FoodController {
 
     //[GET] /admin/food/create
     create(req, res) {
-        res.send('tạo món ăn');
+        res.send('Tao san pham');
     }
 
     //[GET] /admin/food/delete
     delete(req, res) {
-        res.send('xóa môn ăn');
+        res.send('xóa san pham');
     }
 
     //[GET] /admin/food/update
     update(req, res) {
-        res.send('cap nhật môn ăn');
+        res.send('cap nhật san pham');
     }
 }
 
