@@ -11,6 +11,9 @@ const adminSchema = new Schema({
     name: {
         type: String
     },
+    isDeleted: {
+        type: Boolean
+    }
 });
 
 module.exports = mongoose.model('admin', adminSchema);
