@@ -3,6 +3,8 @@ const router = express.Router();
 const adminController = require('../../app/controllers/admin/admin.controller');
 
 router.get('/', adminController.getAll);
+router.get('/login', adminController.loginForm);
+router.post('/login', adminController.login);
 router.get('/:id', adminController.getOne);
 router.post('/:id', adminController.create);
 router.delete('/:id', adminController.delete);

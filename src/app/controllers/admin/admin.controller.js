@@ -1,4 +1,7 @@
+const bcrypt = require('bcrypt');
+
 const adminModel = require('../../models/admin.model')
+const { generateToken } = require('../../common/generateToken');
 
 class AdminController{
     getAll(req, res){
@@ -85,17 +88,38 @@ class AdminController{
         })
     }
 
-    login(req, res){
+    async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
+        console.log(req.body);
+        adminModel.findOne({ username })
+        .then(async admin => {
+            if(!admin){
+                return res.json("Tai khoan khong ton tai");
+            }
+            const passwordCompare = await bcrypt.compare(password, admin.password);
+            if(!passwordCompare) {
+                return res.json("Sai mat khau");
+            }   
+            const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
-        adminModel.findOne({username, password})
-        .then(admin => {
-            res.json('Dang nhap thanh cong');
+            const accessToken = await generateToken(
+                { id: admin._id },
+                accessTokenSecret,
+            );
+
+            res.cookie('adminAccessToken', accessToken, { maxAge: 900000, httpOnly: true });
+            res.redirect('/admin');
         })
         .catch(error => {
             console.log(error);
-        })
+        });
+    }
+
+    loginForm(req, res){
+        res.render('login',{
+            layout: 'admin'
+        });
     }
 }
 

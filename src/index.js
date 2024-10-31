@@ -3,8 +3,12 @@ const db = require('./config/db');
 const router = require('./routes/index');
 const {engine} = require('express-handlebars');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 var app = express();
+
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 db.connect();
