@@ -3,11 +3,7 @@ const foodModel = require('../../models/food.model');
 class FoodController {
     //[GET] /
     home(req, res) {
-        res.render('home',{
-            layout: 'main',
-            title: 'title',
-            name: 'Tú'
-        });
+        res.render('home');
     }
 
     detail(req, res) {

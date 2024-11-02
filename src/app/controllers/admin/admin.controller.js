@@ -117,9 +117,7 @@ class AdminController{
     }
 
     loginForm(req, res){
-        res.render('login',{
-            layout: 'admin'
-        });
+        res.render('login');
     }
 }
 

@@ -20,9 +20,6 @@ const staffSchema = new Schema({
     CCCD: {
         type: Number
     },
-    CCCD: {
-        type: Number
-    },
     trangThaiNV: {
         type: String
     }

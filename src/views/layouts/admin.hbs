@@ -21,20 +21,25 @@
 
 <body>
     <div class="app">
-        {{!-- {{> admin/adheader}} --}}
-        <hr>
+        {{> admin/adheader}}
         <div>
-            <div>
+            <div class="row">
                 {{!--side menu manager--}}
-                <div class="main-sidebar">
-                    {{!-- {{>admin/menufunction}} --}}
-                </div>
-                {{!--side content--}}
-                <div class="content-wrapper">
-                    <div class="content">
-                        {{{body}}}
+                <div class="col-2">
+                    <div class="main-sidebar">
+                        {{>admin/menufunction}}
                     </div>
                 </div>
+
+                {{!--side content--}}
+                <div class="col-10">
+                    <div class="content-wrapper">
+                        <div class="content">
+                            {{{body}}}
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
