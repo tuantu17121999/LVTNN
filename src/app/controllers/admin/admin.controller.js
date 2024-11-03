@@ -4,6 +4,10 @@ const adminModel = require('../../models/admin.model')
 const { generateToken } = require('../../common/generateToken');
 
 class AdminController{
+    index(req, res) {
+        res.render('admin/admin', {layout: 'admin'});
+    }
+
     getAll(req, res){
         adminModel.find({isDeleted: false})
         .then(admins => {
@@ -88,6 +92,12 @@ class AdminController{
         })
     }
 
+    loginForm(req, res){
+        res.render('admin/login',{
+            layout: 'login'
+        });
+    }
+
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
@@ -116,9 +126,7 @@ class AdminController{
         });
     }
 
-    loginForm(req, res){
-        res.render('login');
-    }
+
 }
 
 module.exports = new AdminController();

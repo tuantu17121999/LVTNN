@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../../app/controllers/admin/admin.controller');
 
-router.get('/', adminController.getAll);
+router.get('/', adminController.index);
+
 router.get('/login', adminController.loginForm);
 router.post('/login', adminController.login);
 router.get('/:id', adminController.getOne);
