@@ -25,14 +25,27 @@
                                                 <center>Tên Tin tức</center>
                                             </th>
                                             <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col">
+                                                <center>Hình ảnh</center>
+                                            </th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col">
+                                                <center>Mô tả</center>
+                                            </th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
+                                    
                                     <tbody>
 
                                         {{#news}}
                                         <tr>
                                             <th scope="row">{{sum @index 1}}</th>
                                             <td>{{nameNew}}</td>
+                                            <td>{{imageNew}}</td>
+                                            <td>{{decriptionNew}}</td>
                                             <td>
                                                 <a href="/admin/news/{{this._id}}/update"
                                                     class="btn btn-warning">Sửa</a>
@@ -67,21 +80,21 @@
                                     </div>
                                 </div>
 
-                                <form name="delete-food-form" method="POST"></form>
+                                <form name="delete-news-form" method="POST"></form>
 
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
-                                        var foodId;
-                                        var deleteForm = document.forms['delete-food-form'];
-                                        var btnDeleteFood = document.getElementById('btn-delete-food');
+                                        var newsId;
+                                        var deleteForm = document.forms['delete-news-form'];
+                                        var btnDeleteFood = document.getElementById('btn-delete-news');
 
                                         $('#delete-food-modal').on('show.bs.modal', function (event) {
                                             var button = $(event.relatedTarget);
-                                            foodId = button.data('id');
+                                            newsId = button.data('id');
                                         });
 
                                         btnDeleteFood.onclick = function () {
-                                            deleteForm.action = '/admin/news/' + foodId + '?_method=DELETE';
+                                            deleteForm.action = '/admin/news/' + newsId + '?_method=DELETE';
                                             deleteForm.submit();
                                         }
                                     })

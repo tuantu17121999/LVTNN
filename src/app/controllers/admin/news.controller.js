@@ -28,6 +28,8 @@ class newsController {
     store(req, res) {
         const news = new newsModel({
             nameNew: req.body.nameNew,
+            imageNew: req.body.imageNew,
+            decriptionNew: req.body.decriptionNew
         })
         news.save()
             .then(() => res.redirect('/admin/news/index'))
@@ -55,7 +57,9 @@ class newsController {
     update(req, res) {
         const id = req.params.id;
         newsModel.findByIdAndUpdate(id, {
-            nameNew: req.body.nameNew
+            nameNew: req.body.nameNew,
+            imageNew: req.body.imageNew,
+            decriptionNew: req.body.decriptionNew
         })
             .then(() => res.redirect('/admin/news/index'))
             .catch(error => {
