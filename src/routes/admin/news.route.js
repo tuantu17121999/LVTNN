@@ -3,7 +3,7 @@ const router = express.Router();
 const newsController = require('../../app/controllers/admin/news.controller');
 
 router.get('/index', newsController.index);
-router.get('/delete', newsController.delete);
+
 // create
 router.get('/create', newsController.createForm);
 router.post('/store', newsController.store);

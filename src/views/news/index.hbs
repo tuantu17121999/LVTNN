@@ -20,29 +20,48 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col"><center>STT</center></th>
-                                            <th scope="col"><center>Tên Tin tức</center></th>
-                                            <th scope="col"><center>Hình ảnh</center></th>
-                                            <th scope="col"><center>Mô tả</center></th>
-                                            <th scope="col"><center>Chức năng</center></th>
+                                            <th scope="col">
+                                                <center>STT</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Tên Tin tức</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Hình ảnh</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Mô tả</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Chức năng</center>
+                                            </th>
                                         </tr>
                                     </thead>
-                                    
+
                                     <tbody>
 
                                         {{#news}}
                                         <tr>
-                                            <th scope="row"><center>{{sum @index 1}}</center></th>
-                                            <td><center>{{nameNew}}</center></td>
-                                            <td><center>{{imageNew}}</center></td>
-                                            <td><center>{{decriptionNew}}</center></td>
+                                            <th scope="row">
+                                                <center>{{sum @index 1}}</center>
+                                            </th>
+                                            <td>
+                                                <center>{{nameNew}}</center>
+                                            </td>
+                                            <td>
+                                                <center>{{imageNew}}</center>
+                                            </td>
+                                            <td>
+                                                <center>{{decriptionNew}}</center>
+                                            </td>
                                             <td>
                                                 <center>
-                                                <a href="/admin/news/{{this._id}}/update"
-                                                    class="btn btn-warning">Sửa</a>
-                                                <a href="" class="btn btn-danger" data-id="{{this._id}}"
-                                                    data-bs-toggle="modal" data-bs-target="#delete-food-modal">Xóa</a>
-                                                </center>                                               
+                                                    <a href="/admin/news/{{this._id}}/update"
+                                                        class="btn btn-warning">Sửa</a>
+                                                    <a href="" class="btn btn-danger" data-id="{{this._id}}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#delete-food-modal">Xóa</a>
+                                                </center>    
                                             </td>
                                         </tr>
                                         {{/news}}
@@ -63,7 +82,7 @@
                                             </div>
                                             <div class="modal-body">Thao tác này không thể phục hồi !</div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" id="btn-delete-food">Tôi
+                                                <button type="button" class="btn btn-danger" id="btn-delete-news">Tôi
                                                     đồng ý</button>
                                                 <button type="button" class="btn btn-outline-dark"
                                                     data-bs-dismiss="modal">Hủy</button>
@@ -78,14 +97,14 @@
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var newsId;
                                         var deleteForm = document.forms['delete-news-form'];
-                                        var btnDeleteFood = document.getElementById('btn-delete-news');
+                                        var btnDeleteNews = document.getElementById('btn-delete-news');
 
                                         $('#delete-food-modal').on('show.bs.modal', function (event) {
                                             var button = $(event.relatedTarget);
                                             newsId = button.data('id');
                                         });
 
-                                        btnDeleteFood.onclick = function () {
+                                        btnDeleteNews.onclick = function () {
                                             deleteForm.action = '/admin/news/' + newsId + '?_method=DELETE';
                                             deleteForm.submit();
                                         }

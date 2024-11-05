@@ -4,7 +4,7 @@ const multer = require('multer')
 const router = express.Router()
 
 const storage = multer.diskStorage({
-    //Đường dẫn lưu file
+    //Đường dẫn lưu file callback
     destination: function (req, file, cb) {
         cb(null, 'src/public/upload')
     },
