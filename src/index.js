@@ -5,6 +5,7 @@ const { engine } = require('express-handlebars');
 const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override'); // khai báo method-override
+const upload = require('./app/middlewares/multer.js')
 
 const Handlebars = require('handlebars');
 

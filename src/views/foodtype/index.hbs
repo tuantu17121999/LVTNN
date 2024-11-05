@@ -20,24 +20,25 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">
-                                                <center>Tên loại sản phẩm</center>
-                                            </th>
-                                            <th scope="col"></th>
+                                            <th scope="col"><center>Stt</center></th>
+                                            <th scope="col"><center>Tên loại sản phẩm</center></th>
+                                            <th scope="col"><center>Chức năng</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         {{#foodtype}}
                                         <tr>
-                                            <th scope="row">{{sum @index 1}}</th>
+                                            <th scope="row"><center>{{sum @index 1}}</center></th>
                                             <td>{{nameType}}</td>
                                             <td>
-                                                <a href="/admin/foodType/{{this._id}}/update"
-                                                    class="btn btn-warning">Sửa</a>
-                                                <a href="" class="btn btn-danger" data-id="{{this._id}}"
-                                                    data-bs-toggle="modal" data-bs-target="#delete-food-modal">Xóa</a>
+                                                <center>
+                                                    <a href="/admin/foodType/{{this._id}}/update"
+                                                        class="btn btn-warning">Sửa</a>
+                                                    <a href="" class="btn btn-danger" data-id="{{this._id}}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#delete-food-modal">Xóa</a>
+                                                </center>
                                             </td>
                                         </tr>
                                         {{/foodtype}}

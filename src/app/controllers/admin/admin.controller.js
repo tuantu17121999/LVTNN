@@ -1,52 +1,43 @@
 const bcrypt = require('bcrypt');
-
-const adminModel = require('../../models/admin.model')
+const adminModel = require('../../models/admin.model');
 const { generateToken } = require('../../common/generateToken');
 
 class AdminController{
+    // [GET] /admin
     index(req, res) {
         res.render('admin/admin', {layout: 'admin'});
     }
+    getOne(req, res) {
+        const id = req.params.id;
 
-    getAll(req, res){
-        adminModel.find({isDeleted: false})
-        .then(admins => {
-            res.json(admins);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
-    getOne(req, res){
-        const id = req.params.id; 
-
-        adminModel.findOne({id, isDeleted: false})
+        adminModel.findOne({id, isDeleted: false })
         .then(admin => {
             res.json(admin);
         })
         .catch(error => {
             console.log(error);
-        })
+        });
     }
 
-    create(req, res){
+    async create(req, res) {
+        const salt = bcrypt.genSaltSync(10);
+        const passwordHash = await bcrypt.hash(req.body.password, salt);
         const admin = new adminModel({
             username: req.body.username,
-            password: req.body.password,
+            password: passwordHash,
             name: req.body.name,
-            isDeleted: false
-        }); 
+            isDeleted: false 
+        });
         admin.save()
         .then(admin => {
             res.json(admin);
         })
         .catch(error => {
             console.log(error);
-        })
+        });
     }
 
-    delete(req, res){
+    delete(req, res) {
         const id = req.params.id;
         adminModel.findByIdAndDelete(id)
         .then(admin => {
@@ -54,10 +45,10 @@ class AdminController{
         })
         .catch(error => {
             console.log(error);
-        })
+        });
     }
 
-    update(req, res){
+    update(req, res) {
         const id = req.params.id;
         adminModel.findByIdAndUpdate(id, {
             name: req.body.name
@@ -67,41 +58,40 @@ class AdminController{
         })
         .catch(error => {
             console.log(error);
-        })
-    }
-
-    softDelete(req, res){
-        const id = req.params.id;
-        adminModel.findByIdAndUpdate(id, {isDeleted: true})
-        .then(admin => {
-            res.json(admin);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
-    restore(req, res){
-        const id = req.params.id;
-        adminModel.findByIdAndUpdate(id, {isDeleted: false})
-        .then(admin => {
-            res.json(admin);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
-    loginForm(req, res){
-        res.render('admin/login',{
-            layout: 'login'
         });
     }
 
+    softDelete(req, res) {
+        const id = req.params.id;
+        adminModel.findByIdAndUpdate(id, { isDeleted: true })
+        .then(admin => {
+            res.json(admin);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+    
+    restore(req, res) {
+        const id = req.params.id;
+        adminModel.findByIdAndUpdate(id, { isDeleted: false })
+        .then(admin => {
+            res.json(admin);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    // [GET] /admin/login
+    loginForm(req, res) {
+        res.render('admin/login', { layout: 'login' });
+    }
+
+    // [POST] /admin/login
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
-        console.log(req.body);
         adminModel.findOne({ username })
         .then(async admin => {
             if(!admin){
@@ -126,7 +116,11 @@ class AdminController{
         });
     }
 
-
+    // [GET] /admin/logout
+    logout(req, res) {
+        res.clearCookie('admin');
+        res.redirect('/');
+    }
 }
 
 module.exports = new AdminController();

@@ -1,4 +1,46 @@
-<a>Trang chủ</a>
-<a href="admin/login">Đăng nhập</a>
-<li>tk: admintu5</li>
-<li>mk: admintu123</li>
+<div class="mt-4 container">
+    <div class="row sticky-top">
+        {{>customer/nav-bar}}
+    </div>
+
+    <!--Advertisement-->
+    <div class="row">
+        {{!-- {{>adv}} --}}
+    </div>
+    <!--Main-->
+    {{!-- <h1>Combo</h1>
+    <div class="row mt-3">
+        {{#food2}}
+        <div class="col-sm-4 col-lg-3">
+            {{>customer/main}}
+        </div>
+        {{/food2}}
+    </div>
+    <hr> --}}
+
+    <h1>Sản phẩm mới</h1>
+    {{!-- <div class="row mt-3">
+        {{#foods}}
+        <div class="col-sm-4 col-lg-3">
+            {{>customer/main}}
+        </div>
+        {{/foods}}
+    </div> --}}
+
+    {{!-- <div class="row mt-3">
+        <div class="col-left col-lg-9">
+            <div class="row">
+                {{#foods}}
+                <div class="col-sm-6 col-lg-4">
+                    {{>customer/main}}
+                </div>
+                {{/foods}}
+            </div>
+        </div>
+        <div class="col-right col-lg-3">
+            <div class="row">
+                {{>customer/menufood}}
+            </div>
+        </div>
+    </div> --}}
+</div>

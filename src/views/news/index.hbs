@@ -20,21 +20,11 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">
-                                                <center>Tên Tin tức</center>
-                                            </th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                            <th scope="col">
-                                                <center>Hình ảnh</center>
-                                            </th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                            <th scope="col">
-                                                <center>Mô tả</center>
-                                            </th>
-                                            <th scope="col"></th>
+                                            <th scope="col"><center>STT</center></th>
+                                            <th scope="col"><center>Tên Tin tức</center></th>
+                                            <th scope="col"><center>Hình ảnh</center></th>
+                                            <th scope="col"><center>Mô tả</center></th>
+                                            <th scope="col"><center>Chức năng</center></th>
                                         </tr>
                                     </thead>
                                     
@@ -42,15 +32,17 @@
 
                                         {{#news}}
                                         <tr>
-                                            <th scope="row">{{sum @index 1}}</th>
-                                            <td>{{nameNew}}</td>
-                                            <td>{{imageNew}}</td>
-                                            <td>{{decriptionNew}}</td>
+                                            <th scope="row"><center>{{sum @index 1}}</center></th>
+                                            <td><center>{{nameNew}}</center></td>
+                                            <td><center>{{imageNew}}</center></td>
+                                            <td><center>{{decriptionNew}}</center></td>
                                             <td>
+                                                <center>
                                                 <a href="/admin/news/{{this._id}}/update"
                                                     class="btn btn-warning">Sửa</a>
                                                 <a href="" class="btn btn-danger" data-id="{{this._id}}"
                                                     data-bs-toggle="modal" data-bs-target="#delete-food-modal">Xóa</a>
+                                                </center>                                               
                                             </td>
                                         </tr>
                                         {{/news}}

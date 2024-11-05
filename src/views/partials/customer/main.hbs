@@ -1,0 +1,54 @@
+<div class="card">
+    <!--TAG TRÊN-->
+    <div class="pl-3 pr-2 py-1">
+        <div class="">
+            <button type="button" class="btn btn-warning btn-sm border-radius" disabled>Sản phẩm mới</button>
+        </div>
+    </div>
+    <!--HÌNH ẢNH-->
+    <a href="/food/{{this.slug}}">
+        <img src="/upload/{{this.image}}" class="card-img-top" alt="{{this.name}}" />
+    </a>
+    <!--TÊN MÓN-->
+    <div class="card-body">
+        <a href="/food/{{this.slug}}">
+            <h5 class="card-title">{{this.name}}</h5>
+        </a>
+    </div>
+    <!--GIÁ BÁN / NÚT MUA-->
+    <div class="row next-bar">
+        <div class="col-6">
+            <div class="bd-highlight price_item_new price-big float-right text-success">
+                <div class="float-right">
+                    <span class="">₫{{this.price}}.000</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <button style=" width: 100%;"
+                onclick="onClickAdd('{{this._id}}','{{this.name}}','{{this.description}}','{{this.image}}','{{this.price}}')"
+                type="button" class="btn btn-danger btn-lg btn-next-item"> <b>ADD +</b> </button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/cart.js"></script>
+<script>
+    function onClickAdd(id, name, description, image, price) {
+        var ListItemCart = getListItemCart();
+        var itemExists = false;
+        for (var i = 0; i < ListItemCart.length; i++) {
+            var itemCart = ListItemCart[i];
+            if (itemCart.id == id) {
+                itemCart.amount++;
+                itemExists = true;
+            }
+        }
+        if (itemExists == false) {
+            var itemCart = createItemCart(id, name, description, image, price, 1);
+            ListItemCart.push(itemCart);
+        }
+        saveListItemCartInLocal(ListItemCart);
+        addAmountInnerID('cart-text');
+    }
+</script>
