@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const adminModel = require('../../models/admin.model');
 const { generateToken } = require('../../common/generateToken');
 
