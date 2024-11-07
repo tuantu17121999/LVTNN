@@ -17,8 +17,10 @@ class FoodController {
     async getAll(req, res) {
         const foodGetAll = await foodModel.find({}).populate('foodtypeid')
             .then((food) => {
+                // console.log(food.length)
                 res.render('food/index', {
                     food,
+                    // count: food.length,
                     layout: 'admin'
                 })
             })

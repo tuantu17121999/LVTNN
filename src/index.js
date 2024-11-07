@@ -3,8 +3,8 @@ const db = require('./config/db');
 const router = require('./routes/index');
 const { engine } = require('express-handlebars');
 const path = require('path');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override'); // khai báo method-override
+const bodyParser = require('body-parser'); // khai báo body HTML
+const methodOverride = require('method-override'); // khai báo method-override pt PUT
 const upload = require('./app/middlewares/multer.js')
 
 const Handlebars = require('handlebars');

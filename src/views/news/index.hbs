@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <div class="content-header">
         <center>
-            <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-utensils"></i> Quản lý Tin tức</h2>
+            <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i> Quản lý Tin tức</h2>
         </center>
         <div class="breadcrumb">
             <a class="btn btn-primary btn-sm" href="/admin/news/create" role="button">
@@ -10,7 +10,7 @@
             </a>
         </div>
     </div>
-    <div class="content border-radius">
+    <div class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box" id="view">
@@ -21,10 +21,10 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">
-                                                <center>STT</center>
+                                                <center>Stt</center>
                                             </th>
                                             <th scope="col">
-                                                <center>Tên Tin tức</center>
+                                                <center>Tên tin tức</center>
                                             </th>
                                             <th scope="col">
                                                 <center>Hình ảnh</center>
@@ -37,53 +37,48 @@
                                             </th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
-
                                         {{#news}}
                                         <tr>
                                             <th scope="row">
                                                 <center>{{sum @index 1}}</center>
                                             </th>
+                                            <td><center>{{nameNews}}</center></td>
                                             <td>
-                                                <center>{{nameNew}}</center>
+                                                <center><img src="/upload/{{imageNews}}" alt="{{nameNews}}"
+                                                        class="img-food-admin"></center>
                                             </td>
-                                            <td>
-                                                <center>{{imageNew}}</center>
-                                            </td>
-                                            <td>
-                                                <center>{{decriptionNew}}</center>
-                                            </td>
+                                            <td>{{descriptionNews}}</td>
                                             <td>
                                                 <center>
-                                                    <a href="/admin/news/{{this._id}}/update"
+                                                    <a href="#"
                                                         class="btn btn-warning">Sửa</a>
                                                     <a href="" class="btn btn-danger" data-id="{{this._id}}"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#delete-food-modal">Xóa</a>
-                                                </center>    
+                                                </center>
                                             </td>
                                         </tr>
                                         {{/news}}
-
                                     </tbody>
                                 </table>
 
-                                {{!-- //Delete --}}
+                                {{!-- Confirm delete course--}}
                                 <div class="modal fade" id="delete-food-modal" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Xóa Tin tức này ?
-                                                </h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Xóa món này</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">Thao tác này không thể phục hồi !</div>
+                                            <div class="modal-body">
+                                                Bạn chắc chắn muốn xóa ?
+                                            </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" id="btn-delete-news">Tôi
-                                                    đồng ý</button>
+                                                <button type="button" class="btn btn-danger" id="btn-delete-food">Xóa
+                                                    bỏ</button>
                                                 <button type="button" class="btn btn-outline-dark"
                                                     data-bs-dismiss="modal">Hủy</button>
                                             </div>
@@ -91,20 +86,20 @@
                                     </div>
                                 </div>
 
-                                <form name="delete-news-form" method="POST"></form>
+                                <form name="delete-food-form" method="POST"></form>
 
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var newsId;
-                                        var deleteForm = document.forms['delete-news-form'];
-                                        var btnDeleteNews = document.getElementById('btn-delete-news');
+                                        var deleteForm = document.forms['delete-food-form'];
+                                        var btnDeleteFood = document.getElementById('btn-delete-food');
 
                                         $('#delete-food-modal').on('show.bs.modal', function (event) {
                                             var button = $(event.relatedTarget);
                                             newsId = button.data('id');
                                         });
 
-                                        btnDeleteNews.onclick = function () {
+                                        btnDeleteFood.onclick = function () {
                                             deleteForm.action = '/admin/news/' + newsId + '?_method=DELETE';
                                             deleteForm.submit();
                                         }

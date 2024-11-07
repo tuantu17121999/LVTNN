@@ -1,18 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const newsController = require('../../app/controllers/admin/news.controller');
+const upload = require('../../app/middlewares/multer')
 
-router.get('/index', newsController.index);
+router.get('/index', newsController.getAll);
 
-// create
-router.get('/create', newsController.createForm);
-router.post('/store', newsController.store);
-
-// update
-router.get('/:id/update', newsController.updateForm);
-router.put('/:id', newsController.update)
-
-// delete
-router.delete('/:id', newsController.delete);
+router.get('/create', newsController.create);
+router.post('/store', upload.single('imageNews'), newsController.store);
 
 module.exports = router;

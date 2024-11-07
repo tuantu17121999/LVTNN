@@ -1,5 +1,6 @@
 const { Admin } = require("mongodb");
-const foodTypeModel = require('../../models/foodtype.model')
+const foodTypeModel = require('../../models/foodtype.model');
+const foodModel = require("../../models/food.model");
 
 class foodTypeController {
     // show index
@@ -64,13 +65,20 @@ class foodTypeController {
     }   
 
     //[DELETE] admin/foodtype/:id
-    delete(req, res) {
+    async delete(req, res) {
         const id = req.params.id;
-        foodTypeModel.findByIdAndDelete(id)
+        const existedFood = await foodModel.findOne({foodtypeid: id}).exec() //Kiem tra co san pham khong
+        console.log(existedFood)
+        if (existedFood === null){
+            foodTypeModel.findByIdAndDelete(id)
             .then(() => res.redirect('/admin/foodType/index'))
             .catch(error => {
                 console.log(error);
             })
+        }
+        else {
+            res.redirect('/admin/foodType/index?delete=false')      
+        }         
     }
 }
 

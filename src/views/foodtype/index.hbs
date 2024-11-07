@@ -20,16 +20,24 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col"><center>Stt</center></th>
-                                            <th scope="col"><center>Tên loại sản phẩm</center></th>
-                                            <th scope="col"><center>Chức năng</center></th>
+                                            <th scope="col">
+                                                <center>Stt</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Tên loại sản phẩm</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Chức năng</center>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         {{#foodtype}}
                                         <tr>
-                                            <th scope="row"><center>{{sum @index 1}}</center></th>
+                                            <th scope="row">
+                                                <center>{{sum @index 1}}</center>
+                                            </th>
                                             <td>{{nameType}}</td>
                                             <td>
                                                 <center>
@@ -84,7 +92,22 @@
                                         btnDeleteFood.onclick = function () {
                                             deleteForm.action = '/admin/foodtype/' + foodId + '?_method=DELETE';
                                             deleteForm.submit();
-                                        }
+                                        }                                       
+
+                                        // Example URL 
+                                        const str1 = window.location.href;
+                                        console.log(str1)
+
+                                        // Parse the URL 
+                                        const parsedUrl = new URL(str1);
+
+                                        // Get the value of a specific parameter from the query string 
+                                        const paramName = 'delete';
+                                        const result =
+                                            parsedUrl.searchParams.get(paramName);
+                                        if (result == 'false') {
+                                            alert('Không được xóa vì chứa sản phẩm')
+                                        } 
                                     })
                                 </script>
                             </div>

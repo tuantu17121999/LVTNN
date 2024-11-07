@@ -2,9 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const news = new Schema({
-    nameNew: { type: String, required: true },
-    imageNew: { type: String },
-    decriptionNew: { type: String, required: true }
+    nameNews: { type: String, maxLength: 255, required: true, },
+    imageNews: { type: String, maxLength: 255 },
+    descriptionNews: { type: String, maxLength: 600 },
+    slug: { type: String },
+}, {
+    timestamps: true,
 });
 
 module.exports = mongoose.model('news', news);

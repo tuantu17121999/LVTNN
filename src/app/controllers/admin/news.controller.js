@@ -1,9 +1,19 @@
-const { Admin } = require("mongodb");
 const newsModel = require('../../models/news.model')
+
+const { multipleMongooseToOject } = require('../../../util/mongoose');
+
+// tạo slug thủ công
+const slugify = (text) => {
+    return text.toString().toLowerCase().trim()
+        .replace(/\s+/g, '-') // Thay thế khoảng trắng bằng dấu gạch ngang
+        .replace(/&/g, '-and-') // Thay thế & bằng 'and'
+        .replace(/[^\w\-]+/g, '') // Xóa bỏ ký tự không phải là chữ cái, số, gạch ngang, gạch dưới
+        .replace(/\-\-+/g, '-'); // Thay thế nhiều dấu gạch ngang bằng một dấu
+};
 
 class newsController {
     // show index
-    index(req, res) {
+    async getAll(req, res) {
         newsModel.find({})
             .then((news) => {
                 news = news.map(news => news.toObject())
@@ -17,65 +27,32 @@ class newsController {
             })
     }
 
-    //[GET] admin/news/createForm
-    createForm(req, res) {
-        res.render('news/createForm', {
+    //[GET] admin/foodtype/createForm
+    create(req, res) {
+        res.render('news/create', {
             layout: 'admin'
         });
     }
 
-    //[POST] admin/news/create
-    store(req, res) {
-        const news = new newsModel({
-            nameNew: req.body.nameNew,
-            imageNew: req.body.imageNew,
-            decriptionNew: req.body.decriptionNew
-        })
-        news.save()
-            .then(() => res.redirect('/admin/news/index'))
-            .catch(error => {
-                console.log(error);
-            })
-    }
-
-    //[GET] admin/news/:id/update
-    updateForm(req, res) {
-        const id = req.params.id;
-        newsModel.findById(id)
-            .then((news) => {
-                res.render('news/updateForm',{
-                    news,
-                    layout: 'admin'
-                })
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
-
-    //[PUT] admin/news/:id
-    update(req, res) {
-        const id = req.params.id;
-        newsModel.findByIdAndUpdate(id, {
-            nameNew: req.body.nameNew,
-            imageNew: req.body.imageNew,
-            decriptionNew: req.body.decriptionNew
-        })
-            .then(() => res.redirect('/admin/news/index'))
-            .catch(error => {
-                console.log(error);
-            })
-    }   
-
-    //[DELETE] admin/news/:id
-    delete(req, res) {
-        const id = req.params.id;
-        newsModel.findByIdAndDelete(id)
-            .then(() => res.redirect('/admin/news/index'))
-            .catch(error => {
-                console.log(error);
-            })
+    //[POST] /admin/food/store
+    async store(req, res) {
+        try {
+            const slug = slugify(req.body.nameNews) + '-' + Date.now();
+            const news = new newsModel({
+                nameNews: req.body.nameNews,
+                imageNews: req.file.filename,
+                descriptionNews: req.body.descriptionNews,
+                slug: slug
+            });
+            await news.save();
+            res.redirect('/admin/news/index');
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Error saving news item');
+        }
     }
 }
+
+    
 
 module.exports = new newsController();
