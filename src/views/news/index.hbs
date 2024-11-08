@@ -42,16 +42,16 @@
                                         <tr>
                                             <th scope="row">
                                                 <center>{{sum @index 1}}</center>
-                                            </th>
-                                            <td><center>{{nameNews}}</center></td>
+                                            </th>                                         
                                             <td>
                                                 <center><img src="/upload/{{imageNews}}" alt="{{nameNews}}"
                                                         class="img-food-admin"></center>
                                             </td>
+                                            <td><center>{{nameNews}}</center></td>
                                             <td>{{descriptionNews}}</td>
                                             <td>
                                                 <center>
-                                                    <a href="#"
+                                                    <a href="/admin/news/{{this._id}}/edit"
                                                         class="btn btn-warning">Sửa</a>
                                                     <a href="" class="btn btn-danger" data-id="{{this._id}}"
                                                         data-bs-toggle="modal"

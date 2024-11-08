@@ -27,7 +27,7 @@ class newsController {
             })
     }
 
-    //[GET] admin/foodtype/createForm
+    //[GET] admin/news/create
     create(req, res) {
         res.render('news/create', {
             layout: 'admin'
@@ -51,8 +51,48 @@ class newsController {
             res.status(500).send('Error saving news item');
         }
     }
-}
 
-    
+    //[GET] /admin/food/:id/edit
+    edit(req, res) {
+        const id = req.params.id;
+        newsModel.findById(id)
+            .then((news) => {
+                res.render('news/update', {
+                    news,
+                    layout: 'admin'
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    //[PUT] /admin/food/:id
+    async update(req, res) {
+        const slug = `${slugify(req.body.nameNews)}-${Date.now()}`;
+        let body = {
+            ...req.body,
+            slug
+        };
+        if (req?.file?.filename) {
+            body.image = req.file.filename;
+        }
+        const news = await newsModel.updateOne({ _id: req.params.id }, body)
+            .then(() => res.redirect('/admin/news/index'))
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    //[GET] /admin/news/delete
+    delete(req, res) {
+        const id = req.params.id;
+        newsModel.findByIdAndDelete(id)
+            .then(() => res.redirect('/admin/news/index'))
+            .catch(error => {
+                console.log(error);
+            })
+    }
+}
 
 module.exports = new newsController();
