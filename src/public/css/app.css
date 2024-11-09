@@ -803,3 +803,26 @@ footer {
 .list-menufunction {
   padding: 10px 0px 10px 0px;
 }
+
+.search-box {
+  position: relative;
+  width: 200px; /* độ rộng tùy chỉnh */
+  margin-right: 10px;
+}
+
+
+.search-box input {
+  width: 100%;
+  padding: 10px 40px 10px 10px; /* khoảng cách để icon không chèn vào text */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-box i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none; /* không cho phép click vào icon */
+}

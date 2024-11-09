@@ -5,7 +5,11 @@
             {{!-- <a href="">So luong: ({{count}})</a> --}}
         </center>
         <div class="breadcrumb">
-            <a class="btn btn-primary btn-sm" href="/admin/food/create" role="button">
+            <div class="search-box">
+                <input type="text" placeholder="Search..." style="font-style: italic" id="searchBox"><i
+                    class="fa fa-search"></i></input>
+            </div>
+            <a class="btn btn-primary btn-sm" href="/admin/food/create" role="button" style="align-content: center">
                 Thêm
                 <span class="fas fa-plus-circle"></span>
             </a>
@@ -44,7 +48,7 @@
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="products-container">
                                         {{#food}}
                                         <tr>
                                             <th scope="row">
@@ -102,6 +106,14 @@
                                 <form name="delete-food-form" method="POST"></form>
 
                                 <script>
+                                    document.getElementById("searchBox").addEventListener("keydown",
+                                    async function(event) { if (event.key === "Enter") { const keyword =
+                                    event.target.value.trim(); if (keyword) {
+                                    //const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
+                                    const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
+                                    updateProducts(search.data.data);
+                                    } } }) 
+
                                     document.addEventListener('DOMContentLoaded', function () {
                                         var foodId;
                                         var deleteForm = document.forms['delete-food-form'];
@@ -116,7 +128,36 @@
                                             deleteForm.action = '/admin/food/' + foodId + '?_method=DELETE';
                                             deleteForm.submit();
                                         }
-                                    })
+                                    });
+
+                                    function updateProducts(products) {
+            const productsContainer = document.getElementById("products-container");
+            productsContainer.innerHTML = ""; // Xóa dữ liệu cũ trong tbody
+
+            if (products.length > 0) {
+                products.forEach((product, index) => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <th scope="row"><center>${index + 1}</center></th>
+                        <td><center><img src="/upload/${product.image}" alt="${product.name}" class="img-food-admin" /></center></td>
+                        <td>${product.name}</td>
+                        <td>${product.description}</td>
+                        <td><center>${product.foodtypeid.nameType}</center></td>
+                        <td><center><span>${product.price}.000đ</span></center></td>
+                        <td>
+                            <center>
+                                <a href="/admin/food/${product._id}/edit" class="btn btn-warning">Sửa</a>
+                                <a href="#" class="btn btn-danger" data-id="${product._id}" data-bs-toggle="modal" data-bs-target="#delete-food-modal">Xóa</a>
+                            </center>
+                        </td>
+                    `;
+                    productsContainer.appendChild(row);
+                });
+            } else {
+                productsContainer.innerHTML = "<tr><td colspan='7'>Không tìm thấy sản phẩm nào.</td></tr>";
+            }
+        }
                                 </script>
                             </div>
                         </div>
