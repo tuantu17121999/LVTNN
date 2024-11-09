@@ -20,7 +20,7 @@ class FoodController {
   async getAll(req, res) {
     const foodGetAll = await foodModel
       .find({})
-      .populate("foodtypeid")
+      .populate("foodtypeid") //join bảng
       .then((food) => {
         // console.log(food.length)
         res.render("food/index", {
@@ -118,6 +118,7 @@ class FoodController {
     const search = req.query.keyword;
     foodModel
       .find({ name: { $regex: search, $options: "i" } }) //regex tìm kiếm vị trí bất kỳ
+      .populate("foodtypeid")
       .then((food) => {
         res.json({ data: food });
       })
