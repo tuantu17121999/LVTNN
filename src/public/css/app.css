@@ -243,7 +243,9 @@ ul {
 }
 
 .img-food-admin {
-  height: 100px;
+  height: auto;
+  width: auto;
+  max-width: 100px;
   border-radius: 20px !important;
 }
 
