@@ -38,6 +38,11 @@ module.exports = {
         else{
             return '<button class="btn btn-danger btn-add-to-cart disable" >Hết hàng</button>'
         }
+    },
+
+    // Định nghĩa helper tùy chỉnh cho so sánh '==='
+    ifEquals: function (arg1, arg2, options) {
+        return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
     }
 
 }
