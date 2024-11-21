@@ -3,6 +3,7 @@ const router = express.Router();
 const newsController = require('../../app/controllers/admin/news.controller');
 const upload = require('../../app/middlewares/multer')
 
+
 router.get('/index', newsController.getAll);
 
 router.get('/create', newsController.create);

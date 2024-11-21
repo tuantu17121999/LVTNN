@@ -2,7 +2,17 @@
     <!--TAG TRÊN-->
     <div class="pl-3 pr-2 py-1">
         <div class="">
-            <button type="button" class="btn btn-warning btn-sm border-radius" disabled>Sản phẩm mới</button>
+            {{#if this.discountPrice}}
+            <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
+                disabled>-{{this.discountPrice}}%</button>
+            {{else}}{{#if this.tag}}
+            <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
+                disabled>{{this.tag}}</button>
+            {{else}}
+            <button type="button" id="discountPrice" class="btn btn-light btn-sm border-radius"
+                disabled></button>
+            {{/if}}
+            {{/if}}
         </div>
     </div>
     <!--HÌNH ẢNH-->
@@ -20,13 +30,18 @@
         <div class="col-6">
             <div class="bd-highlight price_item_new price-big float-right text-success">
                 <div class="float-right">
-                    <span class="">₫{{this.price}}.000</span>
+                    {{#if this.newPrice}}
+                    <span class="" id="price">₫{{this.newPrice}}.000</span>
+                    <span class="" id="price"><strike>₫{{this.price}}.000</strike></span>
+                    {{else}}
+                    <span class="" id="price">₫{{this.price}}.000</span>
+                    {{/if}}
                 </div>
             </div>
         </div>
         <div class="col-6">
             <button style=" width: 100%;"
-                onclick="onClickAdd('{{this._id}}','{{this.name}}','{{this.description}}','{{this.image}}','{{this.price}}')"
+                onclick="onClickAdd('{{this._id}}','{{this.name}}','{{this.description}}','{{this.image}}','{{this.price}}','{{this.newPrice}}')"
                 type="button" class="btn btn-danger btn-lg btn-next-item"> <b>ADD +</b> </button>
         </div>
     </div>
@@ -34,19 +49,29 @@
 
 <script src="../js/cart.js"></script>
 <script>
-    function onClickAdd(id, name, description, image, price) {
+    function onClickAdd(id, name, description, image, price, newPrice) {
         var ListItemCart = getListItemCart();
         var itemExists = false;
         for (var i = 0; i < ListItemCart.length; i++) {
             var itemCart = ListItemCart[i];
-            if (itemCart.id == id) {
+            if (itemCart.id == id && itemCart.amount < 10) {
                 itemCart.amount++;
                 itemExists = true;
             }
+            if (itemCart.amount == 10)
+            {
+                itemExists = true;
+                alert('Không được vượt quá 10 sản phẩm một đơn hàng');
+            }
         }
         if (itemExists == false) {
-            var itemCart = createItemCart(id, name, description, image, price, 1);
-            ListItemCart.push(itemCart);
+            if (newPrice) {
+                var itemCart = createItemCart(id, name, description, image, newPrice, 1);
+                ListItemCart.push(itemCart);
+            } else {
+                var itemCart = createItemCart(id, name, description, image, price, 1);
+                ListItemCart.push(itemCart);
+            }
         }
         saveListItemCartInLocal(ListItemCart);
         addAmountInnerID('cart-text');

@@ -1,0 +1,154 @@
+<script src="../js/cart.js"></script>
+<style>
+    .float-right {
+        display: flex;
+        align-items: center;
+    }
+    .float-right a {
+        text-decoration: none;
+        color: #ff0000; /* Màu đỏ cho biểu tượng xoá */
+        font-size: 24px; /* Kích thước biểu tượng */
+        transition: color 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+    }
+    .float-right a:hover {
+        color: #cc0000; /* Màu đỏ tối hơn khi hover */
+    }
+</style>
+
+<div class="container">
+    <div class="bg-white">
+        <div class="row sticky-top">
+            {{>customer/nav-bar}}
+        </div>
+        <div class="cart-content">
+            <center>
+                <h1><i class="fas fa-cart-arrow-down"></i> GIỎ HÀNG CỦA BẠN </h1>
+            </center>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-8">
+                    <div id="gio-hang">
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-4">
+                    {{>cart/cart-total}}
+                </div>
+            </div>
+        </div>
+        <div class="user" id="{{user._id}}"></div>
+    </div>
+</div>
+
+
+
+
+<form name="submit-cart-form"></form>
+
+<script>
+    checkCart();
+    function checkCart() {
+        var listItemCart = getListItemCart();
+        if (listItemCart.length == 0) {
+            showEmptyCart();
+        } else {
+            showListItemCartInnerID('gio-hang');
+            showTotalMoney();
+        }
+    }
+
+    function showTotalMoney() {
+        var listItemCart = getListItemCart();
+        var totalMoney = 0;
+        for (var i = 0; i < listItemCart.length; i++) {
+            var money = listItemCart[i].price * listItemCart[i].amount;
+            totalMoney += money;
+        }
+        var moneyTotal = document.getElementById('total-money-show');
+        moneyTotal.innerText = '';
+        moneyTotal.innerHTML = '₫' + totalMoney + '.000';
+        saveTotalOrderMoneyInLocal(totalMoney);
+    }
+    function submitCart() {
+        var submitCartForm = document.forms['submit-cart-form'];
+        var idUser = document.getElementsByClassName('user')[0].id;
+        submitCartForm.action = '/order/address';
+        submitCartForm.submit();
+    }
+    function xoa(id) {
+        var nodeCart = document.getElementById(id + 'main');
+        nodeCart.parentNode.removeChild(nodeCart);
+        deleteItemCartInLocal(id);
+        addAmountInnerID('cart-text');
+        showTotalMoney();
+        checkCart();
+    }
+    // tăng một số lượng của sản phẩm
+    function tang(id) {
+        let ListItemCart = getListItemCart();
+
+        // Tìm sản phẩm cần tăng số lượng
+        let itemCart = ListItemCart.find(item => item.id === id);
+
+        if (!itemCart) {
+            console.error("Không tìm thấy sản phẩm với ID:", id);
+            return;
+        }
+
+        // Kiểm tra số lượng tối đa
+        if (itemCart.amount >= 10) {
+            alert('Không được vượt quá 10 sản phẩm một đơn hàng');
+            return;
+        }
+
+        // Tăng số lượng sản phẩm
+        itemCart.amount++;
+        const newAmount = itemCart.amount;
+        const newTotalPrice = itemCart.price * newAmount;
+
+        // Lưu lại danh sách giỏ hàng đã cập nhật
+        saveListItemCartInLocal(ListItemCart);
+
+        // Cập nhật giao diện
+        document.getElementById(id).innerText = newAmount;
+        document.getElementById(id + 'price').innerHTML = `<span>${newTotalPrice}<small>.000đ</small></span>`;
+
+        // Hiển thị tổng tiền mới
+        showTotalMoney();
+    }
+    // giảm một số lượng của sản phẩm
+    function giam(id) {
+        let ListItemCart = getListItemCart();
+
+        // Tìm sản phẩm cần giảm số lượng
+        let itemCart = ListItemCart.find(item => item.id === id);
+
+        if (!itemCart) {
+            console.error("Không tìm thấy sản phẩm với ID:", id);
+            return;
+        }
+
+        // Kiểm tra số lượng tối thiểu
+        if (itemCart.amount <= 1) {
+            alert('Không thể giảm số lượng dưới 1 sản phẩm');
+            return;
+        }
+
+        // Giảm số lượng sản phẩm
+        itemCart.amount--;
+        const newAmount = itemCart.amount;
+        const newTotalPrice = itemCart.price * newAmount;
+
+        // Lưu lại danh sách giỏ hàng đã cập nhật
+        saveListItemCartInLocal(ListItemCart);
+
+        // Cập nhật giao diện
+        document.getElementById(id).innerText = newAmount;
+        document.getElementById(id + 'price').innerHTML = `<span>${newTotalPrice}<small>.000đ</small></span>`;
+
+        // Hiển thị tổng tiền mới
+        showTotalMoney();
+    }
+
+</script>

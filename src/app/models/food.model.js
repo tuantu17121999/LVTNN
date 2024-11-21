@@ -11,6 +11,8 @@ const foodSchema = new Schema({
     image: { type: String, maxLength: 255 },
     slug: { type: String },
     price: { type: Number, required: true },
+    tag: { type: String },
+    discountPrice: { type: Number},
 }, {
     timestamps: true,
 });

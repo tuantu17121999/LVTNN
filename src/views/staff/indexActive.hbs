@@ -1,0 +1,211 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <center>
+      <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i>
+        Quản lý nhân viên</h2>
+      <a class="btn btn-success btn-sm" href="/admin/staff/active" role="button">
+        Hoạt động
+      </a>
+      <a class="btn btn-danger btn-sm" href="/admin/staff/inactive" role="button">
+        Không hoạt động
+      </a>
+    </center>
+    <div class="breadcrumb">
+      
+
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search..." /><i class="fa fa-search" aria-hidden="true"></i>
+      </div>
+
+
+      <a class="btn btn-primary btn-sm" href="/admin/staff/createForm" role="button">
+        Thêm
+        <span class="fas fa-plus-circle"></span>
+      </a>
+    </div>
+  </div>
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box" id="view">
+          <div class="box-body">
+            <div class="row" style="padding:0px; margin:0px;">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        <center>Stt</center>
+                      </th>
+                      <th scope="col">
+                        <center>Hình ảnh</center>
+                      </th>
+                      <th scope="col">
+                        <center>Tên nhân viên</center>
+                      </th>
+                      <th scope="col">
+                        Giới tính
+                      </th>
+                      <th scope="col">Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#activeStaffss}}
+                    <tr>
+                      <th scope="row">
+                        <center>{{sum @index 1}}</center>
+                      </th>
+                      <td>
+                        <center><img src="/upload/{{avatar}}" alt="{{name}}" class="img-food-admin" /></center>
+                      </td>
+                      <td>{{name}}</td>
+                      <td>{{sex}}</td>
+                      <td>
+                        <div style="display: flex; margin: 0; gap: 0">
+                          {{#ifEquals status "active"}}
+                          <a href="" class="btn btn-success" data-id="{{this._id}}" data-bs-toggle="modal"
+                            data-bs-target="#unblock-staff-modal">Mở</a>
+                          <a href="" class="btn btn-outline-danger" data-id="{{this._id}}" data-bs-toggle="modal"
+                            data-bs-target="#block-staff-modal">Khóa</a>
+                          {{else}}
+                          <a href="" class="btn btn-outline-success" data-id="{{this._id}}" data-bs-toggle="modal"
+                            data-bs-target="#unblock-staff-modal">Mở</a>
+                          <a href="" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
+                            data-bs-target="#block-staff-modal">Khóa</a>
+                          {{/ifEquals}}
+                        </div>
+                      </td>
+                      <td>
+                        <a href="/admin/staff/{{this._id}}/editForm" class="btn btn-warning">Sửa</a>
+
+
+                      </td>
+                    </tr>
+                    {{/activeStaffss}}
+                  </tbody>
+                </table>
+
+                <div class="modal fade" id="block-staff-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Khóa nhân
+                          viên này</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Bạn chắc chắn muốn khóa nhân viên?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="btn-block-staff">Khóa
+                        </button>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="unblock-staff-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Mở khóa
+                          cho nhân viên này</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Bạn chắc chắn muốn mở khóa cho nhân viên?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-unblock-staff">Mở khóa
+                        </button>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <form name="block-staff-form" method="POST"></form>
+                <form name="unblock-staff-form" method="POST"></form>
+
+                <script>
+                  const urlParams = new URLSearchParams(window.location.search);
+
+                  if (urlParams.has('successMessage')) {
+                    const message = urlParams.get('successMessage'); alert(message);
+                    window.history.replaceState(
+                      {},
+                      document.title,
+                      window.location.pathname
+                    );
+                  }
+
+                  document.getElementById("search-input").addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                      const keyword = event.target.value.trim();
+                      if (keyword) {
+                        const search =
+                          axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`)
+                      }
+                    }
+                  });
+
+                  document.addEventListener('DOMContentLoaded', function () {
+                    console.log("Staff Index")
+                    var staffId;
+                    var deleteForm = document.forms['block-staff-form'];
+                    var btnBlockStaff = document.getElementById('btn-block-staff');
+                    var btnUnBlockStaff = document.getElementById('btn-unblock-staff');
+
+                    $('#block-staff-modal').on('show.bs.modal', function (event) {
+                      console.log(event, "event")
+                      var button = $(event.relatedTarget);
+                      staffId = button.data('id');
+                      btnBlockStaff.onclick = function () {
+                        deleteForm.action = '/admin/staff/' + staffId + '/blockIn?_method=DELETE';
+                        window.location.reload();
+                        deleteForm.submit();
+                      }
+                    });
+
+                    $('#unblock-staff-modal').on('show.bs.modal', function (event) {
+                      var button = $(event.relatedTarget);
+                      staffId = button.data('id');
+
+                      btnUnBlockStaff.onclick = function () {
+                        deleteForm.action = '/admin/staff/' + staffId + '/unblockIn?_method=POST';
+                        window.location.reload();
+                        deleteForm.submit();
+                      }
+                    });
+                  })
+
+                  function updateProducts(products) {
+                    const productsContainer = document.getElementById("products-container");
+                    productsContainer.innerHTML = ""; // Xóa hết các sản phẩm cũ
+                    if (products.length > 0) {
+                      products.forEach(product => {
+                        const productElement = document.createElement("div");
+                        productElement.classList.add("product-item");
+                        productElement.innerHTML = ` 
+                          <h2>${product.name}</h2>
+                          <p>${product.description}</p> <p>Price: $${product.price}</p>
+                        `;
+                        productsContainer.appendChild(productElement);
+                      });
+                    }
+                    else {
+                      productsContainer.innerHTML = "<p>No products found for your search.</p>";
+                    }
+                  }
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

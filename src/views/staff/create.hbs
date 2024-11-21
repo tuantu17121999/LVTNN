@@ -1,0 +1,164 @@
+<div class="container">
+  <div class="row">
+    <div class="col-1">
+      <div class="breadcrumb">
+        <a
+          class="btn btn-success btn-sm"
+          href="/admin/staff/index"
+          role="button"
+        >
+          <i class="fas fa-chevron-left"></i>
+          Trở lại
+        </a>
+      </div>
+    </div>
+    <div class="col-10">
+      <center>
+        <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i>
+          Nhập thông tin nhân viên</h2>
+      </center>
+    </div>
+    <div class="col-1"></div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-8">
+      <form
+        method="POST"
+        action="/admin/staff/store"
+        enctype="multipart/form-data"
+      >
+        {{#if errors.name}}
+          <span style="color: red;">{{errors.name}}</span>
+        {{/if}}
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="Tên nhân viên"
+             value="{{formData.name}}"
+          />
+        </div>
+        {{#if errors.username}}
+          <span style="color: red;">{{errors.username}}</span>
+        {{/if}}
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Tên đăng nhập"
+            value="{{formData.username}}"
+          />
+        </div>
+        {{#if errors.password}}
+          <span style="color: red;">{{errors.password}}</span>
+        {{/if}}
+        <div class="form-group d-flex">
+          <input
+            type="text"
+            id="password"
+            class="form-control mr-2"
+            name="password"
+            placeholder="Mật khẩu"
+            value="{{formData.password}}"
+          />
+          <button
+            class="btn btn-secondary random-password"
+            type="button"
+            onclick="randomPassword()"
+          > Random</button>
+        </div>
+        {{#if errors.identity}}
+          <span style="color: red;">{{errors.identity}}</span>
+        {{/if}}
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="identity"
+            name="identity"
+            placeholder="Căn cước công dân"
+          />
+        </div>
+        {{#if errors.phone}}
+          <span style="color: red;">{{errors.phone}}</span>
+        {{/if}}
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="phone"
+            name="phone"
+            placeholder="Số điện thoại"
+          />
+        </div>
+        <div>
+          <label>
+            <input type="radio" name="sex" value="male" {{#ifEquals formData.sex 'male'}}checked{{/ifEquals}} checked />Nam
+          </label>
+
+          <label>
+            <input type="radio" name="sex" value="female" {{#ifEquals formData.sex 'female'}}checked{{/ifEquals}} />Nữ
+          </label>
+        </div>
+        <div class="form-group">
+          <input
+            type="file"
+            class="form-control"
+            id="avatar"
+            name="avatar"
+            accept="image/*"
+          />
+        </div>
+        <div class="form-group">
+          <center>
+            <button
+              style="width: 100%;"
+              type="submit"
+              class="btn btn-danger btn-lg"
+            >Thêm nhân viên</button>
+          </center>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- hiển thị dữ liệu trực tiếp khi người dùng nhập thông tin vào form -->
+<script>
+  const defaultText = "Tên sản phẩm sẽ hiển thị ở đây"; 
+  const defaultPrice =
+    "₫.000"; document.getElementById('name').addEventListener('input', function (){ 
+      document.getElementById('product-name').textContent = this.value.trim() ? this.value : defaultText; 
+  });
+
+  document.getElementById('price').addEventListener('input', function () {
+    document.getElementById('price-name').textContent = this.value.trim() ? '₫' +
+    this.value + '.000' : defaultPrice; 
+  });
+
+  document.getElementById('imageInput').addEventListener('change', function(event) { 
+    const file = event.target.files[0]; const reader = new FileReader();
+    reader.onload = function(e) { 
+      document.getElementById('previewImage').src = e.target.result; 
+      document.getElementById('previewImage').style.display ='block'; };
+
+    if (file) { 
+      reader.readAsDataURL(file); 
+    } 
+    else {
+      document.getElementById('previewImage').src = '';
+      document.getElementById('previewImage').style.display = 'none'; 
+    } 
+  });
+
+  function randomPassword() { 
+    let rand = Math.random().toString(36).slice(-8);
+    console.log(rand, "random");
+    document.getElementById("password").value = rand;
+  }
+</script>

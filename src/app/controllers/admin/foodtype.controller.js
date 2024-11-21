@@ -68,7 +68,6 @@ class foodTypeController {
     async delete(req, res) {
         const id = req.params.id;
         const existedFood = await foodModel.findOne({foodtypeid: id}).exec() //Kiem tra co san pham khong
-        console.log(existedFood)
         if (existedFood === null){
             foodTypeModel.findByIdAndDelete(id)
             .then(() => res.redirect('/admin/foodType/index'))

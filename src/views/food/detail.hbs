@@ -15,7 +15,7 @@
                     {{#list}}
                     <ul>
                         <li><i class="far fa-dot-circle"></i>{{this}}</li>
-                        
+
                     </ul>
                     {{/list}}
                 </div>
@@ -49,8 +49,8 @@
                 <div class="mt-5">
                     <div class="head_3 bg-gray px-3 border-radius-20">Lưu ý</div>
                     <div class="box-left clearfix mt-4">
-                        <textarea name="note" id="note" rows="3" style="width:100%" class="px-3 form-control border-radius-20"
-                        placeholder="Note something here..."></textarea>
+                        <textarea name="note" id="note" rows="3" style="width:100%"
+                            class="px-3 form-control border-radius-20" placeholder="Note something here..."></textarea>
                     </div>
                 </div>
             </div>
@@ -60,9 +60,6 @@
                     <div id="wp-slider">
                         <div class="items-slide">
                             <div class="owl-carousel owl-theme">
-                                <div class="item">
-                                    <img src="/upload/{{food.image}}" alt="{{food.name}}">
-                                </div>
                                 <div class="item">
                                     <img src="/upload/{{food.image}}" alt="{{food.name}}">
                                 </div>
@@ -78,15 +75,24 @@
                     <li><i class="far fa-dot-circle"></i></i>{{this}}</li>
                 </ul>
                 {{/list}}
-                <div class="display-flex next-bar border-radius-20">
-                    <div class="" style=" width: 50%;">
-                        <div class="bd-highlight price_item_new price-big float-right">
-                            <div class="float-right pr-3">
+                <div class=" next-bar border-radius-20">
+                    <div class="">
+                        <div class="bd-highlight price_item_new price-big">
+                            <center>
+
+                                {{#if food.newPrice}}
+                                <span class="">₫{{food.newPrice}}.000</span>
+                                <small>
+                                    <del><span class="">₫{{food.price}}.000</span></del>
+                                    (-{{food.discountPrice}}%)
+                                </small>
+                                {{else}}
                                 <span class="">₫{{food.price}}.000</span>
-                            </div>
+                                {{/if}}
+                            </center>
                         </div>
                     </div>
-                    <div class="" style=" width: 50%;">
+                    <div class="" >
                         <button style=" width: 100%;" onclick="onClickAdd(
                                 '{{food._id}}',
                                 '{{food.name}}',

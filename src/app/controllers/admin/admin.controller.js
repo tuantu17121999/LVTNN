@@ -20,7 +20,7 @@ class AdminController{
     }
 
     async create(req, res) {
-        const salt = bcrypt.genSaltSync(10);
+        const salt = bcrypt.genSaltSync(10); //tạo salt với 10 row
         const passwordHash = await bcrypt.hash(req.body.password, salt);
         const admin = new adminModel({
             username: req.body.username,

@@ -6,6 +6,7 @@ const router = express.Router();
 router.use('/', foodRouter);
 router.use('/food', foodRouter);
 router.use('/address', addressRouter);
+router.get('/cart', (req, res) => res.render('cart/index', { layout: 'main' }));
 
 
 module.exports = router;
