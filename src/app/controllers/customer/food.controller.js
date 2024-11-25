@@ -3,7 +3,6 @@ const foodTypeModel = require('../../models/foodtype.model');
 
 function replaceDescription(foods) {
     return foods.map(food => {
-        console.log(food.discountPrice)
         if (food.discountPrice != null && parseFloat(food.discountPrice) > 0) {
             const newPrice = parseFloat(food.price) - (parseFloat(food.price) / 100 * parseFloat(food.discountPrice));
             return {
@@ -25,19 +24,22 @@ class FoodController {
     home(req, res) {
         Promise.all([
             foodTypeModel.find({}).lean(), // Sử dụng lean() để chuyển đổi trực tiếp sang Object
-            foodModel.find({}).lean(),
-            foodModel.find({ foodtypeid: '672731488fc21635cbe96291' }).lean(),
+            foodModel.find({ tag: 'New' }).lean(),
+            foodModel.find({ tag: 'sale' }).lean(),
+            foodModel.find({ foodtypeid: '672731488fc21635cbe96291'}).lean(), 
             foodModel.find({ foodtypeid: { $ne: '672731488fc21635cbe96291' } }).lean() //$ne là toán tử (not equals)
         ])
-            .then(([foodtypes, foods, food2, food3]) => {
+            .then(([foodtypes, foods, deals, food2, food3]) => {
 
                 // Thay thế ký tự xuống dòng trong mô tả thực phẩm
                 foods = replaceDescription(foods);
+                deals = replaceDescription(deals);
                 food2 = replaceDescription(food2);
                 food3 = replaceDescription(food3);
                 res.render('home', {
                     foodtypes, // Đổ dữ liệu foodtypes vào view
                     foods, // Đổ dữ liệu foods vào view
+                    deals,
                     food2,
                     food3
                 });

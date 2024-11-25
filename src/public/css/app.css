@@ -29,7 +29,6 @@ a {
   font-size: 20px !important;
   font-weight: bold;
   color: #1f0909 !important;
-  border-top: 1px solid #e1e1e1;
   padding: 5px 0px;
 }
 
@@ -274,7 +273,7 @@ a.menu-function-admin {
 }
 
 .navbar-menu {
-  height: 86px;
+  height: 60px;
 }
 
 .content-wrapper,
@@ -523,7 +522,6 @@ a.menu-function-admin {
   text-align: center;
   border: 0.1875em solid #fff;
   cursor: default;
-  pointer-events: none;
   border-radius: 100%;
   background-color: #cccccc;
   font-weight: 500;
@@ -887,3 +885,96 @@ footer {
 .toggle-checkbox:checked + .toggle-label .toggle-switch-circle {
   left: 33px;
 }
+
+.image-avatar{
+  width: 100%;
+  height: 100%;
+  max-width: 100px;
+}
+
+.search-box{
+  margin-right: 6px;
+}
+
+/* place order / address*/
+.step-form {
+  padding: 20px;
+  margin-bottom: 40px; /* Thêm padding-bottom để tạo khoảng cách dưới */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 15px; /* Bo góc lớn hơn */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Bóng đổ lớn hơn */
+}
+
+.delivery_title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase; /* Chuyển thành chữ hoa */
+  letter-spacing: 1px; /* Giãn chữ */
+}
+
+.form-control {
+  margin-bottom: 15px;
+  border-radius: 30px; /* Bo góc lớn hơn cho trường nhập liệu */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Bóng đổ bên trong */
+  padding: 10px 15px; /* Thêm padding cho trường nhập liệu */
+}
+
+.btn-danger {
+  background-color: #ff4d4d; /* Giữ nguyên màu cho nút "TIẾP TỤC" */
+  border: none;
+  border-radius: 30px;
+  padding: 10px 30px; /* Tăng kích thước nút */
+  font-size: 1.2rem; /* Tăng kích thước chữ */
+}
+
+.btn-danger:hover {
+  background-color: #e60000;
+}
+
+.text-danger {
+  color: #ff4d4d !important;
+}
+
+/*payment*/
+.step-form {
+  padding: 20px;
+  padding-bottom: 40px; /* Thêm padding-bottom để tạo khoảng cách dưới */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 15px; /* Bo góc lớn hơn */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Bóng đổ lớn hơn */
+}
+
+.delivery_title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase; /* Chuyển thành chữ hoa */
+  letter-spacing: 1px; /* Giãn chữ */
+}
+
+.form-control {
+  margin-bottom: 15px;
+  border-radius: 30px; /* Bo góc lớn hơn cho trường nhập liệu */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Bóng đổ bên trong */
+  padding: 10px 15px; /* Thêm padding cho trường nhập liệu */
+}
+
+.btn-danger {
+  background-color: #ff4d4d; /* Giữ nguyên màu cho nút "TIẾP TỤC" */
+  border: none;
+  border-radius: 30px;
+  padding: 10px 30px; /* Tăng kích thước nút */
+  font-size: 1.2rem; /* Tăng kích thước chữ */
+}
+
+.btn-danger:hover {
+  background-color: #e60000;
+}
+
+.text-danger {
+  color: #ff4d4d !important;
+}
+
