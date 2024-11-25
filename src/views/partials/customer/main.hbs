@@ -9,7 +9,7 @@
             <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
                 disabled>{{this.tag}}</button>
             {{else}}
-            <button type="button" id="discountPrice" class="btn btn-light btn-sm border-radius"
+            <button type="button" id="discountPrice" class="btn btn-light btn-sm border-radius" style="margin-top: 21px;"
                 disabled></button>
             {{/if}}
             {{/if}}
@@ -32,7 +32,7 @@
                 <div class="float-right">
                     {{#if this.newPrice}}
                     <span class="" id="price">₫{{this.newPrice}}.000</span>
-                    <span class="" id="price"><strike>₫{{this.price}}.000</strike></span>
+                    <span class="" id="price"><small><strike>₫{{this.price}}.000</strike></small></span>
                     {{else}}
                     <span class="" id="price">₫{{this.price}}.000</span>
                     {{/if}}

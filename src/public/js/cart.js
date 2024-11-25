@@ -16,13 +16,13 @@ function getListItemCart() {
     var listItemCart = new Array();
     var jsonListItemCart = localStorage.getItem(keyLocalStorageItemCart);
     if (jsonListItemCart != null) {
-        listItemCart = JSON.parse(jsonListItemCart);
+        listItemCart = JSON.parse(jsonListItemCart); //chuyển đổi đối tượng Json thành Javascript
     }
     return listItemCart;
 }
 
 function saveListItemCartInLocal(listItemCart) {
-    var jsonListItemCart = JSON.stringify(listItemCart);
+    var jsonListItemCart = JSON.stringify(listItemCart); //chuyển đổi đối tượng Javascript thành Json 
     localStorage.setItem(keyLocalStorageItemCart, jsonListItemCart);
 }
 

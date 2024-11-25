@@ -73,7 +73,7 @@
     function submitCart() {
         var submitCartForm = document.forms['submit-cart-form'];
         var idUser = document.getElementsByClassName('user')[0].id;
-        submitCartForm.action = '/order/address';
+        submitCartForm.action = '/order/place-order';
         submitCartForm.submit();
     }
     function xoa(id) {
