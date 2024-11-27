@@ -9,10 +9,8 @@ const orderSchema = new Schema({
         type: String,
         default: ''
     },
-    idAddress: {
-        type: Schema.Types.ObjectId,        
-        ref: "Address"
-    },
+    idAddress: { type: Schema.Types.ObjectId, ref: "Address", required: true},
+    staffid: { type: Schema.Types.ObjectId, ref: 'staff', required: true },
 }, {
     timestamps: true,
 });

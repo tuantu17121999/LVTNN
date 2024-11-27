@@ -12,6 +12,7 @@ class OrderController {
     }
 
     async submitOrder(req, res) {
+        console.log(req.body.items)
         try {
             // Lưu lại địa chỉ
             const address = await Address.create({
@@ -36,7 +37,9 @@ class OrderController {
                 return OrderDetails.create({
                     foodid: item.id,
                     orderid: order._id,
-                    amount: item.amount
+                    name: item.name,
+                    amount: item.amount,
+                    price: item.price
                 });
             });
 

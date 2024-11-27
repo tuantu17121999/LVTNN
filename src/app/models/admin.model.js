@@ -13,7 +13,11 @@ const adminSchema = new Schema({
     },
     isDeleted: {
         type: Boolean
-    }
+    },
+    // role: {
+    //     type: String,
+    //     enum: [Admin]
+    // }
 });
 
 module.exports = mongoose.model('admin', adminSchema);

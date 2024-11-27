@@ -14,7 +14,7 @@
 <body>
     {{>staff/menufunction}}
     {{{body}}}
-    
+
     <!-- Modal -->
     <div id="cancelModal" class="modal">
         <div class="modal-content">
@@ -53,20 +53,36 @@
             // Lưu slideId vào localStorage
             localStorage.setItem('slideId', slideId);
         }
-        function cancelOrder() {
+        async function cancelOrder(id, reason) {
             // Gửi yêu cầu huỷ đơn hàng đến server
-            alert('Đơn hàng đã được huỷ!');
+            try {
+                const response = await fetch(`/staff/order/cancel/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: id, reason: reason })
+                });
+                order = await response.json();
+                if (order.msg) {
+                    alert(order.msg);
+                    return;
+                } else {
+                    alert('Đơn hàng đã được huỷ!');
+                    window.location.reload(); // Reload lại trang sau khi xác nhận đơn hàng
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
-
         function showDetails() {
             // Hiển thị chi tiết đơn hàng
             alert('Xem chi tiết đơn hàng!');
         }
-
-        function showCancelModal() {
+        function showCancelModal(id) {
             document.getElementById('cancelModal').classList.add('active');
+            document.getElementById('cancelModal').setAttribute('data-order-id', id);
         }
-
         function closeModal() {
             document.getElementById('cancelModal').classList.remove('active');
         }
@@ -76,8 +92,9 @@
 
             orderCards.forEach(function (card) {
                 var orderItems = card.querySelector('.order-items');
+            
                 var items = orderItems.querySelectorAll('li');
-
+        
                 if (items.length > 3) {
                     for (var i = 3; i < items.length; i++) {
                         items[i].style.display = 'none';
@@ -88,14 +105,64 @@
                 }
             });
         });
-
         function submitCancel() {
             const reason = document.getElementById('cancelReason').value;
+            const id = document.getElementById('cancelModal').getAttribute('data-order-id');
             // Gửi lý do huỷ đơn hàng đến server
-            alert('Lý do huỷ: ' + reason);
+            cancelOrder(id, reason);
             closeModal();
         }
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('vi-VN');
+        function confirmOrder(id) {
+            // Gửi yêu cầu xác nhận đơn hàng đến server
+            fetch(`/staff/order/confirm/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Xử lý kết quả từ server
+                    alert('Đơn hàng đã được xác nhận!');
+                    window.location.reload(); // Reload lại trang sau khi xác nhận đơn hàng
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+        function viewOrderDetails(card) {
+            // Xử lý khi xem chi tiết đơn hàng
+            card.classList.remove('new-order');
+            // Thêm các xử lý khác nếu cần
+        }
+
+        let orders = [];
+        // Hàm lấy dữ liệu đơn hàng từ API
+        async function fetchOrders(orders) {
+            try {
+                const response = await fetch('/staff/order/api/orders');
+                orders = await response.json();
+                document.querySelectorAll('.order-card').forEach(card => {
+                    const orderId = card.getAttribute('data-order-id');
+                    const order = orders.find(order => order._id === orderId); // Tìm đơn hàng tương ứng từ danh sách đơn hàng
+                    checkPromotion(order);
+                });
+            } catch (error) {
+                console.error('Lỗi khi lấy đơn hàng:', error);
+            }
+        }
+        function checkPromotion(order) {
+            const promoTag = document.getElementById(`promotionTag-${order._id}`);
+            if (order.promotion) {
+                promoTag.style.display = 'inline-block';
+            } else {
+                promoTag.style.display = 'none';
+            }
+        }
+        // Gọi hàm fetchOrders khi trang được tải
+        window.onload = fetchOrders;
     </script>
 </body>
 

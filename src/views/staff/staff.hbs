@@ -19,8 +19,16 @@
         <h1>Đã hoàn thành</h1>
         <div class="order-section">
             {{#ordersCompleted}}
-            {{>order/orderCompleted}}   
+            {{>order/orderCompleted}}
             {{/ordersCompleted}}
+        </div>
+    </div>
+    <div id="cancelled-orders" class="slide">
+        <h1>Đã huỷ</h1>
+        <div class="order-section">
+            {{#ordersCancelled}}
+            {{>order/orderCancelled}}
+            {{/ordersCancelled}}
         </div>
     </div>
 </div>
