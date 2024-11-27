@@ -1,0 +1,75 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <center>
+            <h2 style="color: rgb(0, 0, 0)"><i class="fas fas fa-receipt"></i> Quản lý đơn hàng</h2>
+        </center>
+    </div>
+    <div class="content border-radius-20 box">
+        <div class="row" style="padding:0px; margin:0px;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <center>Stt</center>
+                            </th>
+                            <th scope="col">
+                                <center>Trạng thái</center>
+                            </th>
+                            <th scope="col">
+                                <center>Tổng tiền</center>
+                            </th>
+                            <th scope="col">
+                                <center>Phương thức thanh toán</center>
+                            </th>
+                            <th scope="col">
+                                <center>Thao tác</center>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#orders}}
+                        <tr>
+                            <th scope="row">
+                                <center>{{sum @index 1}}</center>
+                            </th>
+                            {{#ifEquals status 'new'}}
+                            <td>
+                                <center><i class="btn btn-warning disabled">Đơn mới</i></center>
+                            </td>
+                            {{/ifEquals}}
+                            {{#ifEquals status 'inProgress'}}
+                            <td>
+                                <center><i class="btn btn-success disabled">Đang thực hiện</i></center>
+                            </td>
+                            {{/ifEquals}}
+                            {{#ifEquals status 'completed'}}
+                            <td>
+                                <center><i class="btn btn-danger disabled">Đã hoàn thành</i></center>
+                            </td>
+                            {{/ifEquals}}
+                            {{#ifEquals status 'cancel'}}
+                            <td>
+                                <center><i class="btn btn-secondary disabled">Đã hủy</i></center>
+                            </td>
+                            {{/ifEquals}}
+                            <td>
+                                <b><center>{{moneyTotal}}.000 VNĐ</center></b>
+                            </td>
+                            <td>
+                                <center>{{payment}}</center>
+                            </td>
+                            <td>
+                                <center>
+                                    <a href="/admin/order/{{this._id}}/detail" class="btn btn-success">Chi
+                                        tiết</a>
+                                </center>
+                            </td>
+                        </tr>
+                        {{/orders}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

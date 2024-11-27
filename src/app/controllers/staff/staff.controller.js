@@ -1,40 +1,53 @@
-const addressModel = require('../../models/address.model'); // Đảm bảo bạn đã tạo mô hình Address
-const orderModel = require('../../models/order.model'); // Đảm bảo bạn đã tạo mô hình Order
-const orderDetails = require('../../models/orderDetail.model'); // Đảm bảo bạn đã tạo mô hình OrderDetails
-const foodModel = require('../../models/food.model');
-
+const orderModel = require('../../models/order.model');
+const OrderDetails = require('../../models/orderDetail.model');
+const canceledOrderModel = require('../../models/canceledOrder.model');
 class staffController {
     getAll(req, res) {
         Promise.all([
-            // orderDetails.populate('foodid','orderid',populate('idAddress')).find({ status: 'new' }).lean(),
-            // orderDetails.populate('foodid','orderid',populate('idAddress')).find({ status: 'inProgress' }).lean(),
-            // orderDetails.populate('foodid','orderid',populate('idAddress')).find({ status: 'completed' }).lean(),
-
-            // orderDetails.find().populate('foodid').lean(),
-            // orderDetails.find().lean(),
-            // orderDetails.find().populate('foodid').populate('orderid').lean(),
             orderModel.find({ status: 'new' }).populate('idAddress').lean(),
-            orderModel.find({ status: 'inProgress' }).lean(),
-            orderModel.find({ status: 'completed' }).lean()
+            orderModel.find({ status: 'inProgress' }).populate('idAddress').lean(),
+            orderModel.find({ status: 'completed' }).populate('idAddress').lean(),
+            canceledOrderModel.find({}).populate('orderId').lean()
         ])
-            .then(([ordersNew, ordersInProgress, ordersCompleted]) => {
-                // res.json({
-                //     ordersNew,
-                //     ordersInProgress,
-                //     ordersCompleted
-                // })
-                
-                res.render('staff/staff', {        
+            .then(async ([ordersNew, ordersInProgress, ordersCompleted, ordersCancelled]) => {
+                const orderIdsNew = ordersNew.map(order => order._id);
+                const orderIdsInProgress = ordersInProgress.map(order => order._id);
+                const orderIdsCompleted = ordersCompleted.map(order => order._id);
+    
+                // Lấy chi tiết đơn hàng cho tất cả các trạng thái
+                const [orderDetailsNew, orderDetailsInProgress, orderDetailsCompleted] = await Promise.all([
+                    OrderDetails.find({ orderid: { $in: orderIdsNew } }).lean(),
+                    OrderDetails.find({ orderid: { $in: orderIdsInProgress } }).lean(),
+                    OrderDetails.find({ orderid: { $in: orderIdsCompleted } }).lean()
+                ]);
+    
+                // Kết hợp chi tiết đơn hàng với đơn hàng tương ứng
+                const ordersNewWithDetails = ordersNew.map(order => ({
+                    ...order,
+                    details: orderDetailsNew.filter(detail => detail.orderid.toString() === order._id.toString())
+                }));
+    
+                const ordersInProgressWithDetails = ordersInProgress.map(order => ({
+                    ...order,
+                    details: orderDetailsInProgress.filter(detail => detail.orderid.toString() === order._id.toString())
+                }));
+    
+                const ordersCompletedWithDetails = ordersCompleted.map(order => ({
+                    ...order,
+                    details: orderDetailsCompleted.filter(detail => detail.orderid.toString() === order._id.toString())
+                }));
+                res.render('staff/staff', {
                     layout: 'staff',
-                    ordersNew,
-                    ordersInProgress,
-                    ordersCompleted
+                    ordersNew: ordersNewWithDetails,
+                    ordersInProgress: ordersInProgressWithDetails,
+                    ordersCompleted: ordersCompletedWithDetails,
+                    ordersCancelled
                 });
             })
             .catch(error => {
                 console.log(error);
             });
-    }
+    }    
 }
 
 module.exports = new staffController();
