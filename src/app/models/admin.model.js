@@ -16,7 +16,7 @@ const adminSchema = new Schema({
     },
     // role: {
     //     type: String,
-    //     enum: [Admin]
+    //     enum: [Admin, Staff]
     // }
 });
 

@@ -2,7 +2,6 @@ const Address = require('../../models/address.model'); // Đảm bảo bạn đ�
 const Order = require('../../models/order.model'); // Đảm bảo bạn đã tạo mô hình Order
 const OrderDetails = require('../../models/orderDetail.model'); // Đảm bảo bạn đã tạo mô hình OrderDetails
 
-
 class OrderController {
     //[GET] /address
     async placeOrder(req, res) {
@@ -29,7 +28,9 @@ class OrderController {
                 idAddress: address._id,
                 status: 'new',
                 moneyTotal: req.body.items.reduce((total, item) => total + item.amount * item.price, 0),
-                payment: req.body.paymentMethod
+                payment: req.body.paymentMethod,
+                shippingFee: 15,
+                finalMoney: req.body.items.reduce((total, item) => total + item.amount * item.price, 0) + 15
             });
 
             // Lưu lại chi tiết đơn hàng
@@ -62,6 +63,16 @@ class OrderController {
         // res.render('order/confirmation', {
         //     layout: 'main'
         // })
+    }
+
+    async getOrders(req, res) {
+        try {
+            const orders = await Order.find({}).lean();
+            res.json(orders);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Lấy danh sách đơn hàng thất bại!' });
+        }
     }
 }
 module.exports = new OrderController();

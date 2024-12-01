@@ -1,17 +1,17 @@
-<div class="order-card" onclick="viewOrderDetails(this)" data-order-id="{{this._id}}">
+<div class="order-card" onclick="viewOrderDetails(this)" data-order-id="{{this.orderId._id}}">
     <div class="order-details">
         <div class="order-header">
             <span class="order-time">Đặt: {{formatDateTime this.orderId.createdAt}}</span>
             <span class="order-time">Huỷ: {{formatDateTime this.createdAt}}</span>
             <span>Lý do huỷ đơn: {{this.reason}}</span>
-            <span>Nhân viên huỷ: {{this.staffName}}</span>
+            <span>Nhân viên huỷ: Nhân viên A</span>
         </div>
     </div>
     <div class="order-body">
         <div class="order-money">
             <div class="d-flex">
                 <span class="tag yellow" id="paymentMethod">{{this.orderId.payment}}</span>
-                <span class="tag red" id="promotionTag-{{this._id}}" style="display: none;">Khuyến mãi</span>
+                <span class="tag red" id="promotionTag-{{this.orderId._id}}" style="display: none;">Khuyến mãi</span>
             </div>
         </div>
         <div class="display-flex row">

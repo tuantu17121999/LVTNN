@@ -6,4 +6,6 @@ router.get('/place-order', orderController.placeOrder);
 router.post('/submit-order', orderController.submitOrder);
 router.get('/confirmation', orderController.confirmation);
 
+router.get('/api/orders', orderController.getOrders);
+
 module.exports = router;
