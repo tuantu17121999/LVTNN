@@ -1,28 +1,41 @@
-<div class="order-card">
-    <div class="order-details row">
-        <div class="col-6">
-            <p><strong>Khách hàng:</strong> Nguyễn Văn A</p>
-        </div>
-        <div class="col-6">
-            <p><strong>Số điện thoại:</strong> 0123456789</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-3">
-            <p><strong>Time:</strong> <span class="order-time">{{this.status}}</span></p>
-        </div>
-        <div class="col-4">
-            <p><strong>Tổng tiền:</strong> <span class="">{{this.moneyTotal}}</span></p>
-        </div>
-        <div class="col-3">
-            <p><strong>Pay:</strong> <span class="">{{this.payment}}</span></p>
+
+<div class="order-card" onclick="viewOrderDetails(this)" data-order-id="{{this._id}}">
+    <div class="order-details">
+        <div class="order-header">
+            <span class="order-time">{{formatDateTime this.createdAt}}</span>
+            <h4 id="customerName">{{this.idAddress.fullName}}</h4>
+            <p id="customerPhone">Số điện thoại: {{this.idAddress.phone}}</p>
+            <p id="customerAddress">Địa chỉ: {{this.idAddress.address}}, {{this.idAddress.wards}},
+                {{this.idAddress.district}}, {{this.idAddress.city}}</p>
         </div>
     </div>
-    <ul class="order-items">
-        <li>3x Bánh mì</li>
-        <li>1x Nước cam</li>
-    </ul>
-    <div class="order-actions">
-        <button class="btn-complete" onclick="showDetails()">Xem chi tiết</button>
+    <div class="order-body">
+        <div class="order-money">
+            <div class="d-flex">
+                <span class="tag yellow" id="paymentMethod">{{this.payment}}</span>
+                <span class="tag red" id="promotionTag-{{this._id}}" style="display: none;">Khuyến mãi</span>
+            </div>
+
+        </div>
+        <div class="display-flex row">
+            <div class="col-5">
+                <span class="total-amount float-left" id=""> {{this.amount}} món</span>
+            </div>
+            <div class="col-7">
+                <span class="total-amount float-right" id="totalAmount">{{this.moneyTotal}}.000 VND</span>
+            </div>
+        </div>
+        <div>
+            <ul class="order-items" id="productList">
+                {{#each this.details}}
+                <li>
+                    {{this.amount}} {{this.name}}
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <button class="btn btn-primary" style="width: 100%;" onclick="showDetails()">Xem chi tiết</button>
     </div>
 </div>

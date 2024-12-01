@@ -1,10 +1,27 @@
 const orderModel = require("../../models/order.model");
 const canceledOrderModel = require("../../models/canceledOrder.model");
+const orderDetailModel = require("../../models/orderDetail.model");
 
 class orderController {
     //[GET] /
     home(req, res) {
         res.json({});
+    }
+
+    //[GET] /order/api/:id
+    async getOneOrder(req, res) {
+        const id = req.params.id;
+        Promise.all([
+            orderModel.findOne({ _id: id }).populate('idAddress').lean(),
+            orderDetailModel.find({ orderid: id }).populate('foodid').lean()
+        ])
+            .then(([order, orderDetails]) => {
+                const orderWithDetails = { ...order, orderDetails };
+                res.json({ orderWithDetails });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     confirmOrder(req, res) {

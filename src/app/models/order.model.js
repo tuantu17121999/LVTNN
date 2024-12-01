@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
     moneyTotal: { type: Number, required: true },
+    shippingFee: { type: Number, required: true },
+    finalMoney: { type: Number, required: true },
     status: { type: String, required: true },
     payment: { type: String, required: true },
     amount: { 
@@ -10,7 +12,6 @@ const orderSchema = new Schema({
         default: ''
     },
     idAddress: { type: Schema.Types.ObjectId, ref: "Address", required: true},
-    staffid: { type: Schema.Types.ObjectId, ref: 'staff', required: true },
 }, {
     timestamps: true,
 });

@@ -75,7 +75,7 @@ class newsController {
             slug
         };
         if (req?.file?.filename) {
-            body.image = req.file.filename;
+            body.imageNews = req.file.filename;
         }
         const news = await newsModel.updateOne({ _id: req.params.id }, body)
             .then(() => res.redirect('/admin/news/index'))

@@ -4,6 +4,13 @@
             <h2 style="color: rgb(0, 0, 0)"><i class="fas fas fa-receipt"></i> Quản lý đơn hàng</h2>
         </center>
     </div>
+    <div class="content-header">
+        <center>
+            <h2>
+                <p>Tổng cộng doanh thu: <span id="totalRevenue">{{totalRevenue}}</span>.000 VNĐ</p>
+            </h2>
+        </center>
+    </div>
     <div class="content border-radius-20 box">
         <div class="row" style="padding:0px; margin:0px;">
             <div class="table-responsive">
@@ -54,7 +61,9 @@
                             </td>
                             {{/ifEquals}}
                             <td>
-                                <b><center>{{moneyTotal}}.000 VNĐ</center></b>
+                                <b>
+                                    <center>{{moneyTotal}}.000 VNĐ</center>
+                                </b>
                             </td>
                             <td>
                                 <center>{{payment}}</center>
@@ -73,3 +82,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    function formatNumber(totalRevenue) {
+        if (totalRevenue > 1000) {
+            return totalRevenue.toLocaleString('de-DE'); // Sử dụng 'en-US' để có dấu chấm
+        }
+        return totalRevenue.toString();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var totalRevenueElement = document.getElementById('totalRevenue');
+        var totalRevenue = parseFloat(totalRevenueElement.textContent);
+        totalRevenueElement.textContent = formatNumber(totalRevenue);
+    });
+</script>
