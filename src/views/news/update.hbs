@@ -68,6 +68,10 @@
         </div>
     </div>
 
+    {{!-- <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script> --}}
+
+    
+    <script src="/ckeditor/ckeditor.js"></script>
     <!-- hiển thị dữ liệu trực tiếp khi người dùng nhập thông tin vào form -->
     <script>
         const defaultText = "Tên tin tức sẽ hiển thị ở đây";
@@ -92,6 +96,8 @@
                 document.getElementById('previewImage').style.display = 'none';
             }
         });
+
+        CKEDITOR.replace('descriptionNews');
     </script>
 </body>
 

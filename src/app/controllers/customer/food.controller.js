@@ -1,5 +1,6 @@
 const foodModel = require('../../models/food.model');
 const foodTypeModel = require('../../models/foodtype.model');
+const advModel = require('../../models/advertise.model');
 
 function replaceDescription(foods) {
     return foods.map(food => {
@@ -27,9 +28,10 @@ class FoodController {
             foodModel.find({ tag: 'New' }).lean(),
             foodModel.find({ tag: 'sale' }).lean(),
             foodModel.find({ foodtypeid: '672731488fc21635cbe96291'}).lean(), 
-            foodModel.find({ foodtypeid: { $ne: '672731488fc21635cbe96291' } }).lean() //$ne là toán tử (not equals)
+            foodModel.find({ foodtypeid: { $ne: '672731488fc21635cbe96291' } }).lean(), //$ne là toán tử (not equals)
+            advModel.find({}).lean()
         ])
-            .then(([foodtypes, foods, deals, food2, food3]) => {
+            .then(([foodtypes, foods, deals, food2, food3, adv]) => {
 
                 // Thay thế ký tự xuống dòng trong mô tả thực phẩm
                 foods = replaceDescription(foods);
@@ -41,7 +43,8 @@ class FoodController {
                     foods, // Đổ dữ liệu foods vào view
                     deals,
                     food2,
-                    food3
+                    food3,
+                    adv
                 });
             })
             .catch(error => {

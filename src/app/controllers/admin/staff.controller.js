@@ -1,4 +1,5 @@
-const staffModel = require("../../models/staff.model.js");
+const adminModel = require("../../models/admin.model");
+
 const bcrypt = require('bcryptjs');
 
 const { multipleMongooseToOject } = require("../../../util/mongoose");
@@ -6,11 +7,12 @@ const { validateErrorHandler } = require("../../common/handleError");
 
 class staffController {
   index(req, res) {
-    staffModel.find({}).lean()
+    adminModel
+      .find({ role: "staff" })
       .then((staffs) => {
-        res.render('staff/index', {
-          staffs,
-          layout: 'admin',
+        res.render("staff/index", {
+          staffs: multipleMongooseToOject(staffs),
+          layout: "admin",
         });
       })
       .catch((error) => {
@@ -18,8 +20,19 @@ class staffController {
       });
   }
 
+  getOne(req, res) {
+    adminModel
+      .findById(req.params.id)
+      .then((staff) => {
+        res.json({ data: staff });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   activeStaff(req, res) {
-    staffModel.find({ status: 'active' }).lean()
+    adminModel.find({ status: 'active', role: 'staff' }).lean()
       .then((activeStaffss) => {
         res.render('staff/indexActive', {
           activeStaffss,
@@ -32,7 +45,7 @@ class staffController {
   }
 
   inactiveStaff(req, res) {
-    staffModel.find({ status: 'inactive' }).lean()
+    adminModel.find({ status: 'inactive', role: 'staff' }).lean()
       .then((inactiveStaffss) => {
         res.render('staff/indexInactive', {
           inactiveStaffss,
@@ -56,14 +69,10 @@ class staffController {
     console.log(req?.file?.avatar, "req?.file?.avatar");
     const avatar = req?.file ? req.file.filename : "avatar-staff-default.jpg";
 
-    // Kiểm tra các đầu vào để debug nếu cần
-    console.log("Received data:", req.body);
-    console.log("Received avatar:", avatar);
-
     // Tạo hash cho password
     const salt = bcrypt.genSaltSync(10);
     // Tạo instance mới của staffModel
-    const staff = new staffModel({
+    const staff = new adminModel({
       name,
       username,
       password: password ? await bcrypt.hash(password, salt) : password,
@@ -81,27 +90,16 @@ class staffController {
       })
       .catch((error) => {
         console.log(error, "Error creating staff");
-        validateErrorHandler("staff/create.hbs", error, req, res, next);
-      });
-  }
-
-  getOne(req, res) {
-    staffModel
-      .findById(req.params.id)
-      .then((staff) => {
-        res.json({ data: staff });
-      })
-      .catch((error) => {
-        console.log(error);
+        validateErrorHandler("staff/create.hbs", error, req, res);
       });
   }
 
   updateForm(req, res) {
-    staffModel
+    adminModel
       .findById(req.params.id)
-      .then((staff) => {
+      .then((admin) => {
         res.render("staff/update", {
-          formData: staff,
+          formData: admin,
           layout: "admin",
         });
       })
@@ -126,10 +124,9 @@ class staffController {
       const salt = bcrypt.genSaltSync(10);
       params.password = await bcrypt.hash(password, salt);
     }
-    staffModel
+    adminModel
       .findByIdAndUpdate(req.params.id, params)
       .then((result) => {
-        console.log(result);
         res.redirect("/admin/staff/index");
       })
       .catch((error) => {
@@ -138,7 +135,7 @@ class staffController {
   }
 
   block(req, res) {
-    staffModel
+    adminModel
       .findByIdAndUpdate(req.params.id, {
         status: "inactive",
       })
@@ -152,7 +149,7 @@ class staffController {
   }
 
   unBlock(req, res) {
-    staffModel
+    adminModel
       .findByIdAndUpdate(req.params.id, {
         status: "active",
       })
@@ -166,7 +163,7 @@ class staffController {
   }
 
   blockIn(req, res) {
-    staffModel
+    adminModel
       .findByIdAndUpdate(req.params.id, {
         status: "inactive",
       })
@@ -180,7 +177,7 @@ class staffController {
   }
 
   unBlockIn(req, res) {
-    staffModel
+    adminModel
       .findByIdAndUpdate(req.params.id, {
         status: "active",
       })

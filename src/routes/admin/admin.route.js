@@ -10,12 +10,5 @@ router.post('/login', adminController.login);
 router.post('/logout', adminController.logout);
 
 router.get('/:id', adminController.getOne);
-router.post('/:id', adminController.create);
-
-router.delete('/:id', adminController.delete);
-router.put('/:id', adminController.update);
-
-router.delete('/:id/soft', adminController.softDelete);
-router.put('/:id/restore', adminController.restore);
 
 module.exports = router;
