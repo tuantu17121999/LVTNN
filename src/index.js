@@ -27,18 +27,18 @@ app.listen(3000, () => console.log('listen on port 3000'))
 
 //cai dat handlebars
 app.engine('.hbs', engine({
-    extname: '.hbs',
-    helpers: require('./app/helpers/handlebars.js'),
-    runtimeOptions: {
-        allowProtoPropertiesByDefault: true,
-        allowProtoMethodsByDefault: true,
-    },
+  extname: '.hbs',
+  helpers: require('./app/helpers/handlebars.js'),
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
 }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
 
 // cài đặt public folder là thư mục chữa file static
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 // cài đặt router override
 app.use(methodOverride('_method'));

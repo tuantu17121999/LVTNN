@@ -11,20 +11,39 @@ const slugify = (text) => {
         .replace(/\-\-+/g, '-'); // Thay thế nhiều dấu gạch ngang bằng một dấu
 };
 
+function trimDescription(description, maxLength = 30) {
+    if (description.length <= maxLength) {
+        return description;
+    }
+    const trimmedString = description.substr(0, maxLength);
+    const lastSpaceIndex = trimmedString.lastIndexOf(' ');
+    
+    if (lastSpaceIndex > 0) {
+        return trimmedString.substr(0, lastSpaceIndex) + '...';
+    } else {
+        return trimmedString + '...';
+    }
+}
+
 class newsController {
     // show index
     async getAll(req, res) {
-        newsModel.find({})
-            .then((news) => {
-                news = news.map(news => news.toObject())
-                res.render('news/index', {
-                    news,
-                    layout: 'admin'
-                })
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        try {
+            let news = await newsModel.find({}).lean();
+            news = news.map(news => {
+                return {
+                    ...news,
+                    descriptionNews: trimDescription(news.descriptionNews)
+                };
+            });
+            res.render('news/index', {
+                news,
+                layout: 'admin'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error fetching news items');
+        }
     }
 
     //[GET] admin/news/create

@@ -59,7 +59,7 @@
                         <center><img src="/upload/{{avatar}}" alt="{{name}}" class="img-food-admin" /></center>
                       </td>
                       <td>{{name}}</td>
-                      <td>{{sex}}</td>
+                      <td>{{#ifEquals sex "male"}}Nam{{else}}Nữ{{/ifEquals}}</td>
                       <td>
                         <div style="display: flex; margin: 0; gap: 0">
                           {{#ifEquals status "active"}}
@@ -77,7 +77,6 @@
                       </td>
                       <td>
                         <a href="/admin/staff/{{this._id}}/editForm" class="btn btn-warning">Sửa</a>
-
                       </td>
                     </tr>
                     {{/staffs}}
