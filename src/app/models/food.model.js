@@ -7,6 +7,10 @@ const foodSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "foodType"
     },
+    promotionid: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'promotion', 
+    },
     description: { type: String, maxLength: 600 },
     image: { type: String, maxLength: 255 },
     slug: { type: String },

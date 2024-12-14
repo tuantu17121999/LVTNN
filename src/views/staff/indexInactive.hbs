@@ -146,7 +146,8 @@
                       const keyword = event.target.value.trim();
                       if (keyword) {
                         const search =
-                          axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`)
+                          //axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`)
+                          axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
                       }
                     }
                   });

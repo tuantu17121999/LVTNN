@@ -2,9 +2,9 @@
     <!--TAG TRÊN-->
     <div class="pl-3 pr-2 py-1">
         <div class="">
-            {{#if this.discountPrice}}
+            {{#if promotionid.discount}}
             <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
-                disabled>-{{this.discountPrice}}%</button>
+                disabled>-{{promotionid.discount}}%</button>
             {{else}}{{#if this.tag}}
             <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
                 disabled>{{this.tag}}</button>

@@ -16,7 +16,7 @@ function trimDescription(description, maxLength = 30) {
         return description;
     }
     const trimmedString = description.substr(0, maxLength);
-    const lastSpaceIndex = trimmedString.lastIndexOf(' ');
+    const lastSpaceIndex = trimmedString.lastIndexOf(' '); //tìm vị trí khoảng trắng cuối cùng
     
     if (lastSpaceIndex > 0) {
         return trimmedString.substr(0, lastSpaceIndex) + '...';
@@ -56,7 +56,7 @@ class newsController {
     //[POST] /admin/food/store
     async store(req, res) {
         try {
-            const slug = slugify(req.body.nameNews) + '-' + Date.now();
+            const slug = slugify(req.body.nameNews) + '-' + Date.now(); //duy nhất
             const news = new newsModel({
                 nameNews: req.body.nameNews,
                 imageNews: req.file.filename,

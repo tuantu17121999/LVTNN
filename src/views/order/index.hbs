@@ -21,13 +21,22 @@
                                 <center>Stt</center>
                             </th>
                             <th scope="col">
+                                <center>Tên</center>
+                            </th>
+                            <th scope="col">
                                 <center>Trạng thái</center>
+                            </th>
+                            <th scope="col">
+                                <center>Số món</center>
                             </th>
                             <th scope="col">
                                 <center>Tổng tiền</center>
                             </th>
                             <th scope="col">
-                                <center>Phương thức thanh toán</center>
+                                <center>Payment</center>
+                            </th>
+                            <th scope="col">
+                                <center>Thời gian đặt hàng</center>
                             </th>
                             <th scope="col">
                                 <center>Thao tác</center>
@@ -40,6 +49,9 @@
                             <th scope="row">
                                 <center>{{sum @index 1}}</center>
                             </th>
+                            <td>
+                                <center>{{idAddress.fullName}}</center>
+                            </td>
                             {{#ifEquals status 'new'}}
                             <td>
                                 <center><i class="btn btn-warning disabled">Đơn mới</i></center>
@@ -61,17 +73,21 @@
                             </td>
                             {{/ifEquals}}
                             <td>
-                                <b>
-                                    <center>{{moneyTotal}}.000 VNĐ</center>
-                                </b>
+                                <center>{{amount}}</center>
+                            </td>
+                            <td>
+                                <center>{{sum moneyTotal shippingFee}}.000đ</center>
                             </td>
                             <td>
                                 <center>{{payment}}</center>
                             </td>
                             <td>
+                                <center>{{createdAtFormatted}}</center>
+                            </td>
+                            <td>
                                 <center>
-                                    <a href="/admin/order/{{this._id}}/detail" class="btn btn-success">Chi
-                                        tiết</a>
+                                    <div class="btn btn-success" onclick="viewOrderDetails(this)"
+                                        data-order-id="{{_id}}">Chi tiết</div>
                                 </center>
                             </td>
                         </tr>
@@ -83,7 +99,167 @@
     </div>
 </div>
 
+<div id="details-orders" class="details-order" style="display: none;">
+    <div class="details-order-header">
+        <h3>Chi tiết đơn hàng</h3>
+        <button class="btn-close1" onclick="hideOrderDetails()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="order-section p-3">
+        <div>
+            <div class="bg-white border-radius-20 p-3 m-3" style="width: 430px;">
+                <div class="col">
+                    <h4 class="text-center">Địa chỉ nhận hàng</h4>
+                    <div class="d-flex">
+                        <i class="fas fa-map-marker-alt pr-2 pt-1"></i>
+                        <div class="d-flex flex-column">
+                            <div>
+                                <span id="customerNameDO" class="font-weight-bold"></span>
+                                <span id="customerPhoneDO" class="text-muted"></span>
+                            </div>
+                            <span id="customerAddressDO"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white border-radius-20 p-3 m-3">
+                <div class="">
+                    Mã đơn hàng
+                    <div class="float-right">
+                        <span id="orderIdDO" class="font-weight-bold"></span>
+                    </div>
+                </div>
+                <div>
+                    Phương thức thanh toán
+                    <div class="float-right">
+                        <span id="paymentMethodDO" class=""></span>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <div>Thời gian đặt hàng:</div>
+                    <div><span id="orderDateDO"></span></div>
+                </div>
+            </div>
+            <div class="bg-white border-radius-20 p-3 m-3">
+                <div class="d-flex justify-content-between">
+                    <div>Tổng tiền hàng (<span id="amountDO"></span> món)</div>
+                    <div><span id="totalMoneyDO"></span>.000 VND</div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>Phí giao hàng (chỉ áp dụng TP.HCM)</div>
+                    <div><span id="shippingFeeDO"></span>.000 VND</div>
+                </div>
+                <p id="promotion">Khuyến mãi <span id="promotionTextDO"></span></p>
+                <hr>
+                <div>
+                    <i class="fas fa-chevron-up pl-3"></i>
+                    <div class="float-right">
+                        <p class="float-right">Thành tiền: <span id="finalMoneyDO" class="font-weight-bold"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white border-radius-20 m-3 p-3" style="width: 430px;">
+            <ul id="productListDO" class="list-group"></ul>
+            <button id="showMoreBtn" class="btn btn-link d-none" onclick="toggleProductList()">
+                <i class="fas fa-chevron-down" id="iconDown"></i> Xem thêm
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
+    async function viewOrderDetails(card) {
+        card.classList.remove('new-order');
+
+        try {
+            const orderId = card.getAttribute('data-order-id');
+
+            // Fetch chi tiết đơn hàng từ API
+            const response = await fetch(`/staff/order/api/${orderId}`);
+            const orderDetailsJSON = await response.json();
+            const orderWithDetails = orderDetailsJSON.orderWithDetails;
+            const dateTimeOrder = new Date(orderWithDetails.createdAt);
+
+            // Hiển thị thẻ chi tiết đơn hàng
+            const detailsOrder = document.getElementById('details-orders');
+            if (detailsOrder) {
+                detailsOrder.style.display = 'block';
+                setTimeout(() => {
+                    detailsOrder.classList.add('show');
+                }, 10); // Thêm độ trễ nhỏ để kích hoạt transition
+
+                // Cập nhật nội dung chi tiết đơn hàng
+                document.getElementById('customerNameDO').textContent = orderWithDetails.idAddress.fullName;
+                document.getElementById('customerPhoneDO').textContent = orderWithDetails.idAddress.phone;
+                document.getElementById('customerAddressDO').textContent = `${orderWithDetails.idAddress.address}, ${orderWithDetails.idAddress.wards}, ${orderWithDetails.idAddress.district}, ${orderWithDetails.idAddress.city}`;
+                document.getElementById('totalMoneyDO').textContent = orderWithDetails.moneyTotal;
+                document.getElementById('paymentMethodDO').textContent = orderWithDetails.payment;
+                document.getElementById('promotionTextDO').textContent = orderWithDetails.promotion ? 'Có' : 'Không';
+                document.getElementById('amountDO').textContent = orderWithDetails.orderDetails.length;
+                document.getElementById('orderIdDO').textContent = orderWithDetails._id;
+                document.getElementById('shippingFeeDO').textContent = orderWithDetails.shippingFee;
+                document.getElementById('finalMoneyDO').textContent = orderWithDetails.finalMoney + '.000 VND';
+                document.getElementById('orderDateDO').textContent = dateTimeOrder.toLocaleString('vi-VN');
+
+                const productList = document.getElementById('productListDO');
+                productList.innerHTML = orderWithDetails.orderDetails.map(detail => `
+                <li class="list-group-item product-item d-flex">
+                    <div class="col-4">
+                        <img src="/upload/${detail.foodid.image}" alt="${detail.name}" class="img-thumbnail">
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="product-name">${detail.foodid.name}</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="product-quantity float-right">${detail.amount}x</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="product-price float-right">${detail.price * detail.amount}.000 VND</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            `).join('');
+
+                const showMoreBtn = document.getElementById('showMoreBtn');
+                if (orderWithDetails.orderDetails.length > 3) {
+                    showMoreBtn.classList.remove('d-none');
+                } else {
+                    showMoreBtn.classList.add('d-none');
+                }
+            } else {
+                console.error('Thẻ details-orders không tồn tại');
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy đơn hàng:', error);
+        }
+    }
+    function toggleProductList() {
+        const productList = document.getElementById('productListDO');
+        const iconDown = document.getElementById('iconDown');
+        productList.classList.toggle('show-all');
+        if (productList.classList.contains('show-all')) {
+            iconDown.classList.remove('fa-chevron-down');
+            iconDown.classList.add('fa-chevron-up');
+        } else {
+            iconDown.classList.remove('fa-chevron-up');
+            iconDown.classList.add('fa-chevron-down');
+        }
+    }
+    function hideOrderDetails() {
+        const detailsOrder = document.getElementById('details-orders');
+        if (detailsOrder) {
+            detailsOrder.classList.remove('show');
+            detailsOrder.style.display = 'none';
+        } else {
+            console.error('Thẻ details-orders không tồn tại');
+        }
+    }
+
+    //chuyển số hàng ngàn có dấu chấm (10)
     function formatNumber(totalRevenue) {
         if (totalRevenue > 1000) {
             return totalRevenue.toLocaleString('de-DE'); // Sử dụng 'en-US' để có dấu chấm
@@ -94,6 +270,130 @@
     document.addEventListener('DOMContentLoaded', function () {
         var totalRevenueElement = document.getElementById('totalRevenue');
         var totalRevenue = parseFloat(totalRevenueElement.textContent);
-        totalRevenueElement.textContent = formatNumber(totalRevenue);
+        totalRevenueElement.textContent = formatNumber(totalRevenue); // Định dạng lại số thực thành chuỗi số có định dạng và gán lại cho phần tử
     });
 </script>
+
+<style>
+    .details-order {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 70%;
+        max-width: 80%;
+        max-height: 90%;
+        background-color: #ebebebfa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        overflow-y: auto;
+        display: none;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        transform: scale(0.95)translate(-50%, -50%);
+    }
+
+    .btn-close1,
+    .btn-submit {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-close1 {
+        background-color: #dc3545;
+    }
+
+    .details-order-header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 2222;
+        /* Đảm bảo nó nằm trên các phần tử khác */
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .product-item img {
+        margin-right: 10px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .details-order-footer {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        bottom: 0;
+    }
+
+    .product-item:nth-child(n+4) {
+        display: none !important;
+        /* Ẩn các sản phẩm từ vị trí thứ 4 trở đi */
+    }
+
+    .show-all .product-item {
+        display: flex !important;
+        /* Hiển thị tất cả sản phẩm khi nhấn nút */
+    }
+
+    .order-section {
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        display: flex;
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .list-group-item {
+        position: relative;
+        display: block;
+        padding: .75rem 1.25rem;
+        background-color: #fff;
+        border: none !important;
+    }
+
+    .product-price {
+        color: #ff5722;
+    }
+
+    .product-name,
+    .product-quantity,
+    .product-price {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .img-thumbnail {
+        padding: 0px !important;
+        background-color: #fff;
+        border: none !important;
+        border-radius: .25rem;
+        max-width: 100%;
+        height: auto;
+    }
+</style>

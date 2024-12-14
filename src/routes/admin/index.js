@@ -8,6 +8,8 @@ const newsRouter = require('./news.route.js');
 const staffRouter = require('./staff.route.js');
 const orderRouter = require('./order.route.js');
 const advertiseRouter = require('./advertise.route.js');
+const promotionRouter = require('./promotion.route');
+
 
 
 router.use('/', adminRouter);
@@ -17,5 +19,7 @@ router.use('/news', newsRouter);
 router.use('/staff', staffRouter);
 router.use('/order', orderRouter); // -> /admin/order
 router.use('/advertise', advertiseRouter);
+router.use('/promotion', promotionRouter);
+
 
 module.exports = router;

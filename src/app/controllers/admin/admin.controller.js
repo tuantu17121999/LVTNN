@@ -7,6 +7,7 @@ class AdminController {
     index(req, res) {
         res.render('admin/admin', { layout: 'admin' });
     }
+    
     getOne(req, res) {
         const id = req.params.id;
 
@@ -42,26 +43,30 @@ class AdminController {
         adminModel
             .findOne({ username })
             .then(async (admin) => {
+
                 if (!admin) {
-                    return res.status(500).json("Tai khoan khong ton tai");
+                    return res.status(500).json("Tài khoản không tồn tại");
                 }
                 console.log(admin, "admin");
+
                 if (admin.status === "inactive" && admin.role !== "admin") {
                     res.redirect("/admin/login?message=Tai khoan da bi khoa!");
                 }
-                const passwordCompare = await bcrypt.compare(password, admin.password);
+
+                const passwordCompare = await bcrypt.compare(password, admin.password); //so sánh mk
                 if (!passwordCompare) {
                   return res.status(500).json("Sai mat khau");
                 }
+
                 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
                 const accessToken = await generateToken(
                     { id: admin._id },
                     accessTokenSecret
                 );
-
+                //Lưu token vào cookie
                 res.cookie("adminAccessToken", accessToken, {
-                    maxAge: 900000,
+                    maxAge: 900000, //end 15minutes
                     httpOnly: true,
                 });
                 if (admin.role === "admin") {

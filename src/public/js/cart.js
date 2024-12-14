@@ -1,5 +1,6 @@
 var keyLocalStorageItemCart = 'ListItemCart';
 
+//133 detail.hbs && 69 main.hbs
 function createItemCart(id, name, description, image, price, amount) {
     var itemCart = new Object()
     itemCart.id = id;
