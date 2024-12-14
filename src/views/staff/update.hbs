@@ -143,7 +143,7 @@
 <script>
   const urlParams = new URLSearchParams(window.location.search);
 
-  if(urlParams.has('successMessage')) { 
+  if(urlParams.has('successMessage')) {  //kiểm tra xem có trong chuỗi truy vấn hay không
     const message = urlParams.get('successMessage'); alert(message); 
     window.history.replaceState(
       {}, 

@@ -27,17 +27,17 @@ class advertiseController {
             })
     }
 
-    //[GET] admin/news/create
+    //[GET] admin/advertise/create
     create(req, res) {
         res.render('advertise/create', {
             layout: 'admin'
         });
     }
 
-    //[POST] /admin/food/store
+    //[POST] /admin/advertise/store
     async store(req, res) {
         try {
-            const slug = slugify(req.body.nameAdvertise) + '-' + Date.now();
+            const slug = slugify(req.body.nameAdvertise) + '-' + Date.now(); //duy nhất
             const advertise = new advertiseModel({
                 nameAdvertise: req.body.nameAdvertise,
                 imageAdvertise: req.file.filename,
@@ -52,25 +52,7 @@ class advertiseController {
         }
     }
 
-    //[POST] /admin/food/store
-    async store(req, res) {
-        try {
-            const slug = slugify(req.body.nameAdvertise) + '-' + Date.now();
-            const advertise = new advertiseModel({
-                nameAdvertise: req.body.nameAdvertise,
-                imageAdvertise: req.file.filename,
-                linkAdvertise: req.body.linkAdvertise,
-                slug: slug
-            });
-            await advertise.save();
-            res.redirect('/admin/advertise/index');
-        } catch (error) {
-            console.log(error);
-            res.status(500).send('Error saving advertise item');
-        }
-    }
-
-    //[GET] /admin/food/:id/edit
+    //[GET] /admin/advertise/:id/edit
     edit(req, res) {
         const id = req.params.id;
         advertiseModel.findById(id)
@@ -85,9 +67,9 @@ class advertiseController {
             })
     }
 
-    //[PUT] /admin/food/:id
+    //[PUT] /admin/advertise/:id
     async update(req, res) {
-        const slug = `${slugify(req.body.nameAdvertise)}-${Date.now()}`;
+        const slug = `${slugify(req.body.nameAdvertise)}-${Date.now()}`; //duy nhất
         let body = {
             ...req.body,
             slug

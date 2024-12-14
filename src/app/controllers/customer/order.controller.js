@@ -2,6 +2,7 @@ const Address = require('../../models/address.model'); // Đảm bảo bạn đ�
 const Order = require('../../models/order.model'); // Đảm bảo bạn đã tạo mô hình Order
 const OrderDetails = require('../../models/orderDetail.model'); // Đảm bảo bạn đã tạo mô hình OrderDetails
 
+
 class OrderController {
     //[GET] /address
     async placeOrder(req, res) {
@@ -11,7 +12,6 @@ class OrderController {
     }
 
     async submitOrder(req, res) {
-        console.log(req.body.items)
         try {
             // Lưu lại địa chỉ
             const address = await Address.create({
@@ -60,9 +60,6 @@ class OrderController {
 
     confirmation(req, res) {
         res.redirect('/');
-        // res.render('order/confirmation', {
-        //     layout: 'main'
-        // })
     }
 
     async getOrders(req, res) {

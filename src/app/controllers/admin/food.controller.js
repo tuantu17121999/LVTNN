@@ -1,5 +1,6 @@
 const foodModel = require("../../models/food.model");
 const foodTypeModel = require("../../models/foodtype.model");
+const promotionModel = require("../../models/promotion.model");
 
 const { multipleMongooseToOject } = require("../../../util/mongoose");
 
@@ -20,7 +21,8 @@ class FoodController {
   async getAll(req, res) {
     const foodGetAll = await foodModel
       .find({})
-      .populate("foodtypeid") //join bảng
+      .populate("foodtypeid") // Kết hợp bảng foodtypeid
+      .populate("promotionid") // Kết hợp bảng promotionid
       .then((food) => {
         // console.log(food.length)
         res.render("food/index", {
@@ -32,7 +34,8 @@ class FoodController {
       .catch((error) => {
         console.log(error);
       });
-  }
+}
+
 
   //[GET] /admin/food/create
   create(req, res) {
@@ -119,6 +122,7 @@ class FoodController {
     foodModel
       .find({ name: { $regex: search, $options: "i" } }) //regex tìm kiếm vị trí bất kỳ
       .populate("foodtypeid")
+      .populate("promotionid")
       .then((food) => {
         res.json({ data: food });
       })

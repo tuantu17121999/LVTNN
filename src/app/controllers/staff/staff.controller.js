@@ -24,17 +24,17 @@ class staffController {
                 // Kết hợp chi tiết đơn hàng với đơn hàng tương ứng
                 const ordersNewWithDetails = ordersNew.map(order => ({
                     ...order,
-                    details: orderDetailsNew.filter(detail => detail.orderid.toString() === order._id.toString())
+                    details: orderDetailsNew.filter(detail => detail.orderid.toString() === order._id.toString()) //lọc
                 }));
     
                 const ordersInProgressWithDetails = ordersInProgress.map(order => ({
                     ...order,
-                    details: orderDetailsInProgress.filter(detail => detail.orderid.toString() === order._id.toString())
+                    details: orderDetailsInProgress.filter(detail => detail.orderid.toString() === order._id.toString()) //lọc
                 }));
     
                 const ordersCompletedWithDetails = ordersCompleted.map(order => ({
                     ...order,
-                    details: orderDetailsCompleted.filter(detail => detail.orderid.toString() === order._id.toString())
+                    details: orderDetailsCompleted.filter(detail => detail.orderid.toString() === order._id.toString()) //lọc
                 }));
                 res.render('staff/staff', {
                     layout: 'staff',

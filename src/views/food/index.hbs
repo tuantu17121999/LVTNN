@@ -38,7 +38,10 @@
                                                 <center>Mô tả</center>
                                             </th>
                                             <th scope="col">
-                                                <center>Loại sản phẩm</center>
+                                                <center>Sale</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Loại</center>
                                             </th>
                                             <th scope="col">
                                                 <center>Giá</center>
@@ -60,6 +63,7 @@
                                             </td>
                                             <td>{{name}}</td>
                                             <td>{{description}}</td>
+                                            <td>{{promotionid.name}}</td>
                                             <td>
                                                 <center>{{foodtypeid.nameType}}</center>
                                             </td>
@@ -106,13 +110,14 @@
                                 <form name="delete-food-form" method="POST"></form>
 
                                 <script>
+                                    //tìm kiếm sản phẩm
                                     document.getElementById("searchBox").addEventListener("keydown",
                                         async function (event) {
                                             if (event.key === "Enter") {
                                                 const keyword =
                                                     event.target.value.trim(); if (keyword) {
-                                                        const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
-                                                        //const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
+                                                        //const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
+                                                        const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
                                                         updateProducts(search.data.data);
                                                     }
                                             }
@@ -147,6 +152,7 @@
                                                             <td><center><img src="/upload/${product.image}" alt="${product.name}" class="img-food-admin" /></center></td>
                                                             <td>${product.name}</td>
                                                             <td>${product.description}</td>
+                                                            <td>${product.promotionid.name}</td>
                                                             <td><center>${product.foodtypeid.nameType}</center></td>
                                                             <td><center><span>${product.price}.000đ</span></center></td>
                                                             <td>
@@ -156,7 +162,7 @@
                                                             </center>
                                                             </td>
                                                             `;
-                                                productsContainer.appendChild(row);
+                                                productsContainer.appendChild(row); //thêm phần tử con vào phần tử cha
                                             });
                                         } else {
                                             productsContainer.innerHTML = "<tr><td colspan='7'>Không tìm thấy sản phẩm nào.</td></tr>";

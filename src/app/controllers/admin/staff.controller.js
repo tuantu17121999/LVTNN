@@ -109,10 +109,8 @@ class staffController {
   }
 
   async update(req, res) {
-    const { name, phone, sex, identity } = req.body;
+    const { name, phone, sex, identity, avatar} = req.body;
     const { password } = req.body ? req.body : null;
-    console.log(password, "password");
-    const avatar = req.file?.filename ? req.file.filename : null;
     const params = {
       name,
       phone,
@@ -123,6 +121,9 @@ class staffController {
     if (password) {
       const salt = bcrypt.genSaltSync(10);
       params.password = await bcrypt.hash(password, salt);
+    }
+    if (req?.file?.filename) {
+      params.avatar = req.file.filename;
     }
     adminModel
       .findByIdAndUpdate(req.params.id, params)
@@ -140,7 +141,6 @@ class staffController {
         status: "inactive",
       })
       .then((result) => {
-        console.log("block success", result);
         res.redirect("/admin/staff/index");
       })
       .catch((error) => {
@@ -154,7 +154,6 @@ class staffController {
         status: "active",
       })
       .then((result) => {
-        console.log("Unblock success", result);
         res.redirect("/admin/staff/index");
       })
       .catch((error) => {
@@ -168,7 +167,6 @@ class staffController {
         status: "inactive",
       })
       .then((result) => {
-        console.log("block success", result);
         res.redirect("/admin/staff/active");
       })
       .catch((error) => {
@@ -182,14 +180,12 @@ class staffController {
         status: "active",
       })
       .then((result) => {
-        console.log("Unblock success", result);
         res.redirect("/admin/staff/inactive");
       })
       .catch((error) => {
         console.log(error);
       });
   }
-
 }
 
 module.exports = new staffController();

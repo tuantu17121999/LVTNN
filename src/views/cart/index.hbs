@@ -1,4 +1,4 @@
-<script src="../js/cart.js"></script>
+
 <style>
     .float-right {
         display: flex;
@@ -43,7 +43,7 @@
 
 
 
-
+<script src="../js/cart.js"></script>
 <form name="submit-cart-form"></form>
 
 <script>
@@ -66,24 +66,27 @@
             totalMoney += money;
         }
         var moneyTotal = document.getElementById('total-money-show');
-        moneyTotal.innerText = '';
+        moneyTotal.innerText = ''; //xóa phần tử
         moneyTotal.innerHTML = '₫' + totalMoney + '.000';
         saveTotalOrderMoneyInLocal(totalMoney);
     }
+
     function submitCart() {
-        var submitCartForm = document.forms['submit-cart-form'];
-        var idUser = document.getElementsByClassName('user')[0].id;
+        var submitCartForm = document.forms['submit-cart-form']; //tạo biểu mẫu
+        var idUser = document.getElementsByClassName('user')[0].id; //lấy phần tử css user
         submitCartForm.action = '/order/place-order';
         submitCartForm.submit();
     }
+
     function xoa(id) {
         var nodeCart = document.getElementById(id + 'main');
-        nodeCart.parentNode.removeChild(nodeCart);
+        nodeCart.parentNode.removeChild(nodeCart); //xóa phần tử ra khỏi DOM
         deleteItemCartInLocal(id);
         addAmountInnerID('cart-text');
         showTotalMoney();
         checkCart();
     }
+
     // tăng một số lượng của sản phẩm
     function tang(id) {
         let ListItemCart = getListItemCart();
