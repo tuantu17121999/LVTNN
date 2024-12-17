@@ -6,6 +6,8 @@ const path = require('path');
 const bodyParser = require('body-parser'); // khai báo body HTML
 const methodOverride = require('method-override'); // khai báo method-override pt PUT
 const upload = require('./app/middlewares/multer.js')
+const cookieParser = require('cookie-parser');
+
 
 const Handlebars = require('handlebars');
 
@@ -16,6 +18,8 @@ const template = Handlebars.compile('Your template string here', {
 
 
 var app = express();
+
+app.use(cookieParser());
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

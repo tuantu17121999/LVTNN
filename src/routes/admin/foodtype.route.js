@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const foodTypeController = require('../../app/controllers/admin/foodtype.controller');
+const { checkTokenAdmin } = require('../../app/common/checkAuthentication')
 
 router.get('/index', foodTypeController.index);
 

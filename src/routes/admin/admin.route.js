@@ -7,7 +7,7 @@ router.get('/', adminController.index);
 router.get('/login', adminController.loginForm);
 router.post('/login', adminController.login);
 
-router.post('/logout', adminController.logout);
+router.get('/logout', adminController.logout);
 
 router.get('/:id', adminController.getOne);
 
