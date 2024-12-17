@@ -47,7 +47,6 @@ class AdminController {
                 if (!admin) {
                     return res.status(500).json("Tài khoản không tồn tại");
                 }
-                console.log(admin, "admin");
 
                 if (admin.status === "inactive" && admin.role !== "admin") {
                     res.redirect("/admin/login?message=Tai khoan da bi khoa!");
@@ -58,7 +57,7 @@ class AdminController {
                   return res.status(500).json("Sai mat khau");
                 }
 
-                const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+                const accessTokenSecret = 'abc123';
 
                 const accessToken = await generateToken(
                     { id: admin._id },
@@ -82,10 +81,9 @@ class AdminController {
 
     // [GET] /admin/logout
     logout(req, res) {
-        res.clearCookie('admin');
+        res.clearCookie('adminAccessToken');
         res.redirect('/');
     }
-
 }
 
 module.exports = new AdminController();

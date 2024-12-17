@@ -11,11 +11,11 @@
       </a>
     </center>
     <div class="breadcrumb">
-      
 
-      <div class="search-box">
+
+      {{!-- <div class="search-box">
         <input type="text" id="search-input" placeholder="Search..." /><i class="fa fa-search" aria-hidden="true"></i>
-      </div>
+      </div> --}}
 
 
       <a class="btn btn-primary btn-sm" href="/admin/staff/createForm" role="button">
@@ -46,7 +46,11 @@
                       <th scope="col">
                         Giới tính
                       </th>
-                      <th scope="col">Trạng thái</th>
+                      <th scope="col">Trạng thái
+                      </th>
+                      <th scope="col">
+                        <center>Chức năng</center>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -61,22 +65,26 @@
                       <td>{{name}}</td>
                       <td>{{#ifEquals sex "male"}}Nam{{else}}Nữ{{/ifEquals}}</td>
                       <td>
-                        <div style="display: flex; margin: 0; gap: 0">
-                          {{#ifEquals status "active"}}
-                          <a href="" class="btn btn-success" data-id="{{this._id}}" data-bs-toggle="modal"
-                            data-bs-target="#unblock-staff-modal">Mở</a>
-                          <a href="" class="btn btn-outline-danger" data-id="{{this._id}}" data-bs-toggle="modal"
-                            data-bs-target="#block-staff-modal">Khóa</a>
-                          {{else}}
-                          <a href="" class="btn btn-outline-success" data-id="{{this._id}}" data-bs-toggle="modal"
-                            data-bs-target="#unblock-staff-modal">Mở</a>
-                          <a href="" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
-                            data-bs-target="#block-staff-modal">Khóa</a>
-                          {{/ifEquals}}
-                        </div>
+                        <center>
+                          <div style="display: flex; margin: 0; gap: 0">
+                            {{#ifEquals status "active"}}
+                            <a href="" class="btn btn-success" data-id="{{this._id}}" data-bs-toggle="modal"
+                              data-bs-target="#unblock-staff-modal">Mở</a>
+                            <a href="" class="btn btn-outline-danger" data-id="{{this._id}}" data-bs-toggle="modal"
+                              data-bs-target="#block-staff-modal">Khóa</a>
+                            {{else}}
+                            <a href="" class="btn btn-outline-success" data-id="{{this._id}}" data-bs-toggle="modal"
+                              data-bs-target="#unblock-staff-modal">Mở</a>
+                            <a href="" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
+                              data-bs-target="#block-staff-modal">Khóa</a>
+                            {{/ifEquals}}
+                          </div>
+                        </center>
                       </td>
                       <td>
-                        <a href="/admin/staff/{{this._id}}/editForm" class="btn btn-warning">Sửa</a>
+                        <center>
+                          <a href="/admin/staff/{{this._id}}/editForm" class="btn btn-warning">Sửa</a>
+                        </center>
                       </td>
                     </tr>
                     {{/staffs}}
@@ -166,7 +174,7 @@
                         deleteForm.action = '/admin/staff/' + staffId + '/block?_method=DELETE';
                         window.location.reload();
                         deleteForm.submit();
-                        
+
                       }
                     });
 
@@ -178,7 +186,7 @@
                         deleteForm.action = '/admin/staff/' + staffId + '/unblock?_method=POST';
                         window.location.reload();
                         deleteForm.submit();
-                        
+
                       }
                     });
                   })
