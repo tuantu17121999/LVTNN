@@ -11,11 +11,13 @@ class promotionController {
                 })
             })
     }
+
     create(req, res) {
         res.render('promotion/create', {
             layout: 'admin'
         })
     }
+
     store(req, res) {
         try {
             // luu lai khuyen mai
@@ -46,6 +48,7 @@ class promotionController {
             console.log(error);
         }
     }
+
     async delete(req, res) {
         Promise.all([
             promotionModel.findByIdAndDelete(req.params.id),
@@ -56,6 +59,7 @@ class promotionController {
                 console.log(error);
             })
     }
+
     async edit(req, res) {
         await promotionModel.findById(req.params.id).lean()
             .then((promotion) => {
@@ -68,6 +72,7 @@ class promotionController {
                 console.log(error);
             })
     }
+
     async update(req, res) {
         try {
             //update promotion
@@ -97,6 +102,7 @@ class promotionController {
             console.log(error);
         }
     }
+
     getPromotionFoods(req, res) {
         foodModel.find({ promotionid: req.params.id }).lean()
             .then(foods => {
@@ -107,6 +113,7 @@ class promotionController {
             })
 
     }
+    
     getNotPromotionFoods(req, res) {
         foodModel.find({ promotionid: null }).lean()
             .then(foods => {

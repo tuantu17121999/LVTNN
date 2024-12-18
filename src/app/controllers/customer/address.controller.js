@@ -20,6 +20,15 @@ class addressController {
     oderconfirmed(req, res) {
         res.send('Đơn hàng đc xác nhận');
     }
+
+    customerAddressList(req, res) {
+        addressModel.find({}).lean()
+            .then(addresses => {
+                res.render('address/customerAddressList', { 
+                    addresses,
+                    layout: 'main' });
+            })
+    }
 }
 
 module.exports = new addressController();

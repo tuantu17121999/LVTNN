@@ -17,7 +17,7 @@ router.use('/food', foodRouter);
 router.use('/foodtype', foodTypeRouter);
 router.use('/news', newsRouter);
 router.use('/staff', staffRouter);
-router.use('/order', orderRouter); // -> /admin/order
+router.use('/order', orderRouter);
 router.use('/advertise', advertiseRouter);
 router.use('/promotion', promotionRouter);
 

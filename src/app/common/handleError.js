@@ -5,7 +5,6 @@ exports.validateErrorHandler = (
   error,
   req,
   res,
-  next,
   layout = null
 ) => {
   if (error instanceof mongoose.Error.ValidationError) {
@@ -22,10 +21,10 @@ exports.validateErrorHandler = (
       formData: req.body,
       formImage: req.file,
       layout: req.originalUrl.startsWith("/admin")
-        ? "admin"
+        ? "admain"
         : req.originalUrl.startsWith("/staff")
-        ? "staff"
-        : "main",
+          ? "staff"
+          : "main",
     });
   }
 
@@ -38,22 +37,22 @@ exports.validateErrorHandler = (
       },
       formData: req.body, // Giữ lại dữ liệu đã nhập
       layout: req.originalUrl.startsWith("/admin")
-        ? "admin"
+        ? "admain"
         : req.originalUrl.startsWith("/staff")
-        ? "staff"
-        : "main",
+          ? "staff"
+          : "main",
     });
   }
 
-  res.render(template, {
+  return res.render(template, {
     errors: {
       message: "Đã xảy ra lỗi hệ thống",
     },
     layout:
       layout || req.originalUrl.startsWith("/admin")
-        ? "admin"
+        ? "admain"
         : req.originalUrl.startsWith("/staff")
-        ? "staff"
-        : "main",
+          ? "staff"
+          : "main",
   });
 };

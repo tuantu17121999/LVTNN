@@ -45,7 +45,7 @@ class AdminController {
             .then(async (admin) => {
 
                 if (!admin) {
-                    return res.status(500).json("Tài khoản không tồn tại");
+                    res.redirect("/admin/login?message=Tai khoan khong ton tai!")
                 }
 
                 if (admin.status === "inactive" && admin.role !== "admin") {
@@ -54,7 +54,8 @@ class AdminController {
 
                 const passwordCompare = await bcrypt.compare(password, admin.password); //so sánh mk
                 if (!passwordCompare) {
-                  return res.status(500).json("Sai mat khau");
+                    res.redirect("/admin/login?message=Sai mat khau!")
+
                 }
 
                 const accessTokenSecret = 'abc123';

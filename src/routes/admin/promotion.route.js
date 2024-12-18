@@ -4,11 +4,15 @@ const promotionController = require('../../app/controllers/admin/promotion.contr
 const { route } = require("./food.route.js");
 
 router.get('/index', promotionController.index);
+
 router.get('/create', promotionController.create);
 router.post('/store', promotionController.store);
+
 router.delete('/:id', promotionController.delete);
+
 router.get('/api/unpromotion', promotionController.getNotPromotionFoods);
 router.get('/api/:id', promotionController.getPromotionFoods);
+
 router.get('/:id/edit', promotionController.edit);
 router.put('/:id/update', promotionController.update);
 
