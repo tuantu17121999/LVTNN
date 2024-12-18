@@ -16,7 +16,6 @@ const foodSchema = new Schema({
     slug: { type: String },
     price: { type: Number, required: true },
     tag: { type: String },
-    discountPrice: { type: Number},
 }, {
     timestamps: true,
 });

@@ -1,4 +1,4 @@
-var express = require("express");
+
 const db = require('./config/db');
 const router = require('./routes/index');
 const { engine } = require('express-handlebars');
@@ -7,7 +7,7 @@ const bodyParser = require('body-parser'); // khai báo body HTML
 const methodOverride = require('method-override'); // khai báo method-override pt PUT
 const upload = require('./app/middlewares/multer.js')
 const cookieParser = require('cookie-parser');
-
+const { handleError } = require("./app/common/handleError.js");
 
 const Handlebars = require('handlebars');
 
@@ -16,7 +16,7 @@ const template = Handlebars.compile('Your template string here', {
   allowProtoMethodsByDefault: true
 });
 
-
+var express = require("express");
 var app = express();
 
 app.use(cookieParser());
@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 db.connect();
+
 
 app.listen(3000, () => console.log('listen on port 3000'))
 

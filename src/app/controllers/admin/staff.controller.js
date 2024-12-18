@@ -1,5 +1,4 @@
 const adminModel = require("../../models/admin.model");
-
 const bcrypt = require('bcryptjs');
 
 const { multipleMongooseToOject } = require("../../../util/mongoose");
@@ -66,7 +65,7 @@ class staffController {
   async create(req, res, next) {
     const { name, username, phone, sex, identity } = req.body;
     let { password } = req.body;
-    console.log(req?.file?.avatar, "req?.file?.avatar");
+
     const avatar = req?.file ? req.file.filename : "avatar-staff-default.jpg";
 
     // Tạo hash cho password
@@ -125,8 +124,12 @@ class staffController {
     if (req?.file?.filename) {
       params.avatar = req.file.filename;
     }
+
     adminModel
-      .findByIdAndUpdate(req.params.id, params)
+      .findByIdAndUpdate(req.params.id, params, {
+        new: true,
+        runValidators: true, // Đảm bảo kiểm tra lại các điều kiện khác
+      })
       .then((result) => {
         res.redirect("/admin/staff/index");
       })
