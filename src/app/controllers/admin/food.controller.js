@@ -127,8 +127,9 @@ class FoodController {
         res.json({ data: food });
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.error(error);
+        res.status(500).json({ message: 'Có lỗi xảy ra trong quá trình tìm kiếm' });
+      });  
   }
 }
 

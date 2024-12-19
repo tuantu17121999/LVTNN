@@ -114,8 +114,8 @@
                                     document.getElementById("searchBox").addEventListener("keydown",
                                         async function (event) {
                                             if (event.key === "Enter") {
-                                                const keyword =
-                                                    event.target.value.trim(); if (keyword) {
+                                                const keyword = event.target.value.trim(); 
+                                                if (keyword) {
                                                         const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
                                                         //const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
                                                         updateProducts(search.data.data);
@@ -147,12 +147,15 @@
                                             products.forEach((product, index) => {
                                                 const row = document.createElement("tr");
 
+                                                // Kiểm tra promotionid và name 
+                                                const promotionName = product.promotionid && product.promotionid.name ? product.promotionid.name : '';
+                                                
                                                 row.innerHTML = `
                                                             <th scope="row"><center>${index + 1}</center></th>
                                                             <td><center><img src="/upload/${product.image}" alt="${product.name}" class="img-food-admin" /></center></td>
                                                             <td>${product.name}</td>
                                                             <td>${product.description}</td>
-                                                            <td>${product.promotionid.name}</td>
+                                                            <td><center>${promotionName}</center></td>
                                                             <td><center>${product.foodtypeid.nameType}</center></td>
                                                             <td><center><span>${product.price}.000đ</span></center></td>
                                                             <td>
