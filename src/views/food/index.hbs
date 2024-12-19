@@ -116,8 +116,8 @@
                                             if (event.key === "Enter") {
                                                 const keyword =
                                                     event.target.value.trim(); if (keyword) {
-                                                        //const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
-                                                        const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
+                                                        const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
+                                                        //const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
                                                         updateProducts(search.data.data);
                                                     }
                                             }

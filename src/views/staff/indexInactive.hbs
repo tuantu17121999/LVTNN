@@ -11,7 +11,7 @@
       </a>
     </center>
     <div class="breadcrumb">
-
+      
 
       <div class="search-box">
         <input type="text" id="search-input" placeholder="Search..." /><i class="fa fa-search" aria-hidden="true"></i>
@@ -47,9 +47,7 @@
                         Giới tính
                       </th>
                       <th scope="col">Trạng thái</th>
-                      <th scope="col">
-                        <center>Chức năng</center>
-                      </th>
+                      <th scope="col">Chức năng</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -64,26 +62,23 @@
                       <td>{{name}}</td>
                       <td>{{#ifEquals sex "male"}}Nam{{else}}Nữ{{/ifEquals}}</td>
                       <td>
-                        <center>
-                          <div style="display: flex; margin: 0; gap: 0">
-                          {{#ifEquals status "active"}}
-                          <a href="" class="btn btn-success" data-id="{{this._id}}" data-bs-toggle="modal"
+                        <div style="display: flex; margin: 0; gap: 0">
+                          {{#ifEquals status "inactive"}}
+                          {{!-- <a href="" class="btn btn-success" data-id="{{this._id}}" data-bs-toggle="modal"
                             data-bs-target="#unblock-staff-modal">Mở</a>
                           <a href="" class="btn btn-outline-danger" data-id="{{this._id}}" data-bs-toggle="modal"
                             data-bs-target="#block-staff-modal">Khóa</a>
-                          {{else}}
+                          {{else}} --}}
                           <a href="" class="btn btn-outline-success" data-id="{{this._id}}" data-bs-toggle="modal"
                             data-bs-target="#unblock-staff-modal">Mở</a>
                           <a href="" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
                             data-bs-target="#block-staff-modal">Khóa</a>
                           {{/ifEquals}}
-                        </center>
                         </div>
                       </td>
                       <td>
-                        <center>
-                          <a href="/admin/staff/{{this._id}}/editForm" class="btn btn-warning">Sửa</a>
-                        </center>
+                        <a href="/admin/staff/{{this._id}}/editForm" class="btn btn-warning">Sửa</a>
+
                       </td>
                     </tr>
                     {{/inactiveStaffss}}
@@ -171,7 +166,6 @@
                       staffId = button.data('id');
                       btnBlockStaff.onclick = function () {
                         deleteForm.action = '/admin/staff/' + staffId + '/blockIn?_method=DELETE';
-                        window.location.reload();
                         deleteForm.submit();
                       }
                     });
@@ -182,7 +176,6 @@
 
                       btnUnBlockStaff.onclick = function () {
                         deleteForm.action = '/admin/staff/' + staffId + '/unblockIn?_method=POST';
-                        window.location.reload();
                         deleteForm.submit();
                       }
                     });
