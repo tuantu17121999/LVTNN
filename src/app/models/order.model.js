@@ -14,7 +14,7 @@ const orderSchema = new Schema({
     idAddress: { 
         type: Schema.Types.ObjectId, 
         ref: "Address", 
-        equired: true},
+        required: true},
 }, {
     timestamps: true,
 });

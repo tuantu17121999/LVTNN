@@ -26,6 +26,7 @@ const adminSchema = new Schema({
     type: String,
     required: [true, "Số điện thoại là bắt buộc"],
     minlength: [10, "Số điện thoại phải là 10 số"],
+    unique: true,
   },
   sex: {
     type: String,
