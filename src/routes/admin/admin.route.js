@@ -10,6 +10,6 @@ router.post('/login', adminController.login);
 
 router.get('/logout', adminController.logout);
 
-router.get('/:id', adminController.getOne);
+// router.get('/:id', adminController.getOne);
 
 module.exports = router;
