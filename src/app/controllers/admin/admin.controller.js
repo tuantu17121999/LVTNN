@@ -8,17 +8,17 @@ class AdminController {
         res.render('admin/admin', { layout: 'admin' });
     }
     
-    getOne(req, res) {
-        const id = req.params.id;
+    // getOne(req, res) {
+    //     const id = req.params.id;
 
-        adminModel.findOne({ id, isDeleted: false })
-            .then(admin => {
-                res.json(admin);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+    //     adminModel.findOne({ id, isDeleted: false })
+    //         .then(admin => {
+    //             res.json(admin);
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         });
+    // }
 
     delete(req, res) {
         const id = req.params.id;

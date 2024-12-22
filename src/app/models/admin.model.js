@@ -48,9 +48,9 @@ const adminSchema = new Schema({
     enum: ["admin", "staff"],
     default: "staff",
   },
-  isDeleted: {
-    type: Boolean,
-  },
+  // isDeleted: {
+  //   type: Boolean,
+  // },
 });
 
 module.exports = mongoose.model("admin", adminSchema);
