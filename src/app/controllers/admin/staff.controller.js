@@ -108,7 +108,7 @@ class staffController {
   }
 
   async update(req, res) {
-    const { name, phone, sex, identity, avatar} = req.body;
+    const { name, phone, sex, identity, avatar } = req.body;
     const { password } = req.body ? req.body : null;
     const params = {
       name,
@@ -189,6 +189,7 @@ class staffController {
         console.log(error);
       });
   }
+
 }
 
 module.exports = new staffController();

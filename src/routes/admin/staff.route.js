@@ -4,25 +4,25 @@ const router = express.Router();
 const staffController = require("../../app/controllers/admin/staff.controller");
 const upload = require("../../app/middlewares/multer");
 
-router.get('/index', staffController.index);
+const { checkTokenAdmin } = require('../../app/common/checkAuthentication')
 
-router.get('/active/', staffController.activeStaff);
-router.get('/inactive/', staffController.inactiveStaff);
+router.get('/index', checkTokenAdmin, staffController.index);
 
-router.get("/createForm", staffController.createForm);
-router.post("/store", upload.single("avatar"), staffController.create);
+router.get('/active/', checkTokenAdmin, staffController.activeStaff);
+router.get('/inactive/', checkTokenAdmin, staffController.inactiveStaff);
 
-router.get("/:id", staffController.getOne);
+router.get("/createForm", checkTokenAdmin, staffController.createForm);
+router.post("/store", checkTokenAdmin, upload.single("avatar"), staffController.create);
 
-router.get("/:id/editForm", staffController.updateForm);
-router.put("/:id", upload.single("avatar"), staffController.update);
+router.get("/:id", checkTokenAdmin, staffController.getOne);
 
-router.delete("/:id/block", staffController.block);
-router.post("/:id/unblock", staffController.unBlock);
+router.get("/:id/editForm", checkTokenAdmin, staffController.updateForm);
+router.put("/:id", checkTokenAdmin, upload.single("avatar"), staffController.update);
 
-router.delete("/:id/blockIn", staffController.blockIn);
-router.post("/:id/unblockIn", staffController.unBlockIn);
+router.delete("/:id/block", checkTokenAdmin, staffController.block);
+router.post("/:id/unblock", checkTokenAdmin, staffController.unBlock);
 
-
+router.delete("/:id/blockIn", checkTokenAdmin, staffController.blockIn);
+router.post("/:id/unblockIn", checkTokenAdmin, staffController.unBlockIn);
 
 module.exports = router;

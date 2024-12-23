@@ -7,7 +7,7 @@ class AdminController {
     index(req, res) {
         res.render('admin/admin', { layout: 'admin' });
     }
-    
+
     // getOne(req, res) {
     //     const id = req.params.id;
 
@@ -64,11 +64,20 @@ class AdminController {
                     { id: admin._id },
                     accessTokenSecret
                 );
-                //Lưu token vào cookie
-                res.cookie("adminAccessToken", accessToken, {
-                    maxAge: 900000, //end 15minutes
-                    httpOnly: true,
-                });
+
+                //Lưu token vào cookie               
+                if (admin.role === 'admin') {
+                    res.cookie("adminAccessToken", accessToken, {
+                        maxAge: 900000, //end 15minutes
+                        httpOnly: true,
+                    });
+                } else if (admin.role === 'staff') {
+                    res.cookie("staffAccessToken", accessToken, {
+                        maxAge: 900000, //end 15minutes
+                        httpOnly: true,
+                    });
+                }
+
                 if (admin.role === "admin") {
                     res.redirect("/admin");
                 } else {

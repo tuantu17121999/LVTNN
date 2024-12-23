@@ -21,7 +21,7 @@ exports.validateErrorHandler = (
       formData: req.body,
       formImage: req.file,
       layout: req.originalUrl.startsWith("/admin")
-        ? "admain"
+        ? "admin"
         : req.originalUrl.startsWith("/staff")
           ? "staff"
           : "main",
@@ -37,7 +37,7 @@ exports.validateErrorHandler = (
       },
       formData: req.body, // Giữ lại dữ liệu đã nhập
       layout: req.originalUrl.startsWith("/admin")
-        ? "admain"
+        ? "admin"
         : req.originalUrl.startsWith("/staff")
           ? "staff"
           : "main",
@@ -50,7 +50,7 @@ exports.validateErrorHandler = (
     },
     layout:
       layout || req.originalUrl.startsWith("/admin")
-        ? "admain"
+        ? "admin"
         : req.originalUrl.startsWith("/staff")
           ? "staff"
           : "main",

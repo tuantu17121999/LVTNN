@@ -47,7 +47,12 @@ class staffController {
             .catch(error => {
                 console.log(error);
             });
-    }    
+    }
+    
+    logout(req, res) {
+        res.clearCookie('staffAccessToken');
+        res.redirect('/');
+    }
 }
 
 module.exports = new staffController();

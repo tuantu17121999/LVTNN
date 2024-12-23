@@ -18,12 +18,6 @@
       </a>
     </center>
     <div class="breadcrumb">
-      
-
-      <div class="search-box">
-        <input type="text" id="search-input" placeholder="Search..." /><i class="fa fa-search" aria-hidden="true"></i>
-      </div>
-
 
       <a class="btn btn-primary btn-sm" href="/admin/staff/createForm" role="button">
         Thêm
@@ -144,17 +138,6 @@
                       window.location.pathname
                     );
                   }
-
-                  document.getElementById("search-input").addEventListener("keydown", function (event) {
-                    if (event.key === "Enter") {
-                      const keyword = event.target.value.trim();
-                      if (keyword) {
-                        const search =
-                          //axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`)
-                          axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
-                      }
-                    }
-                  });
 
                   document.addEventListener('DOMContentLoaded', function () {
                     console.log("Staff Index")

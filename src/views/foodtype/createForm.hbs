@@ -15,10 +15,24 @@
         </div>
         <div class="col-1"></div>
     </div>
-    <form method="POST" action="/admin/foodtype/store">
+    <form method="POST" action="/admin/foodtype/store" onsubmit="return validateForm()">
         <div class="form-group d-flex">
             <input type="text" class="form-control" id="nameType" name="nameType" placeholder="Tên loại" />
             <button type="submit" class="btn btn-primary ml-2">Thêm loại</button>
         </div>
     </form>
 </div>
+
+<script>
+        function validateForm() {
+        const nameType = document.getElementById('nameType').value.trim();
+
+        if (!nameType) {
+            alert('Vui lòng điền tên loại sản phẩm');
+            return false;
+        }
+
+        // Thêm các kiểm tra khác nếu cần
+        return true;
+    }
+</script>
