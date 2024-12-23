@@ -2,17 +2,18 @@ const express = require("express");
 const router = express.Router();
 const foodController = require("../../app/controllers/admin/food.controller");
 const upload = require("../../app/middlewares/multer");
+const { checkTokenAdmin } = require('../../app/common/checkAuthentication')
 
-router.get("/index", foodController.getAll);
+router.get("/index", checkTokenAdmin, foodController.getAll);
 
-router.get("/create", foodController.create);
-router.post("/store", upload.single("image"), foodController.store);
+router.get("/create", checkTokenAdmin, foodController.create);
+router.post("/store", checkTokenAdmin, upload.single("image"), foodController.store);
 
-router.get("/:id/edit", foodController.updateForm);
-router.put("/:id/update", upload.single("image"), foodController.update);
+router.get("/:id/edit", checkTokenAdmin, foodController.updateForm);
+router.put("/:id/update", checkTokenAdmin, upload.single("image"), foodController.update);
 
-router.delete("/:id", foodController.delete);
+router.delete("/:id", checkTokenAdmin, foodController.delete);
 
-router.get("/search", foodController.search);
+router.get("/search", checkTokenAdmin, foodController.search);
 
 module.exports = router;

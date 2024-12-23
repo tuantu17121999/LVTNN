@@ -45,13 +45,14 @@
                 </div>
             </div>
             <div class="col-8">
-                <form method="POST" action="/admin/advertise/{{_id}}/update?_method=PUT " enctype="multipart/form-data">
+                <form method="POST" action="/admin/advertise/{{_id}}/update?_method=PUT " enctype="multipart/form-data" onsubmit="return validateForm()">
                     <div class="form-group">
-                        <input type="file" class="form-control" id="imageInput" name="imageAdvertise" accept="image/*" />
+                        <input type="file" class="form-control" id="imageInput" name="imageAdvertise"
+                            accept="image/*" />
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="nameAdvertise" name="nameAdvertise" placeholder="Tên quảng cáo"
-                            value="{{nameAdvertise}}" />
+                        <input type="text" class="form-control" id="nameAdvertise" name="nameAdvertise"
+                            placeholder="Tên quảng cáo" value="{{nameAdvertise}}" />
                     </div>
                     <div class="form-group">
                         <textarea class="form-control" name="linkAdvertise" id="linkAdvertise" rows="5"
@@ -92,6 +93,18 @@
                 document.getElementById('previewImage').style.display = 'none';
             }
         });
+
+        function validateForm() {
+            const nameAdvertise = document.getElementById('nameAdvertise').value.trim();           
+
+            if (!nameAdvertise) {
+                alert('Vui lòng điền tên quảng cáo');
+                return false;
+            }
+
+            // Thêm các kiểm tra khác nếu cần
+            return true;
+        }
     </script>
 </body>
 

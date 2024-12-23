@@ -2,6 +2,7 @@ var express = require("express");
 const router = express.Router();
 const promotionController = require('../../app/controllers/admin/promotion.controller.js');
 const { route } = require("./food.route.js");
+const { checkTokenAdmin } = require('../../app/common/checkAuthentication')
 
 router.get('/index', promotionController.index);
 

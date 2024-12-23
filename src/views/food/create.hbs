@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="col-8">
-            <form method="POST" action="/admin/food/store" enctype="multipart/form-data">
+            <form method="POST" action="/admin/food/store" enctype="multipart/form-data" onsubmit="return validateForm()">
                 <div class="form-group">
                     <input type="text" class="form-control" id="name" name="name" placeholder="Tên sản phẩm" />
                 </div>
@@ -124,4 +124,19 @@
             document.getElementById('previewImage').style.display = 'none';
         }
     });
+
+    function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const imageInput = document.getElementById('imageInput').value.trim();
+
+            if (!name || !price || !description || !imageInput) {
+                alert('Vui lòng điền đầy đủ tất cả các trường.');
+                return false;
+            }
+
+            // Thêm các kiểm tra khác nếu cần
+            return true;
+        }
 </script>

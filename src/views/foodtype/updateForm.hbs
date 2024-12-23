@@ -15,7 +15,7 @@
         </div>
         <div class="col-1"></div>
     </div>
-    <form class="mt-4" method="POST" action="/admin/foodtype/{{foodtype._id}}?_method=PUT">
+    <form class="mt-4" method="POST" action="/admin/foodtype/{{foodtype._id}}?_method=PUT" onsubmit="return validateForm()">
         <div class="form-group d-flex">
             <input type="text" class="form-control" value="{{foodtype.nameType}}" id="nameType" name="nameType"
                 placeholder="Tên loại sản phẩm" />
@@ -23,3 +23,17 @@
         </div>
     </form>
 </div>
+
+<script>
+        function validateForm() {
+        const nameType = document.getElementById('nameType').value.trim();
+
+        if (!nameType) {
+            alert('Vui lòng điền tên loại sản phẩm');
+            return false;
+        }
+
+        // Thêm các kiểm tra khác nếu cần
+        return true;
+    }
+</script>

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../../app/controllers/staff/order.controller');
+const { checkTokenStaff } = require('../../app/common/checkAuthentication')
 
 router.get('/', orderController.home);
 
