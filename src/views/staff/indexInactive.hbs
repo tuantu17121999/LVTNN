@@ -125,17 +125,6 @@
                 <form name="unblock-staff-form" method="POST"></form>
 
                 <script>
-                  const urlParams = new URLSearchParams(window.location.search);
-
-                  if (urlParams.has('successMessage')) {
-                    const message = urlParams.get('successMessage'); alert(message);
-                    window.history.replaceState(
-                      {},
-                      document.title,
-                      window.location.pathname
-                    );
-                  }
-
                   document.addEventListener('DOMContentLoaded', function () {
                     console.log("Staff Index")
                     var staffId;
@@ -163,25 +152,6 @@
                       }
                     });
                   })
-
-                  function updateProducts(products) {
-                    const productsContainer = document.getElementById("products-container");
-                    productsContainer.innerHTML = ""; // Xóa hết các sản phẩm cũ
-                    if (products.length > 0) {
-                      products.forEach(product => {
-                        const productElement = document.createElement("div");
-                        productElement.classList.add("product-item");
-                        productElement.innerHTML = ` 
-                          <h2>${product.name}</h2>
-                          <p>${product.description}</p> <p>Price: $${product.price}</p>
-                        `;
-                        productsContainer.appendChild(productElement);
-                      });
-                    }
-                    else {
-                      productsContainer.innerHTML = "<p>No products found for your search.</p>";
-                    }
-                  }
                 </script>
               </div>
             </div>

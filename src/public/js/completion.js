@@ -64,6 +64,13 @@ function showTotalOrderMoneyInnerID(idHTML) {
     return true;
 }
 
+function showTotalShipOrderMoneyInnerID(idHTML) {
+    var TotalOrderMoney = getTotalOrderMoney();
+    var nodeCart = document.getElementById(idHTML);
+    nodeCart.innerHTML = TotalOrderMoney + 15;
+    return true;
+}
+
 function getTotalOrderMoney() {
     var jsonTotalOrderMoney = localStorage.getItem(keyLocalStorageTotalOrderMoney);
     if (jsonTotalOrderMoney != null) {
