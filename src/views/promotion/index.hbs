@@ -98,14 +98,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         var foodId;
         var deleteForm = document.forms['delete-food-form'];
-        var btnDeleteFood = document.getElementById('btn-delete-food');
-        $('#delete-food-modal').on('show.bs.modal', function (event) {
+        var btnDeleteFood = document.getElementById('btn-delete-food'); 
+        $('#delete-food-modal').on('show.bs.modal', function (event) { //lấy nút đã nhấn để mở modal
             var button = $(event.relatedTarget);
             foodId = button.data('id');
         });
         btnDeleteFood.onclick = function () {
-            deleteForm.action = '/admin/promotion/' + foodId +
-                '?_method=DELETE'; deleteForm.submit();
+            deleteForm.action = '/admin/promotion/' + foodId + '?_method=DELETE'; deleteForm.submit();
         }
     })
 </script>

@@ -5,8 +5,8 @@ exports.checkToken = async (req, res, next) => {
     if (!req.headers.authorization) {
     }
     if (req.headers && req.headers.authorization) {
-      const token = req.headers.authorization.split(" ")[1];
-      const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+      const token = req.headers.authorization.split(" ")[1]; //lấy token từ tiêu đề
+      const decoded = await jwt.verify(token, 'abc123');
       if (decoded) {
         next();
       } else {

@@ -10,7 +10,7 @@
         </div>
         <div class="col-10">
             <center>
-                <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i> Nhập thông tin khuyến mãi
+                <h2 style="color: rgb(0, 0, 0)"><i class="fab fa-hotjar"></i> Nhập thông tin khuyến mãi
             </center>
         </div>
         <div class="col-1"></div>
@@ -81,6 +81,23 @@
                 });
         });
     });
+
+    //Tạo khuyến mãi
+    function showItems() {
+        const items = document.getElementById('items');
+        items.innerHTML = '';
+
+        for (let i = 0; i < itemsData.length; i++) {
+            const item = itemsData[i];
+            items.innerHTML += `
+            <div class="row p-2">
+                <div class="col-8">${item.name}</div>
+                <div class="col-4">
+                    <button onclick="onClickSelect('${item._id}', '${item.name}')" class="btn btn-success" type="button">Chọn</button>
+                </div>
+            </div>`;
+        }
+    }
     document.addEventListener('DOMContentLoaded', async function () {
         try {
             const response = await fetch('/admin/promotion/api/unpromotion');
@@ -93,24 +110,7 @@
         }
         showItems();
     });
-    function onClickSelect(id, name) {
-        const item = {
-            _id: id,
-            name: name
-        };
-
-        promotionItemsData.push(item);
-
-        // Tìm vị trí của phần tử trong itemsData
-        const index = itemsData.findIndex(foodItem => foodItem._id === id);
-
-        // Xóa phần tử khỏi itemsData nếu tìm thấy
-        if (index !== -1) {
-            itemsData.splice(index, 1);
-        }
-        showPromotionItems();
-        showItems();
-    }
+    //Bỏ chọn khuyến mãi
     function onClickUnSelect(id, name) {
         const item = {
             _id: id,
@@ -146,19 +146,23 @@
             </div>`;
         }
     }
-    function showItems() {
-        const items = document.getElementById('items');
-        items.innerHTML = '';
+    function onClickSelect(id, name) {
+        const item = {
+            _id: id,
+            name: name
+        };
 
-        for (let i = 0; i < itemsData.length; i++) {
-            const item = itemsData[i];
-            items.innerHTML += `
-            <div class="row p-2">
-                <div class="col-8">${item.name}</div>
-                <div class="col-4">
-                    <button onclick="onClickSelect('${item._id}', '${item.name}')" class="btn btn-success" type="button">Chọn</button>
-                </div>
-            </div>`;
+        promotionItemsData.push(item);
+
+        // Tìm vị trí của phần tử trong itemsData
+        const index = itemsData.findIndex(foodItem => foodItem._id === id);
+
+        // Xóa phần tử khỏi itemsData nếu tìm thấy
+        if (index !== -1) {
+            itemsData.splice(index, 1);
         }
+        // Cập nhật và hiển thị lại 
+        showPromotionItems();
+        showItems();
     }
 </script>
