@@ -1,0 +1,67 @@
+<div class="container bg-white">
+    <div class="row w-100 py-4">
+        <center>
+            <div class="img_user">
+                <a href="/customer/avatar/{{user._id}}">
+                    {{!-- <img class="border-radius" src="/upload/{{user.avatar}}"> --}}
+                    <img class="border-radius"
+                        src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175421/Originals/avatar-la-gi-2.jpg">
+                </a>
+            </div>
+            <p><span class="text-danger">Xin chào!</span></p>
+            <p><strong class="text-body box_user_head">{{user.fullName}} USER TEST</strong></p>
+            <p>{{user.phone}} 0123456789
+                {{#if 1}} | {{user.sex}} Nam{{/if}}
+                {{#if 1}} | {{user.email}} test@gmail.com{{/if}}
+            </p>
+        </center>
+    </div>
+    <div class="row w-100">
+        <div class="col-4">
+            <a class="dropdown-item" href="/user/{{user._id}}" id="memberInfo">
+                <span class="icon"><i class="fas fa-user-alt"></i></span>
+                <span class="text">Thông tin tài khoản</span>
+            </a>
+            <a class="dropdown-item" href="#" id="memberHistory" :focus>
+                <span class="icon"><i class="fas fa-history"></i></span>
+                <span class="text">Lịch sử đơn hàng</span>
+            </a>
+            <a class="dropdown-item" href="/customer/address/{{user._id}}" id="memberAddress">
+                <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
+                <span class="text">Địa chỉ giao hàng</span>
+            </a>
+        </div>
+        <div class="col-8">
+            <form action="/user/input/{{user._id}}" method="POST">
+                <div class="head_3 bg-gray px-3 border-radius-20">
+                    Thông tin tài khoản
+                    <button type="submit" class="btn btn-danger border-radius float-right">SỬA</button>
+                </div>
+                <div class="box-left clearfix mt-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control border-radius" id="fullName" name="fullName"
+                            placeholder="Họ và tên..." value="{{user.fullName}} USER TEST" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control border-radius" id="email" name="email"
+                            placeholder="Email..." value="{{user.email}} test@gmail.com" />
+                    </div>
+                    <div class="btn-group" id="sex" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="sex" value="nam" id="btnradio1" autocomplete="off"
+                            checked>
+                        <label class="btn btn-outline-danger border-radius-left" for="btnradio1">Nam</label>
+
+                        <input type="radio" class="btn-check" name="sex" value="nữ" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-warning border-radius-right" for="btnradio2">Nữ</label>
+
+                        <input type="radio" class="btn-check" name="sex" value="khác" id="btnradio3" autocomplete="off">
+                        <label class="btn btn-outline-success border-radius" for="btnradio3">Khác</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>

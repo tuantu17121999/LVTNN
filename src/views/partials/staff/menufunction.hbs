@@ -10,13 +10,11 @@
         </div>
     </div>
     <div class="user-info">
-        <img src="https://via.placeholder.com/80" alt="Avatar">
-        <p>Nhân viên A</p>
+        {{#staff}}
+        <img src="/upload/{{avatar}}" alt="Avatar">
+        <p>{{name}}</p>
         <p>Ngày: <span id="currentDate"></span></p>
-        <p>Giờ vào ca: <span id="shiftTime">10:09</span></p>
-        <a href="#" class="profile-btn"><i class="fas fa-user"></i> Thông tin cá nhân</a>
-        <a href="/staff/logout">
-            <button class="btn btn-danger border-radius">Đăng xuất <i class="fas fa-sign-in-alt"></i></button>
-        </a>
+        <a href="/staff/logout" class="profile-btn"><i class="fas fa-user"></i> Đăng xuất</a>
+        {{/staff}}
     </div>
 </div>

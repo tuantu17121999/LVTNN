@@ -102,7 +102,7 @@
 <div id="details-orders" class="details-order" style="display: none;">
     <div class="details-order-header">
         <h3>Chi tiết đơn hàng</h3>
-        <button class="btn-close1" onclick="hideOrderDetails()"><i class="fas fa-times"></i></button>
+        <button class="btn-close1" onclick="hideOrderDetails()" style="background-color: #dc3545;"><i class="fas fa-times"></i></button>
     </div>
     <div class="order-section p-3">
         <div>
@@ -395,5 +395,20 @@
         border-radius: .25rem;
         max-width: 100%;
         height: auto;
+    }
+
+    .btn-close,
+    .btn-submit {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-close {
+        background-color: #dc3545;
     }
 </style>

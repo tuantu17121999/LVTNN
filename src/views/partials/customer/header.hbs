@@ -6,13 +6,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="float-right">
-            {{#if user}}
+            {{#if customer}}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button class="btn btn-light border-radius">
-                            <span class="cart-text">VN | </span><span class="cart-text"> {{user.fullName}}</span></button>
+                            <span class="cart-text">VN | </span><span class="cart-text"> {{customer.name}}</span></button>
                     </a>
                     <ul class="dropdown-menu">
                         <div class="menu_show_user">
@@ -24,41 +24,35 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-9">
-                                    <p><strong class="text-body">{{user.fullName}}</strong></p>
+                                    <p><strong class="text-body">{{customer.name}}</strong></p>
                                 </div>
                             </div>
                         </div>
                         <hr>
                         <li>
-                            <a class="dropdown-item" href="/user/{{user._id}}" id="memberInfo">
+                            <a class="dropdown-item" href="/customer/{{_id}}" id="memberInfo">
                                 <span class="icon"><i class="fas fa-user-alt"></i></span>
                                 <span class="text">Thông tin tài khoản</span>
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" id="memberHistory">
-                                <span class="icon"><i class="fas fa-history"></i></span>
-                                <span class="text">Lịch sử đơn hàng</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/user/address/{{user._id}}" id="memberAddress">
+                            <a class="dropdown-item" href="/customer/address" id="memberAddress">
                                 <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
                                 <span class="text">Địa chỉ giao hàng</span>
                             </a>
                         </li>
                         <hr>
                         <li>
-                            <a class="dropdown-item" href="/admin/login">
+                            <a class="dropdown-item" href="/customer/logout">
                                 <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                                <span class="text text-uppercase">Đăng nhập</span>
+                                <span class="text text-uppercase">Đăng xuất</span>
                             </a>
                         </li>
                     </ul>
                 </li>
             </ul>
             {{else}}
-            <a href="/admin/login">
+            <a href="/customer/login">
                 <button class="btn btn-danger border-radius">ĐĂNG NHẬP <i class="fas fa-sign-in-alt"></i></button>
             </a>
             {{/if}}

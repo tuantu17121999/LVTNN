@@ -9,8 +9,8 @@ const staffRouter = require('./staff.route.js');
 const orderRouter = require('./order.route.js');
 const advertiseRouter = require('./advertise.route.js');
 const promotionRouter = require('./promotion.route');
-
-
+const orderHelperRouter = require('./orderHelper.route.js');
+const customerRouter = require ('./customer.route.js')
 
 router.use('/', adminRouter);
 router.use('/food', foodRouter);
@@ -20,6 +20,7 @@ router.use('/staff', staffRouter);
 router.use('/order', orderRouter);
 router.use('/advertise', advertiseRouter);
 router.use('/promotion', promotionRouter);
-
+router.use('/orderHelper', orderHelperRouter);
+router.use('/customer', customerRouter);
 
 module.exports = router;

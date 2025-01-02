@@ -1,0 +1,35 @@
+<div class="content">
+    <div id="new-orders" class="slide active">
+        <h1>Đơn hàng mới</h1>
+        <div class="order-section">
+            {{#ordersNew}}
+            {{>order/orderNew}}
+            {{/ordersNew}}
+        </div>
+    </div>
+    <div id="in-progress-orders" class="slide">
+        <h1>Đang thực hiện</h1>
+        <div class="order-section">
+            {{#ordersInProgress}}
+            {{>order/orderInProgress}}
+            {{/ordersInProgress}}
+        </div>
+    </div>
+    <div id="completed-orders" class="slide">
+        <h1>Đã hoàn thành</h1>
+        <div class="order-section">
+            {{#ordersCompleted}}
+            {{>order/orderCompleted}}
+            {{/ordersCompleted}}
+        </div>
+    </div>
+    <div id="cancelled-orders" class="slide">
+        <h1>Đã huỷ</h1>
+        <div class="order-section">
+            {{#ordersCancelled}}
+            {{>order/orderCancelled}}
+            {{/ordersCancelled}}
+        </div>
+    </div>
+    {{>order/orderDetail}}
+</div>

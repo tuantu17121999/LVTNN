@@ -6,4 +6,5 @@ const { checkTokenAdmin } = require('../../app/common/checkAuthentication')
 
 router.get('/index', checkTokenAdmin, orderController.getAll);
 
+
 module.exports = router

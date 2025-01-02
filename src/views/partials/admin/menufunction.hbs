@@ -59,10 +59,37 @@
     </li>
     <hr />
     <li>
-      <a class="menu-function-admin" href="/admin">
+      <a class="menu-function-admin" href="/admin/customer/index">
         <div class="row">
           <div class="col-2 icon-menufunction fas fa-users"></div>
           <div class="col-10 list-menufunction">Khách hàng</div>
+        </div>
+      </a>
+    </li>
+    <hr />
+    <li>
+      <a class="menu-function-admin" href="/admin/orderHelper" onclick="showSlide('new-orders')">
+        <div class="row">
+          <div class="col-2 icon-menufunction fas fa-hourglass-start"></div>
+          <div class="col-10 list-menufunction">Đơn hàng mới</div>
+        </div>
+      </a>
+      <a class="menu-function-admin" href="/admin/orderHelper" onclick="showSlide('in-progress-orders')">
+        <div class="row">
+          <div class="col-2 icon-menufunction fas fa-hourglass-half"></div>
+          <div class="col-10 list-menufunction">Đang thực hiện</div>
+        </div>
+      </a>
+      <a class="menu-function-admin" href="/admin/orderHelper" onclick="showSlide('completed-orders')">
+        <div class="row">
+          <div class="col-2 icon-menufunction fas fa-hourglass-end"></div>
+          <div class="col-10 list-menufunction">Đã hoàn thành</div>
+        </div>
+      </a>
+      <a class="menu-function-admin" href="/admin/orderHelper" onclick="showSlide('cancelled-orders')">
+        <div class="row">
+          <div class="col-2 icon-menufunction fas fa-times"></div>
+          <div class="col-10 list-menufunction">Đã huỷ</div>
         </div>
       </a>
     </li>

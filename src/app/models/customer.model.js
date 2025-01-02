@@ -65,7 +65,6 @@ const customerSchema = new Schema({
       },
       message: "Số điện thoại là bắt buộc.",
     },
-    required: true,
   },
   sex: {
     type: String,

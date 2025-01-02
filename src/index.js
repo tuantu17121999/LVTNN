@@ -1,4 +1,3 @@
-
 const db = require('./config/db');
 const router = require('./routes/index');
 const { engine } = require('express-handlebars');
@@ -8,6 +7,9 @@ const methodOverride = require('method-override'); // khai báo method-override 
 const upload = require('./app/middlewares/multer.js')
 const cookieParser = require('cookie-parser');
 const { handleError } = require("./app/common/handleError.js");
+
+// const passport = require("passport");
+const passport = require("./config/passport/passport");
 
 const Handlebars = require('handlebars');
 
