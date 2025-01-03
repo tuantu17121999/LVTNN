@@ -11,7 +11,6 @@ const { handleError } = require("./app/common/handleError.js");
 // const passport = require("passport");
 const passport = require("./config/passport/passport");
 
-
 const Handlebars = require('handlebars');
 
 const template = Handlebars.compile('Your template string here', {

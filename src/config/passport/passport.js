@@ -7,6 +7,7 @@ require("dotenv").config();
 passport.use(
   new GoogleStrategy(
     {
+<<<<<<< HEAD
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
@@ -15,6 +16,11 @@ passport.use(
       // clientSecret: "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",
       // callbackURL: "http://localhost:3000/customer/login/google/callback",
       // ACCESS_TOKEN_CUSTOMER_SECRE = 'ABC'
+=======
+      clientID: "803563391879-011pu6ma02dc2ce2jd3sbaup51svdqgg.apps.googleusercontent.com",
+      clientSecret: "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",
+      callbackURL: "http://localhost:3000/customer/login/google/callback",
+>>>>>>> 0d3828a (fixx)
     },
     async (accessToken, refreshToken, profile, done) => {
       //get the user data from google
@@ -38,7 +44,10 @@ passport.use(
         }
       } catch (err) {
         console.error(err);
+<<<<<<< HEAD
         done(err);
+=======
+>>>>>>> 0d3828a (fixx)
       }
     }
   )

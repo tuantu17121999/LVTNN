@@ -12,7 +12,6 @@ const promotionRouter = require('./promotion.route');
 const orderHelperRouter = require('./orderHelper.route.js');
 const customerRouter = require ('./customer.route.js')
 
-
 router.use('/', adminRouter);
 router.use('/food', foodRouter);
 router.use('/foodtype', foodTypeRouter);
@@ -23,6 +22,5 @@ router.use('/advertise', advertiseRouter);
 router.use('/promotion', promotionRouter);
 router.use('/orderHelper', orderHelperRouter);
 router.use('/customer', customerRouter);
-
 
 module.exports = router;
