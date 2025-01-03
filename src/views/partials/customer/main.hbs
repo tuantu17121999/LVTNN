@@ -1,0 +1,85 @@
+<div class="card">
+    <!--TAG TRÊN-->
+    <div class="pl-3 pr-2 py-1">
+        <div class="">
+            {{#if promotionid.discount}}
+            <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
+                disabled>-{{promotionid.discount}}%</button>
+                {{#if this.tag}}
+                <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
+                    disabled>{{this.tag}}</button>
+                {{else}}
+                <button type="button" id="discountPrice" class="btn btn-light btn-sm border-radius"
+                    style="margin-top: 21px;" disabled></button>
+                {{/if}}           
+            {{else}}{{#if this.tag}}
+            <button type="button" id="discountPrice" class="btn btn-warning btn-sm border-radius"
+                disabled>{{this.tag}}</button>
+            {{else}}
+            <button type="button" id="discountPrice" class="btn btn-light btn-sm border-radius"
+                style="margin-top: 21px;" disabled></button>
+            {{/if}}
+            {{/if}}
+        </div>
+    </div>
+    <!--HÌNH ẢNH-->
+    <a href="/food/{{this.slug}}/detail">
+        <img src="/upload/{{this.image}}" class="card-img-top" alt="{{this.name}}" />
+    </a>
+    <!--TÊN MÓN-->
+    <div class="card-body">
+        <a href="/food/{{this.slug}}/detail">
+            <h5 class="card-title">{{this.name}}</h5>
+        </a>
+    </div>
+    <!--GIÁ BÁN / NÚT MUA-->
+    <div class="row next-bar">
+        <div class="col-6">
+            <div class="bd-highlight price_item_new price-big float-right text-success">
+                <div class="float-right">
+                    {{#if this.newPrice}}
+                    <span class="" id="price">₫{{this.newPrice}}.000</span>
+                    <span class="" id="price"><small><strike>₫{{this.price}}.000</strike></small></span>
+                    {{else}}
+                    <span class="" id="price">₫{{this.price}}.000</span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <button style=" width: 100%;"
+                onclick="onClickAdd('{{this._id}}','{{this.name}}','{{this.description}}','{{this.image}}','{{this.price}}','{{this.newPrice}}')"
+                type="button" class="btn btn-danger btn-lg btn-next-item"> <b>ADD +</b> </button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/cart.js"></script>
+<script>
+    function onClickAdd(id, name, description, image, price, newPrice) {
+        var ListItemCart = getListItemCart();
+        var itemExists = false;
+        for (var i = 0; i < ListItemCart.length; i++) {
+            var itemCart = ListItemCart[i];
+            if (itemCart.id == id && itemCart.amount < 10) {
+                itemCart.amount++;
+                itemExists = true;
+            }
+            if (itemCart.amount == 10) {
+                itemExists = true;
+                alert('Không được vượt quá 10 sản phẩm một đơn hàng');
+            }
+        }
+        if (itemExists == false) {
+            if (newPrice) {
+                var itemCart = createItemCart(id, name, description, image, newPrice, 1);
+                ListItemCart.push(itemCart);
+            } else {
+                var itemCart = createItemCart(id, name, description, image, price, 1);
+                ListItemCart.push(itemCart);
+            }
+        }
+        saveListItemCartInLocal(ListItemCart);
+        addAmountInnerID('cart-text');
+    }
+</script>

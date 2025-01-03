@@ -1,0 +1,168 @@
+<div class="container">
+    <div class="row">
+        <div class="col-1">
+            <div class="breadcrumb">
+                <a class="btn btn-success btn-sm" href="/admin/promotion/index" role="button">
+                    <i class="fas fa-chevron-left"></i>
+                    Trở lại
+                </a>
+            </div>
+        </div>
+        <div class="col-10">
+            <center>
+                <h2 style="color: rgb(0, 0, 0)"><i class="fab fa-hotjar"></i> Nhập thông tin khuyến mãi
+            </center>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-6">
+            <div id="items"></div>
+        </div>
+        <div class="col-6">
+            <form id="promotionForm">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Tên khuyến mãi"
+                        required />
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="discount" name="discount" placeholder="% giảm giá"
+                        required />
+                </div>
+                <div class="form-group">
+                    Danh sách sản phẩm:
+                    <div id="promotionItems"></div>
+                </div>
+                <div class="form-group">
+                    <center>
+                        <button type="submit" style="width: 100%;" id="submitPromotion"
+                            class="btn btn-danger btn-lg">Tạo khuyến mãi</button>
+                    </center>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const promotionItemsData = [];
+    const itemsData = [];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const promotionForm = document.querySelector('#promotionForm');
+
+        promotionForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn sự kiện submit mặc định của form
+
+            const name = document.getElementById('name').value;
+            const discount = document.getElementById('discount').value;
+
+            const data = {
+                name: name,
+                discount: discount,
+                promotionItems: promotionItemsData
+            };
+
+            // Gửi dữ liệu qua fetch
+            fetch('/admin/promotion/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(data => {
+                    alert('Success:', data);
+                    window.location.href = '/admin/promotion/index';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    });
+
+    //Tạo khuyến mãi
+    function showItems() {
+        const items = document.getElementById('items');
+        items.innerHTML = '';
+
+        for (let i = 0; i < itemsData.length; i++) {
+            const item = itemsData[i];
+            items.innerHTML += `
+            <div class="row p-2">
+                <div class="col-8">${item.name}</div>
+                <div class="col-4">
+                    <button onclick="onClickSelect('${item._id}', '${item.name}')" class="btn btn-success" type="button">Chọn</button>
+                </div>
+            </div>`;
+        }
+    }
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            const response = await fetch('/admin/promotion/api/unpromotion');
+            const foods = await response.json();
+
+            // Thêm (push) dữ liệu foods vào promotionItemsData
+            Array.prototype.push.apply(itemsData, foods);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        showItems();
+    });
+    //Bỏ chọn khuyến mãi
+    function onClickUnSelect(id, name) {
+        const item = {
+            _id: id,
+            name: name
+        };
+
+        // Thêm lại vào itemsData
+        itemsData.push(item);
+
+        // Tìm vị trí của phần tử trong promotionItemsData
+        const index = promotionItemsData.findIndex(promoItem => promoItem._id === id);
+
+        // Xóa phần tử khỏi promotionItemsData nếu tìm thấy
+        if (index !== -1) {
+            promotionItemsData.splice(index, 1);
+        }
+
+        showPromotionItems();
+        showItems();
+    }
+    function showPromotionItems() {
+        const promotionItems = document.getElementById('promotionItems');
+        promotionItems.innerHTML = '';
+
+        for (let i = 0; i < promotionItemsData.length; i++) {
+            const item = promotionItemsData[i];
+            promotionItems.innerHTML += `
+            <div class="row p-2">
+                <div class="col-4">
+                    <button onclick="onClickUnSelect('${item._id}', '${item.name}')" class="btn btn-danger" type="button">Bỏ chọn</button>
+                </div>
+                <div class="col-8">${item.name}</div>
+            </div>`;
+        }
+    }
+    function onClickSelect(id, name) {
+        const item = {
+            _id: id,
+            name: name
+        };
+
+        promotionItemsData.push(item);
+
+        // Tìm vị trí của phần tử trong itemsData
+        const index = itemsData.findIndex(foodItem => foodItem._id === id);
+
+        // Xóa phần tử khỏi itemsData nếu tìm thấy
+        if (index !== -1) {
+            itemsData.splice(index, 1);
+        }
+        // Cập nhật và hiển thị lại 
+        showPromotionItems();
+        showItems();
+    }
+</script>

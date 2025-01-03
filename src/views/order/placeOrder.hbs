@@ -1,0 +1,160 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy trình đặt hàng</title>
+    <style>
+        .step-form {
+            display: none;
+        }
+
+        .step-form.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="col-12 mb-4" id="1">
+        <div class="nav_menu_header mb-4 text-center">
+            Quy trình đặt hàng
+        </div>
+        <div class="progress-checkout d-flex justify-content-center">
+            <ul class="nav nav-pills nav-justified mb-3 col-lg-7 p-0">
+                <li class="nav-item">
+                    <div>
+                        <p class="above"><button type="button" class="btn"><span>1</span></button>
+                        </p>
+                        <p class="below"><span class="text">Địa chỉ giao hàng</span></p>
+                    </div>
+                </li>
+                <li class="nav-item no-shadow">
+                    <div>
+                        <p class="above"><button type="button" class="btn"><span>2</span></button>
+                        </p>
+                        <p class="below"><span class="text">Xác nhận và thanh toán</span></p>
+                    </div>
+                </li>
+                <li class="nav-item no-shadow">
+                    <div>
+                        <p class="above"><button type="button" class="btn"><span>3</span></button>
+                        </p>
+                        <p class="below"><span class="text">Hoàn tất đơn hàng</span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-left col-8 col-lg-8 offset-2">
+        {{>order/address}}
+        {{>order/payment}}
+        {{>order/completion}}
+    </div>
+    <script src="../../js/completion.js"></script>
+    <script>
+        showListItemCartInnerID('gio-hang');
+        showTotalOrderMoneyInnerID('price_item_new');
+        showTotalShipOrderMoneyInnerID('total_price');
+        function showStep(step) {
+            var steps = document.getElementsByClassName('step-form');
+            for (var i = 0; i < steps.length; i++) {
+                steps[i].classList.remove('active');
+            }
+            document.getElementById('step' + step).classList.add('active');
+        }
+        function backStep(step) {
+            showStep(step);
+        }
+        function nextStep(step) {
+            var currentStep = step - 1;
+            var form = document.getElementById('step' + currentStep).querySelector('form');
+
+            if (validateForm()) {
+                showStep(step);
+            } else {
+                form.reportValidity(); // Optional: báo lỗi cho các trường hợp khác nếu có
+            }
+        }
+        function validateForm() {
+            const fullName = document.getElementById('inputFullname').value.trim();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const address = document.getElementById('inputAddress').value.trim();
+            const wards = document.getElementById('inputWards').value.trim();
+            const district = document.getElementById('inputDistrict').value.trim();
+            const city = document.getElementById('inputCity').value.trim();
+
+            if (!fullName || !phone || !address || !wards || !district || !city) {
+                alert('Vui lòng điền đầy đủ tất cả các trường.');
+                return false;
+            }
+
+            // Kiểm tra định dạng số điện thoại
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                alert('Vui lòng nhập số điện thoại hợp lệ (10 chữ số).');
+                return false;
+            }
+
+            // Thêm các kiểm tra khác nếu cần
+            return true;
+        }
+        async function submitOrder() {
+            const fullName = document.getElementById('inputFullname').value;
+            const phone = document.getElementById('inputPhone').value;
+
+            const address = document.getElementById('inputAddress').value;
+            const wards = document.getElementById('inputWards').value;
+            const district = document.getElementById('inputDistrict').value;
+            const city = document.getElementById('inputCity').value;
+
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            // Lấy danh sách giỏ hàng từ localStorage
+            const cartItems = JSON.parse(localStorage.getItem('ListItemCart')) || [];
+            console.log(cartItems);
+
+            // Kiểm tra xem giỏ hàng có trống không
+            if (cartItems.length === 0) {
+                alert('Giỏ hàng của bạn đang trống.');
+                return;
+            }
+
+            // Tạo đối tượng đơn hàng
+            const orderData = {
+                fullName,
+                phone,
+                address,
+                wards,
+                district,
+                city,
+                paymentMethod,
+                items: cartItems
+            };
+
+            // Gửi dữ liệu đơn hàng đến máy chủ
+            try {
+                const response = await fetch('/order/submit-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Đặt hàng thành công!');
+                    localStorage.removeItem('ListItemCart'); // Xóa giỏ hàng sau khi đặt hàng thành công
+                    window.location.href = '/order/confirmation'; // Điều hướng tới trang xác nhận đơn hàng
+                } else {
+                    alert('Lỗi khi đặt hàng: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Lỗi khi gửi yêu cầu đặt hàng:', error);
+                alert('Đã xảy ra lỗi khi đặt hàng, vui lòng thử lại sau.');
+            }
+        }
+        // Hiển thị bước đầu tiên khi tải trang
+        showStep(1);
+    </script>
+</body>

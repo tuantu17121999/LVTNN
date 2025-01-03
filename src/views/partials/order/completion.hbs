@@ -1,0 +1,49 @@
+<div id="step3" class="step-form">
+    <div class="">
+        <button type="button" onclick="backStep(2)" class="btn btn-success rounded-pill btn-sm float-left">
+            <i class="fas fa-chevron-left"></i> Trở lại trang thanh toán
+        </button>
+    </div>
+    <div class="form_top bg-white p-5 rounded-lg">
+        <h3 class="delivery_title mb-4 mt-4">
+            <center>Xác nhận đơn hàng</center>
+        </h3>
+        <div class="delivery_box_2 box_pro_detail">
+            <!-- Hiển thị sản phẩm trong giỏ hàng -->
+            <div class="cart_new_item mb-0">
+                <div class="gio-hang" id="gio-hang"></div>
+            </div>
+            <!-- Tính tổng tiền đơn hàng -->
+            <div class="promotion_new">
+                <div class="d-flex align-items-center bd-highlight pt-5">
+                    <div class="d-flex align-items-center mr-auto bd-highlight price-bold">
+                        Tổng cộng
+                    </div>
+                    <div class="bd-highlight price_item_new price-bold">
+                        <span id="price_item_new"></span>.000đ
+                    </div>
+                </div>
+            </div>
+            <div class="promotion_new">
+                <div class="d-flex align-items-center bd-highlight pt-5">
+                    <div class="d-flex align-items-center mr-auto bd-highlight price-bold">
+                        Phí ship
+                    </div>
+                    <div class="bd-highlight price_item_new price-bold">
+                        15.000đ
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub_total align-items-center bd-highlight">
+            <div class="row">
+                <div class="form-group col-12 text-center mt-4">
+                    <button style=" width: 100%;" onclick="submitOrder()" class="btn btn-danger btn-lg rounded-pill">
+                        Đặt hàng - <span id="total_price"></span>.000đ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

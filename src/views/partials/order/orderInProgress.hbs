@@ -1,0 +1,62 @@
+<div class="order-card" onclick="viewOrderDetails(this)" data-order-id="{{this._id}}">
+    <div class="order-details">
+        <div class="order-header">
+            <span class="order-time">{{formatTime this.createdAt}}</span>
+            <h4 id="customerName">{{this.idAddress.fullName}}</h4>
+            <p id="customerPhone">Số điện thoại: {{this.idAddress.phone}}</p>
+            <p id="customerAddress">Địa chỉ: {{this.idAddress.address}}, {{this.idAddress.wards}},
+                {{this.idAddress.district}}, {{this.idAddress.city}}</p>
+        </div>
+    </div>
+    <div class="order-body">
+        <div class="order-money">
+            <div class="d-flex">
+                <span class="tag yellow" id="paymentMethod">{{this.payment}}</span>
+                <span class="tag red" id="promotionTag-{{this._id}}" style="display: none;">Khuyến mãi</span>
+            </div>
+
+        </div>
+        <div class="display-flex row">
+            <div class="col-5">
+                <span class="total-amount float-left" id=""> {{this.amount}} món</span>
+            </div>
+            <div class="col-7">
+                <span class="total-amount float-right" id="totalAmount">{{this.moneyTotal}}.000 VND</span>
+            </div>
+        </div>
+        <div>
+            <ul class="order-items" id="productList">
+                {{#each this.details}}
+                <li>
+                    {{this.amount}} {{this.name}}
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="order-actions">
+        <button class="btn-complete" onclick="completeOrder('{{this._id}}')">Hoàn thành</button>
+        <button class="btn-cancel" onclick="showCancelModal('{{this._id}}')">Huỷ</button>
+    </div>
+</div>
+<script>
+    function completeOrder(id) {
+        // Gửi yêu cầu xác nhận đơn hàng đến server
+        fetch(`/staff/order/complete/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: id })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý kết quả từ server
+                alert('Đơn hàng đã được hoàn thành!');
+                window.location.reload(); // Reload lại trang sau khi xác nhận đơn hàng
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+</script>

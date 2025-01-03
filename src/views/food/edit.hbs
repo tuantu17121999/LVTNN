@@ -1,0 +1,136 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                <div class="breadcrumb">
+                    <a class="btn btn-success btn-sm" href="/admin/food/index" role="button">
+                        <i class="fas fa-chevron-left"></i>
+                        Trở lại
+                    </a>
+                </div>
+            </div>
+            <div class="col-10">
+                <center>
+                    <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i> Cập nhật thông tin sản phẩm</h2>
+                </center>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <hr>
+        <div class="row">
+            {{#food}}
+            <div class="col-4">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card">
+                        <!--TAG TRÊN-->
+                        <div class="pl-3 pr-2 py-1">
+                            <div class="#">
+                                <button type="button" class="btn btn-warning btn-sm border-radius">Trực
+                                    tiếp</button>
+                            </div>
+                        </div>
+                        <!--HÌNH ẢNH-->
+                        <a href="#">
+                            <img class="card-img-top" id="previewImage" src="/upload/{{image}}" alt="Image Preview" />
+                        </a>
+                        <!--TÊN MÓN-->
+                        <div class="card-body">
+                            <a href="#">
+                                <h5 class="card-title" id="product-name">{{name}}</h5>
+                            </a>
+                        </div>
+                        <!--GIÁ BÁN / NÚT MUA-->
+                        <div class="row next-bar">
+                            <div class="col-6">
+                                <div class="bd-highlight price_item_new price-big float-right">
+                                    <div class="float-right">
+                                        <span class="" id="price-name">₫{{price}}.000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <button style="width: 100%;" type="button" class="btn btn-danger btn-lg btn-next-item">
+                                    <b>ADD +</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <form method="POST" action="/admin/food/{{_id}}/update?_method=PUT " enctype="multipart/form-data"
+                    onsubmit="return validateForm()">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Tên sản phẩm"
+                            value="{{name}}" />
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="price" name="price" placeholder="Giá"
+                            value="{{price}}" />
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="description" id="description" rows="5"
+                            placeholder="Mô tả">{{description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" class="form-control" id="imageInput" name="image" accept="image/*" />
+                    </div>
+                    <div class="form-group">
+                        <center>
+                            <button style="width: 100%;" type="submit" class="btn btn-danger btn-lg">Cập nhật</button>
+                        </center>
+                    </div>
+                </form>
+            </div>
+            {{/food}}
+        </div>
+    </div>
+
+    <!-- hiển thị dữ liệu trực tiếp khi người dùng nhập thông tin vào form -->
+    <script>
+        const defaultText = "Tên sản phẩm sẽ hiển thị ở đây";
+        const defaultPrice = "₫.000";
+
+        document.getElementById('name').addEventListener('input', function () {
+            document.getElementById('product-name').textContent = this.value.trim() ? this.value : defaultText;
+        });
+
+        document.getElementById('price').addEventListener('input', function () {
+            document.getElementById('price-name').textContent = this.value.trim() ? '₫.' + this.value + '.000' : defaultPrice;
+        });
+
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('previewImage').style.display = 'block';
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('previewImage').src = '';
+                document.getElementById('previewImage').style.display = 'none';
+            }
+        });
+
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value.trim();
+            const description = document.getElementById('description').value.trim();
+
+            if (!name || !price || !description) {
+                alert('Vui lòng điền đầy đủ tất cả các trường.');
+                return false;
+            }
+
+            // Thêm các kiểm tra khác nếu cần
+            return true;
+        }
+    </script>
+</body>
+
+</html>

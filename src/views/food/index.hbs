@@ -1,0 +1,182 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <center>
+            <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i> Quản lý sản phẩm </h2>
+            {{!-- <a href="">So luong: ({{count}})</a> --}}
+        </center>
+        <div class="breadcrumb">
+            <div class="search-box">
+                <input type="text" placeholder="Search..." style="font-style: italic" id="searchBox"><i
+                    class="fa fa-search"></i></input>
+            </div>
+            <a class="btn btn-primary btn-sm" href="/admin/food/create" role="button" style="align-content: center">
+                Thêm
+                <span class="fas fa-plus-circle"></span>
+            </a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" id="view">
+                    <div class="box-body">
+                        <div class="row" style="padding:0px; margin:0px;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">
+                                                <center>Stt</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Hình ảnh</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Tên sản phẩm</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Mô tả</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Sale</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Loại</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Giá</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Chức năng</center>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="products-container">
+                                        {{#food}}
+                                        <tr>
+                                            <th scope="row">
+                                                <center>{{sum @index 1}}</center>
+                                            </th>
+                                            <td>
+                                                <center><img src="/upload/{{image}}" alt="{{name}}"
+                                                        class="img-food-admin"></center>
+                                            </td>
+                                            <td>{{name}}</td>
+                                            <td>{{description}}</td>
+                                            <td>{{promotionid.name}}</td>
+                                            <td>
+                                                <center>{{foodtypeid.nameType}}</center>
+                                            </td>
+                                            <td>
+                                                <center><span>{{price}}.000đ</span></center>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    <a href="/admin/food/{{this._id}}/edit"
+                                                        class="btn btn-warning">Sửa</a>
+                                                    <a href="" class="btn btn-danger" data-id="{{this._id}}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#delete-food-modal">Xóa</a>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                        {{/food}}
+                                    </tbody>
+                                </table>
+
+                                {{!-- Confirm delete course--}}
+                                <div class="modal fade" id="delete-food-modal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Xóa món này</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Bạn chắc chắn muốn xóa ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" id="btn-delete-food">Xóa
+                                                    bỏ</button>
+                                                <button type="button" class="btn btn-outline-dark"
+                                                    data-bs-dismiss="modal">Hủy</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form name="delete-food-form" method="POST"></form>
+
+                                <script>
+                                    //tìm kiếm sản phẩm
+                                    document.getElementById("searchBox").addEventListener("keydown",
+                                        async function (event) {
+                                            if (event.key === "Enter") {
+                                                const keyword = event.target.value.trim(); 
+                                                if (keyword) {
+                                                        //const search = await axios.get(`http://localhost:3000/admin/food/search?keyword=${keyword}`);
+                                                        const search = await axios.get(`https://shopfastfood.onrender.com/admin/food/search?keyword=${keyword}`);
+                                                        updateProducts(search.data.data);
+                                                    }
+                                            }
+                                        })
+
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var foodId;
+                                        var deleteForm = document.forms['delete-food-form'];
+                                        var btnDeleteFood = document.getElementById('btn-delete-food');
+
+                                        $('#delete-food-modal').on('show.bs.modal', function (event) {
+                                            var button = $(event.relatedTarget);
+                                            foodId = button.data('id');
+                                        });
+
+                                        btnDeleteFood.onclick = function () {
+                                            deleteForm.action = '/admin/food/' + foodId + '?_method=DELETE';
+                                            deleteForm.submit();
+                                        }
+                                    });
+
+                                    function updateProducts(products) {
+                                        const productsContainer = document.getElementById("products-container");
+                                        productsContainer.innerHTML = ""; // Xóa dữ liệu cũ trong tbody
+
+                                        if (products.length > 0) {
+                                            products.forEach((product, index) => {
+                                                const row = document.createElement("tr");
+
+                                                // Kiểm tra promotionid và name 
+                                                const promotionName = product.promotionid && product.promotionid.name ? product.promotionid.name : '';
+                                                
+                                                row.innerHTML = `
+                                                            <th scope="row"><center>${index + 1}</center></th>
+                                                            <td><center><img src="/upload/${product.image}" alt="${product.name}" class="img-food-admin" /></center></td>
+                                                            <td>${product.name}</td>
+                                                            <td>${product.description}</td>
+                                                            <td><center>${promotionName}</center></td>
+                                                            <td><center>${product.foodtypeid.nameType}</center></td>
+                                                            <td><center><span>${product.price}.000đ</span></center></td>
+                                                            <td>
+                                                            <center>
+                                                                <a href="/admin/food/${product._id}/edit" class="btn btn-warning">Sửa</a>
+                                                                <a href="#" class="btn btn-danger" data-id="${product._id}" data-bs-toggle="modal" data-bs-target="#delete-food-modal">Xóa</a>
+                                                            </center>
+                                                            </td>
+                                                            `;
+                                                productsContainer.appendChild(row); //thêm phần tử con vào phần tử cha
+                                            });
+                                        } else {
+                                            productsContainer.innerHTML = "<tr><td colspan='7'>Không tìm thấy sản phẩm nào.</td></tr>";
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

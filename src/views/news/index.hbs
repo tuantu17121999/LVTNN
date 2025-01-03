@@ -1,0 +1,115 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <center>
+            <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-newspaper"></i> Quản lý Tin tức</h2>
+        </center>
+        <div class="breadcrumb">
+            <a class="btn btn-primary btn-sm" href="/admin/news/create" role="button">
+                Thêm
+                <span class="fas fa-plus-circle"></span>
+            </a>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" id="view">
+                    <div class="box-body">
+                        <div class="row" style="padding:0px; margin:0px;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">
+                                                <center>Stt</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Hình ảnh</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Tên tin tức</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Mô tả</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Chức năng</center>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#news}}
+                                        <tr>
+                                            <th scope="row">
+                                                <center>{{sum @index 1}}</center>
+                                            </th>                                         
+                                            <td>
+                                                <center><img src="/upload/{{imageNews}}" alt="{{nameNews}}"
+                                                        class="img-food-admin"></center>
+                                            </td>
+                                            <td>{{nameNews}}</td>
+                                            <td>{{{descriptionNews}}}</td>
+                                            <td>
+                                                <center>
+                                                    <a href="/admin/news/{{this._id}}/edit"
+                                                        class="btn btn-warning">Sửa</a>
+                                                    <a href="" class="btn btn-danger" data-id="{{this._id}}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#delete-food-modal">Xóa</a>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                        {{/news}}
+                                    </tbody>
+                                </table>
+
+                                {{!-- Confirm delete course--}}
+                                <div class="modal fade" id="delete-food-modal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Xóa tin tức này</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Bạn chắc chắn muốn xóa ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" id="btn-delete-food">Xóa
+                                                    bỏ</button>
+                                                <button type="button" class="btn btn-outline-dark"
+                                                    data-bs-dismiss="modal">Hủy</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form name="delete-food-form" method="POST"></form>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var newsId;
+                                        var deleteForm = document.forms['delete-food-form'];
+                                        var btnDeleteFood = document.getElementById('btn-delete-food');
+
+                                        $('#delete-food-modal').on('show.bs.modal', function (event) {
+                                            var button = $(event.relatedTarget);
+                                            newsId = button.data('id');
+                                        });
+
+                                        btnDeleteFood.onclick = function () {
+                                            deleteForm.action = '/admin/news/' + newsId + '?_method=DELETE';
+                                            deleteForm.submit();
+                                        }
+                                    })
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

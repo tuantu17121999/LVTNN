@@ -1,0 +1,46 @@
+<div class="mt-4 container">
+    <div class="row sticky-top">
+        {{>customer/nav-bar}}
+    </div>
+    <!--Advertisement-->
+    <div>
+        {{>customer/adv}}
+    </div>
+    <!--Main-->
+    <h1 style="color: white; font-size: 60px" id="select1">Ưu đãi</h1>
+    <h1 style="margin-top: 0px;">Ưu đãi</h1>
+    <div class="row mt-3">
+        {{#deals}}
+        <div class="col-sm-4 col-lg-3">
+            {{>customer/main}}
+        </div>
+        {{/deals}}
+    </div>
+    <h1 style="color: white; font-size: 60px" id="select2">Sản phẩm mới</h1>
+    <h1 style="margin-top: 0px;">Sản phẩm mới</h1>
+    <div class="row mt-3">
+        {{#foods}}
+        <div class="col-sm-4 col-lg-3">
+            {{>customer/main}}
+        </div>
+        {{/foods}}
+    </div>
+    <h1 style="color: white; font-size: 60px" id="select3">Combo</h1>
+    <h1 style="margin-top: 0px;">Combo Nhóm</h1>
+    <div class="row mt-3">
+        {{#food2}}
+        <div class="col-sm-4 col-lg-3">
+            {{>customer/main}}
+        </div>
+        {{/food2}}
+    </div>
+    <h1 style="color: white; font-size: 60px" id="select4">Món ăn đơn</h1>
+    <h1 style="margin-top: 0px;">Món ăn đơn</h1>
+    <div class="row mt-3">
+        {{#food3}}
+        <div class="col-sm-4 col-lg-3">
+            {{>customer/main}}
+        </div>
+        {{/food3}}
+    </div>
+</div>

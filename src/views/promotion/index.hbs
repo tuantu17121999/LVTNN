@@ -1,0 +1,110 @@
+<div class="content-wrapper">
+    {{!-- Content Header (Page header) --}}
+    <div class="content-header">
+        <center>
+            <h2 style="color: rgb(0, 0, 0)"><i class="fab fa-hotjar"></i>
+                Danh sách khuyến mãi<h2>
+        </center>
+        <div class="breadcrumb">
+            <a class="btn btn-primary btn-sm" href="/admin/promotion/create" role="button">
+                Thêm
+                <span class="fas fa-plus-circle"></span>
+            </a>
+        </div>
+    </div>
+    
+    {{!-- Content --}}
+    <div class="content">
+        <div class="box" id="view">
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <center>Stt</center>
+                                </th>
+                                <th scope="col">
+                                    <center>Tên</center>
+                                </th>
+                                <th scope="col">
+                                    <center>Số lượng</center>
+                                </th>
+                                <th scope="col">
+                                    <center>Giảm giá</center>
+                                </th>
+                                <th scope="col">
+                                    <center>Chức năng</center>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-container">
+                            {{#promotions}}
+                            <tr>
+                                <th scope="row">
+                                    <center>{{sum @index 1}}</center>
+                                </th>
+                                <td>
+                                    <center>{{name}}</center>
+                                </td>
+                                <td>
+                                    <center>{{amount}}</center>
+                                </td>
+                                <td>
+                                    <center>{{discount}}%</center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <a href="/admin/promotion/{{this._id}}/edit" class="btn btn-warning">Sửa</a>
+                                        <a href="" class="btn btn-danger" data-id="{{this._id}}" data-bs-toggle="modal"
+                                            data-bs-target="#delete-food-modal">Xóa</a>
+                                    </center>
+                                </td>
+                            </tr>
+                            {{/promotions}}
+                        </tbody>
+                    </table>
+
+                    {{! Confirm delete course MODAL}}
+                    <div class="modal fade" id="delete-food-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Xóa khuyến mãi</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Bạn chắc chắn muốn xóa ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" id="btn-delete-food">Xóa
+                                        bỏ</button>
+                                    <button type="button" class="btn btn-outline-dark"
+                                        data-bs-dismiss="modal">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="delete-food-form" method="POST"></form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var foodId;
+        var deleteForm = document.forms['delete-food-form'];
+        var btnDeleteFood = document.getElementById('btn-delete-food'); 
+        $('#delete-food-modal').on('show.bs.modal', function (event) { //lấy nút đã nhấn để mở modal
+            var button = $(event.relatedTarget);
+            foodId = button.data('id');
+        });
+        btnDeleteFood.onclick = function () {
+            deleteForm.action = '/admin/promotion/' + foodId + '?_method=DELETE'; deleteForm.submit();
+        }
+    })
+</script>

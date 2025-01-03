@@ -1,0 +1,105 @@
+<div class="container">
+    <div class="row">
+        <div class="col-1">
+            <div class="breadcrumb">
+                <a class="btn btn-success btn-sm" href="/admin/advertise/index" role="button">
+                    <i class="fas fa-chevron-left"></i>
+                    Trở lại
+                </a>
+            </div>
+        </div>
+        <div class="col-10">
+            <center>
+                <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-ad"></i> Nhập thông tin quảng cáo</h2>
+            </center>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-4">
+            <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                    <!--HÌNH ẢNH-->
+                    <a href="#">
+                        <img class="card-img-top" id="previewImage" src="/img/empty/YourImageHere.jpg"
+                            alt="Image Preview" />
+                    </a>
+                    <!--TÊN MÓN-->
+                    <div class="card-body">
+                        <a href="#">
+                            <h5 class="card-title" id="product-name">Tên quảng cáo sẽ hiển thị ở đây</h5>
+                        </a>
+                    </div>
+                    <!--GIÁ BÁN / NÚT MUA-->
+                    <div class="row next-bar">
+                        <div class="col">
+                            <button style="width: 100%;" type="button" class="btn btn-danger btn-lg btn-next-item">
+                                <b>Xem chi tiết</b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <form method="POST" action="/admin/advertise/store" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="nameAdvertise" name="nameAdvertise"
+                        placeholder="Tên quảng cáo" required/>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="linkAdvertise" id="linkAdvertise" rows="3"
+                        placeholder="Link"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="file" class="form-control" id="imageInput" name="imageAdvertise" accept="image/*" required/>
+                </div>
+                <div class="form-group">
+                    <center>
+                        <button style="width: 100%;" type="submit" class="btn btn-danger btn-lg">Thêm quảng cáo</button>
+                    </center>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- hiển thị dữ liệu trực tiếp khi người dùng nhập thông tin vào form -->
+<script>
+    const defaultText = "Tên quảng cáo sẽ hiển thị ở đây";
+
+    document.getElementById('nameAdvertise').addEventListener('input', function () {
+        document.getElementById('product-name').textContent = this.value.trim() ? this.value : defaultText;
+    });
+
+    document.getElementById('imageInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById('previewImage').src = e.target.result;
+            document.getElementById('previewImage').style.display = 'block';
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('previewImage').src = '';
+            document.getElementById('previewImage').style.display = 'none';
+        }
+    });
+
+    function validateForm() {
+        const nameAdvertise = document.getElementById('nameAdvertise').value.trim();
+        const imageInput = document.getElementById('imageInput').value.trim();
+
+        if (!nameNews || !imageInput) {
+            alert('Vui lòng điền đầy đủ tất cả các trường.');
+            return false;
+        }
+
+        // Thêm các kiểm tra khác nếu cần
+        return true;
+    }
+</script>

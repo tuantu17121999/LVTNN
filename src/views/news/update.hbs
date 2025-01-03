@@ -1,0 +1,118 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                <div class="breadcrumb">
+                    <a class="btn btn-success btn-sm" href="/admin/news/index" role="button">
+                        <i class="fas fa-chevron-left"></i>
+                        Trở lại
+                    </a>
+                </div>
+            </div>
+            <div class="col-10">
+                <center>
+                    <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-hamburger"></i> Cập nhật thông tin tin tức</h2>
+                </center>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <hr>
+        <div class="row">
+            {{#news}}
+            <div class="col-4">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card">
+                        <!--HÌNH ẢNH-->
+                        <a href="#">
+                            <img class="card-img-top" id="previewImage" src="/upload/{{imageNews}}"
+                                alt="Image Preview" />
+                        </a>
+                        <!--TÊN TIN TỨC-->
+                        <div class="card-body">
+                            <a href="#">
+                                <h5 class="card-title" id="product-name">{{nameNews}}</h5>
+                            </a>
+                        </div>
+                        <!--CHI TIẾT-->
+                        <div class="row next-bar">
+                            <div class="col">
+                                <button style="width: 100%;" type="button" class="btn btn-danger btn-lg btn-next-item">
+                                    <b>Chi tiết</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <form method="POST" action="/admin/news/{{_id}}/update?_method=PUT " enctype="multipart/form-data" onsubmit="return validateForm()">
+                    <div class="form-group">
+                        <input type="file" class="form-control" id="imageInput" name="imageNews" accept="image/*" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="nameNews" name="nameNews" placeholder="Tên tin tức"
+                            value="{{nameNews}}" />
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="descriptionNews" id="descriptionNews" rows="5"
+                            placeholder="Mô tả">{{descriptionNews}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <center>
+                            <button style="width: 100%;" type="submit" class="btn btn-danger btn-lg">Cập nhật</button>
+                        </center>
+                    </div>
+                </form>
+            </div>
+            {{/news}}
+        </div>
+    </div>
+
+    {{!--
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script> --}}
+
+
+    <script src="/ckeditor/ckeditor.js"></script>
+    <!-- hiển thị dữ liệu trực tiếp khi người dùng nhập thông tin vào form -->
+    <script>
+        const defaultText = "Tên tin tức sẽ hiển thị ở đây";
+
+        document.getElementById('nameNews').addEventListener('input', function () {
+            document.getElementById('product-name').textContent = this.value.trim() ? this.value : defaultText;
+        });
+
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('previewImage').style.display = 'block';
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('previewImage').src = '';
+                document.getElementById('previewImage').style.display = 'none';
+            }
+        });
+
+        CKEDITOR.replace('descriptionNews');
+
+        function validateForm() {
+            const nameNews = document.getElementById('nameNews').value.trim();
+            const descriptionNews = CKEDITOR.instances.descriptionNews.getData().trim();;
+
+            if (!nameNews || !descriptionNews) {
+                alert('Vui lòng điền đầy đủ tất cả các trường.');
+                return false;
+            }
+
+            // Thêm các kiểm tra khác nếu cần
+            return true;
+        }
+    </script>
+</body>
+
+</html>

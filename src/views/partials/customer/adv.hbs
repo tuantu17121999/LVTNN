@@ -1,0 +1,105 @@
+{{!-- adSlider --}}
+<div id="" class="slider"> 
+    <div class="slider-container">
+        {{#adv}}
+        <div class="slider-item">
+            <a href="{{this.linkAdvertise}}">
+                <img src="/upload/{{this.imageAdvertise}}" class="card-img-top" alt="{{this.nameAdvertise}}" />
+            </a>
+        </div>
+        {{/adv}}
+
+        <!-- Thêm các slider-item khác tại đây -->
+    </div>
+    <button class="slider-btn prev-btn" onclick="prevSlide()">&#10094;</button>
+    <button class="slider-btn next-btn" onclick="nextSlide()">&#10095;</button>
+</div>
+<style>
+    /* Định dạng cho slider */
+    .slider {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Container chứa các slider-item */
+    .slider-container {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    /* Định dạng cho từng slider-item */
+    .slider-item {
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Định dạng cho hình ảnh trong slider */
+    .slider-item img {
+        width: 100%;
+        display: block;
+        border-radius: 10px;
+    }
+
+    /* Định dạng cho các nút điều khiển */
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .prev-btn {
+        left: 10px;
+    }
+
+    .next-btn {
+        right: 10px;
+    }
+</style>
+<script>
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        const sliderContainer = document.querySelector('.slider-container');
+        const slides = document.querySelectorAll('.slider-item');
+        if (index >= slides.length) {
+            currentIndex = 0;
+        } else if (index < 0) {
+            currentIndex = slides.length - 1;
+        } else {
+            currentIndex = index;
+        }
+        sliderContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+
+    //document.querySelectorAll('.slider-item').forEach((item, index) => {
+    //item.addEventListener('click', () => {
+    //alert(`Quảng cáo ${index + 1}`);
+    //});
+    //});
+
+    // Tự động chuyển slide mỗi 2s
+    setInterval(() => {
+        nextSlide();
+    }, 3000);
+
+    showSlide(currentIndex);
+</script>

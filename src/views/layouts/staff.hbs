@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/staff.css">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body>
+    {{>staff/menufunction}}
+    {{{body}}}
+
+    <!-- Modal -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Lý do huỷ đơn</h5>
+                <button class="btn-close" onclick="closeModal()">X</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="cancelReason" rows="4" style="width: 100%;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-submit" onclick="submitCancel()">Gửi</button>
+                <button class="btn-close" onclick="closeModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lấy slideId từ localStorage nếu có
+            const savedSlideId = localStorage.getItem('slideId');
+
+            // Nếu có slideId được lưu, hiển thị đúng slide
+            if (savedSlideId) {
+                showSlide(savedSlideId);
+            } else {
+                // Nếu không có, hiển thị slide mặc định (slide đầu tiên)
+                showSlide('new-orders');
+            }
+
+            // Chỉ cho phép hiển thị 3 chi tiết đơn hàng, nếu nhiều hơn thì hiển thị ...
+            var orderCards = document.querySelectorAll('.order-card');
+
+            orderCards.forEach(function (card) {
+                var orderItems = card.querySelector('.order-items');
+
+                if (orderItems) { // Kiểm tra nếu `orderItems` tồn tại
+                    var items = orderItems.querySelectorAll('li');
+                    if (items.length > 3) {
+                        for (var i = 3; i < items.length; i++) {
+                            items[i].style.display = 'none';
+                        }
+                        var moreItem = document.createElement('li');
+                        moreItem.textContent = '...';
+                        orderItems.appendChild(moreItem);
+                    }
+                }
+            });
+        });
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('vi-VN');
+
+        document.getElementById('cancelOrderBtn').addEventListener('click', function () {
+            const orderId = document.getElementById('orderIdDO').textContent;
+            document.getElementById('cancelModal').classList.add('active');
+            document.getElementById('cancelModal').setAttribute('data-order-id', orderId);
+        });
+        document.getElementById('confirmOrderBtn').addEventListener('click', function () {
+            const orderId = document.getElementById('orderIdDO').textContent;
+            confirmOrder(orderId);
+        });
+        document.getElementById('completeOrderBtn').addEventListener('click', function () {
+            const orderId = document.getElementById('orderIdDO').textContent;
+            completeOrder(orderId);
+        })
+
+        function confirmOrder(id) {
+            // Gửi yêu cầu xác nhận đơn hàng đến server
+            fetch(`/staff/order/confirm/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Xử lý kết quả từ server
+                    alert('Đơn hàng đã được xác nhận!');
+                    window.location.reload(); // Reload lại trang sau khi xác nhận đơn hàng
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+        function showSlide(slideId) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active'));
+            document.getElementById(slideId).classList.add('active');
+
+            // Lưu slideId vào localStorage
+            localStorage.setItem('slideId', slideId);
+        }
+        async function cancelOrder(id, reason) {
+            // Gửi yêu cầu huỷ đơn hàng đến server
+            try {
+                const response = await fetch(`/staff/order/cancel/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: id, reason: reason })
+                });
+                order = await response.json();
+                if (order.msg) {
+                    alert(order.msg);
+                    return;
+                } else {
+                    alert('Đơn hàng đã được huỷ!');
+                    window.location.reload(); // Reload lại trang sau khi xác nhận đơn hàng
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        function showCancelModal(id) {
+            document.getElementById('cancelModal').classList.add('active');
+            document.getElementById('cancelModal').setAttribute('data-order-id', id);
+        }
+        function closeModal() {
+            document.getElementById('cancelModal').classList.remove('active');
+        }
+        function submitCancel() {
+            const reason = document.getElementById('cancelReason').value;
+            const id = document.getElementById('cancelModal').getAttribute('data-order-id');
+            // Gửi lý do huỷ đơn hàng đến server
+            cancelOrder(id, reason);
+            closeModal();
+        }
+        async function viewOrderDetails(card) {
+            card.classList.remove('new-order');
+
+            try {
+                const orderId = card.getAttribute('data-order-id');
+
+                // Fetch chi tiết đơn hàng từ API
+                const response = await fetch(`/staff/order/api/${orderId}`);
+                const orderDetailsJSON = await response.json();
+                const orderWithDetails = orderDetailsJSON.orderWithDetails;
+                console.log({orderWithDetails})
+                const dateTimeOrder = new Date(orderWithDetails.createdAt);
+
+                // Hiển thị thẻ chi tiết đơn hàng
+                const detailsOrder = document.getElementById('details-orders');
+                if (detailsOrder) {
+                    detailsOrder.style.display = 'block';
+                    setTimeout(() => {
+                        detailsOrder.classList.add('show');
+                    }, 10); // Thêm độ trễ nhỏ để kích hoạt transition
+
+                    // Cập nhật nội dung chi tiết đơn hàng
+                    document.getElementById('customerNameDO').textContent = orderWithDetails.idAddress.fullName;
+                    document.getElementById('customerPhoneDO').textContent = orderWithDetails.idAddress.phone;
+                    document.getElementById('customerAddressDO').textContent = `${orderWithDetails.idAddress.address}, ${orderWithDetails.idAddress.wards}, ${orderWithDetails.idAddress.district}, ${orderWithDetails.idAddress.city}`;
+                    document.getElementById('totalMoneyDO').textContent = orderWithDetails.moneyTotal;
+                    document.getElementById('paymentMethodDO').textContent = orderWithDetails.payment;
+                    document.getElementById('promotionTextDO').textContent = orderWithDetails.promotion ? 'Có' : 'Không';
+                    document.getElementById('amountDO').textContent = orderWithDetails.orderDetails.length;
+                    document.getElementById('orderIdDO').textContent = orderWithDetails._id;
+                    document.getElementById('shippingFeeDO').textContent = orderWithDetails.shippingFee;
+                    document.getElementById('finalMoneyDO').textContent = orderWithDetails.finalMoney + '.000 VND';
+                    document.getElementById('orderDateDO').textContent = dateTimeOrder.toLocaleString('vi-VN');
+
+                    const productList = document.getElementById('productListDO');
+                    productList.innerHTML = orderWithDetails.orderDetails.map(detail => `
+                <li class="list-group-item product-item d-flex">
+                    <div class="col-4">
+                        <img src="/upload/${detail.foodid.image}" alt="${detail.name}" class="img-thumbnail">
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="product-name">${detail.foodid.name}</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="product-quantity float-right">${detail.amount}x</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="product-price float-right">${detail.price * detail.amount}.000 VND</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            `).join('');
+
+                    const showMoreBtn = document.getElementById('showMoreBtn');
+                    if (orderWithDetails.orderDetails.length > 3) {
+                        showMoreBtn.classList.remove('d-none');
+                    } else {
+                        showMoreBtn.classList.add('d-none');
+                    }
+
+                    // Cập nhật hiển thị các nút theo trạng thái đơn hàng
+                    const orderFooter = document.getElementById('orderFooter');
+                    const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+                    const completeOrderBtn = document.getElementById('completeOrderBtn');
+                    const cancelOrderBtn = document.getElementById('cancelOrderBtn');
+
+
+                    if (orderWithDetails.status === 'new') {
+                        orderFooter.style.display = 'flex';
+                        confirmOrderBtn.style.display = 'inline-block';
+                        completeOrderBtn.style.display = 'none';
+                        cancelOrderBtn.style.display = 'inline-block';
+                    } else if (orderWithDetails.status === 'inProgress') {
+                        orderFooter.style.display = 'flex';
+                        confirmOrderBtn.style.display = 'none';
+                        completeOrderBtn.style.display = 'inline-block';
+                        cancelOrderBtn.style.display = 'inline-block';
+                    } else {
+                        orderFooter.style.display = 'none';
+                        completeOrderBtn.style.display = 'none';
+                        confirmOrderBtn.style.display = 'none';
+                        cancelOrderBtn.style.display = 'none';
+                    }
+                } else {
+                    console.error('Thẻ details-orders không tồn tại');
+                }
+            } catch (error) {
+                console.error('Lỗi khi lấy đơn hàng:', error);
+            }
+        }
+
+        function hideOrderDetails() {
+            const detailsOrder = document.getElementById('details-orders');
+            if (detailsOrder) {
+                detailsOrder.classList.remove('show');
+                detailsOrder.style.display = 'none';
+            } else {
+                console.error('Thẻ details-orders không tồn tại');
+            }
+        }
+        let orders = [];
+        // Hàm lấy dữ liệu đơn hàng từ API
+        async function fetchOrders() {
+            try {
+                const response = await fetch('/order/api/orders');
+                const orders = await response.json();
+                document.querySelectorAll('.order-card').forEach(card => {
+                    const orderId = card.getAttribute('data-order-id');
+                    const order = orders.find(order => order._id === orderId); // Tìm đơn hàng tương ứng từ danh sách đơn hàng
+                    checkPromotion(order);
+                });
+            } catch (error) {
+                console.error('Lỗi khi lấy đơn hàng:', error);
+            }
+        }
+        function checkPromotion(order) {
+            const promoTag = document.getElementById(`promotionTag-${order._id}`);
+            if (order.promotion) {
+                promoTag.style.display = 'inline-block';
+            } else {
+                promoTag.style.display = 'none';
+            }
+        }
+
+        // Gọi hàm fetchOrders khi trang được tải
+        window.onload = fetchOrders;
+    </script>
+</body>
+
+</html>

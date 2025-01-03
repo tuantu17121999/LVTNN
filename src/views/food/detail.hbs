@@ -1,0 +1,139 @@
+<div class="container bg-white">
+    <!--MENU BAR-->
+    <div class="row sticky-top">
+        {{>customer/nav-bar}}
+    </div>
+    <!--CONTENT-->
+    <div class="box_pro_detail">
+        <div class="row">
+            <!--BOX LEFT-->
+            <div class="col-8">
+                <div class="box-left">
+                    <div class="food-name-detail">{{food.name}}</div>
+                    <br>
+                    <div class="head_3 bg-gray px-3 border-radius-20">Phần ăn bao gồm</div>
+                    {{#list}}
+                    <ul>
+                        <li><i class="far fa-dot-circle"></i>{{this}}</li>
+
+                    </ul>
+                    {{/list}}
+                </div>
+                {{!-- <div class="mt-5">
+                    <div class="head_3 bg-gray px-3 border-radius-20">Món ăn thường được mua kèm</div>
+                    <div class="box-left clearfix mt-4" id="recommend" data-price="50000" data-text="Bánh Trứng (4 Cái)"
+                        data-type="2">
+                        <div class="item_img">
+                            <img class="border-radius-5"
+                                src="https://kfcvietnam.com.vn/uploads/product/be95ff8508fa5aacb78baba4a6b644c1.jpg"
+                                alt="Bánh Trứng (4 Cái)">
+                        </div>
+                        <div class="item_info">
+                            <h2 class="cart_tt">Bánh Trứng (4 Cái)</h2>
+                            <div class="price_tool d-flex align-items-center">
+                                <a href="javascript:void(0);" class="minus" onclick="changeQtyRecommendPrd('-',41);">
+                                    <i class="fas fa-minus-circle"></i>
+                                </a>
+                                <span id="recommendqty_41" class="px-1"> 0 </span>
+                                <a href="javascript:void(0);" class="plus" onclick="changeQtyRecommendPrd('+',41);">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="special_price">
+                            <strong class="spe_price">50.000đ</strong>
+                        </div>
+                        <div class="special_subtotal" id="recommendsubtotal_41"></div>
+                    </div>
+                </div> --}}
+                <div class="mt-5">
+                    <div class="head_3 bg-gray px-3 border-radius-20">Lưu ý</div>
+                    <div class="box-left clearfix mt-4">
+                        <textarea name="note" id="note" rows="3" style="width:100%"
+                            class="px-3 form-control border-radius-20" placeholder="Note something here..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <!--BOX RIGHT-->
+            <div class="col-4 box-right">
+                <div class="food-img-detail">
+                    <div id="wp-slider">
+                        <div class="items-slide">
+                            <div class="owl-carousel owl-theme">
+                                <div class="item">
+                                    <img src="/upload/{{food.image}}" alt="{{food.name}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="food-title">{{food.name}}</h5>
+                </div>
+                {{#list}}
+                <ul>
+                    <li><i class="far fa-dot-circle"></i></i>{{this}}</li>
+                </ul>
+                {{/list}}
+                <div class=" next-bar border-radius-20">
+                    <div class="">
+                        <div class="bd-highlight price_item_new price-big">
+                            <center>
+
+                                {{#if food.newPrice}}
+                                <span class="">₫{{food.newPrice}}.000</span>
+                                <small>
+                                    <del><span class="">₫{{food.price}}.000</span></del>
+                                    (-{{food.discount}}%)
+                                </small>
+                                {{else}}
+                                <span class="">₫{{food.price}}.000</span>
+                                {{/if}}
+                            </center>
+                        </div>
+                    </div>
+                    <div class="" >
+                        <button style=" width: 100%;" onclick="onClickAdd(
+                                '{{food._id}}',
+                                '{{food.name}}',
+                                '{{food.description}}',
+                                '{{food.image}}',
+                                '{{food.price}}')" type="button" class="btn btn-danger btn-lg border-radius-20">
+                            <b>ADD +</b>
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="form-group">
+                        <a href="/">
+                            <button style=" width: 100%;" class="btn btn-outline-dark btn-lg border-radius-20">
+                                QUAY LẠI THỰC ĐƠN</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/cart.js"></script>
+<script>
+    function onClickAdd(id, name, description, image, price) {
+        var ListItemCart = getListItemCart();
+        var itemExists = false;
+        for (var i = 0; i < ListItemCart.length; i++) {
+            var itemCart = ListItemCart[i];
+            if (itemCart.id == id) {
+                itemCart.amount++;
+                itemExists = true;
+            }
+        }
+        if (itemExists == false) {
+            var itemCart = createItemCart(id, name, description, image, price, 1);
+            ListItemCart.push(itemCart);
+        }
+        saveListItemCartInLocal(ListItemCart);
+        addAmountInnerID('cart-text');
+    }
+</script>

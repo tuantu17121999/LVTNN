@@ -1,0 +1,28 @@
+<div id="step2" class="step-form">
+    <div class="">
+        <button type="button" onclick="backStep(1)" class="btn btn-success rounded-pill btn-sm float-left">
+            <i class="fas fa-chevron-left"></i> Trở lại trang địa chỉ
+        </button>
+        <div class="float-right">
+            <button type="button" onclick="nextStep(3)" class="btn btn-danger rounded-pill btn-sm float-right">
+                Hoàn tất đơn hàng
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="form_top bg-white p-5 rounded-lg">
+        <h3 class="delivery_title mb-4">
+            <center>Thanh toán</center>
+        </h3>
+        <div class="form-group">
+            <label for="paymentMethod" class="font-weight-bold">Chọn phương thức thanh toán:</label>
+            <select id="paymentMethod" name="paymentMethod" class="form-control rounded-pill" required>
+                <option value="COD">Thanh toán khi nhận hàng</option>
+                <option value="creditCard">Thẻ tín dụng</option>
+                <option value="paypal">PayPal</option>
+                <option value="momo">MoMo</option>
+            </select>
+        </div>
+    </div>
+</div>

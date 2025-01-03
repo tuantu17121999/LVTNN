@@ -1,0 +1,207 @@
+<div id="details-orders" class="details-order" style="display: none;">
+    <div class="details-order-header">
+        <h3>Chi tiết đơn hàng</h3>
+        <button class="btn-close11" onclick="hideOrderDetails()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="order-section p-3">
+        <div>
+            <div class="bg-white border-radius-20 p-3 m-3" style="width: 430px;">
+                <div class="col">
+                    <h4 class="text-center">Địa chỉ nhận hàng</h4>
+                    <div class="d-flex">
+                        <i class="fas fa-map-marker-alt pr-2 pt-1"></i>
+                        <div class="d-flex flex-column">
+                            <div>
+                                <span id="customerNameDO" class="font-weight-bold"></span>
+                                <span id="customerPhoneDO" class="text-muted"></span>
+                            </div>
+                            <span id="customerAddressDO"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white border-radius-20 p-3 m-3">
+                <div class="">
+                    Mã đơn hàng
+                    <div class="float-right">
+                        <span id="orderIdDO" class="font-weight-bold"></span>
+                    </div>
+                </div>
+                <div>
+                    Phương thức thanh toán
+                    <div class="float-right">
+                        <span id="paymentMethodDO" class=""></span>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <div>Thời gian đặt hàng:</div>
+                    <div><span id="orderDateDO"></span></div>
+                </div>
+            </div>
+            <div class="bg-white border-radius-20 p-3 m-3">
+                <div class="d-flex justify-content-between">
+                    <div>Tổng tiền hàng (<span id="amountDO"></span> món)</div>
+                    <div><span id="totalMoneyDO"></span>.000 VND</div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>Phí giao hàng (chỉ áp dụng TP.HCM)</div>
+                    <div><span id="shippingFeeDO"></span>.000 VND</div>
+                </div>
+                <p id="promotion">Khuyến mãi <span id="promotionTextDO"></span></p>
+                <hr>
+                <div>
+                    <i class="fas fa-chevron-up pl-3"></i>
+                    <div class="float-right">
+                        <p class="float-right">Thành tiền: <span id="finalMoneyDO" class="font-weight-bold"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white border-radius-20 m-3 p-3" style="width: 430px;">
+            <ul id="productListDO" class="list-group"></ul>
+            <button id="showMoreBtn" class="btn btn-link d-none" onclick="toggleProductList()">
+                <i class="fas fa-chevron-down" id="iconDown"></i> Xem thêm
+            </button>
+        </div>
+    </div>
+    <!-- Thêm thẻ footer -->
+    <div id="orderFooter" class="details-order-footer bg-light p-3 d-flex justify-content-between"
+        style="display: none;">
+        <button class="btn btn-success" id="confirmOrderBtn">Xác nhận đơn hàng</button>
+        <button class="btn btn-primary" id="completeOrderBtn">Hoàn tất đơn hàng</button>
+        <button class="btn btn-cancel" id="cancelOrderBtn">Hủy đơn hàng</button>
+    </div>
+</div>
+
+<script>
+    function toggleProductList() {
+        const productList = document.getElementById('productListDO');
+        const iconDown = document.getElementById('iconDown');
+        productList.classList.toggle('show-all');
+        if (productList.classList.contains('show-all')) {
+            iconDown.classList.remove('fa-chevron-down');
+            iconDown.classList.add('fa-chevron-up');
+        } else {
+            iconDown.classList.remove('fa-chevron-up');
+            iconDown.classList.add('fa-chevron-down');
+        }
+    }
+</script>
+
+<style>
+    .details-order {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 70%;
+        max-width: 80%;
+        max-height: 90%;
+        background-color: #ebebebfa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        overflow-y: auto;
+        display: none;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        transform: scale(0.95)translate(-50%, -50%);
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .details-order-header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        /* Đảm bảo nó nằm trên các phần tử khác */
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .product-item img {
+        margin-right: 10px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .details-order-footer {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        bottom: 0;
+    }
+
+    .product-item:nth-child(n+4) {
+        display: none !important;
+        /* Ẩn các sản phẩm từ vị trí thứ 4 trở đi */
+    }
+
+    .show-all .product-item {
+        display: flex !important;
+        /* Hiển thị tất cả sản phẩm khi nhấn nút */
+    }
+
+    .btn-close11,
+    .btn-submit {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-close11 {
+        background-color: #dc3545;
+    }
+
+    .order-card .order-actions .btn-cancel {
+        background-color: #dc3545;
+        width: 49%;
+    }
+
+    .btn-confirm,
+    .btn-cancel {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-cancel {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background-color: #c82333;
+    }
+</style>
