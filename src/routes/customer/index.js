@@ -15,6 +15,4 @@ router.use('/order', orderRouter);
 router.use('/news', newsRouter);
 router.use('/customer', customerRouter);
 
-
-
 module.exports = router;
