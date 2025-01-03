@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 210c9c87557076f94cd1f68258921f9640bba585
 const db = require('./config/db');
 const router = require('./routes/index');
 const { engine } = require('express-handlebars');
@@ -11,12 +7,10 @@ const methodOverride = require('method-override'); // khai báo method-override 
 const upload = require('./app/middlewares/multer.js')
 const cookieParser = require('cookie-parser');
 const { handleError } = require("./app/common/handleError.js");
-<<<<<<< HEAD
 
 // const passport = require("passport");
 const passport = require("./config/passport/passport");
-=======
->>>>>>> 210c9c87557076f94cd1f68258921f9640bba585
+
 
 const Handlebars = require('handlebars');
 
