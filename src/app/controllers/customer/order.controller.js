@@ -50,7 +50,6 @@ class OrderController {
             // Cập nhật số lượng chi tiết đơn hàng trong đơn hàng
             order.amount = req.body.items.length;
             await order.save();
-
             res.status(201).json({ message: 'Đặt hàng thành công!', order });
         } catch (error) {
             console.log(error);
@@ -59,7 +58,7 @@ class OrderController {
     }
 
     confirmation(req, res) {
-        res.redirect('/');
+        res.render('order/thanks', {layout: 'main'});
     }
 
     async getOrders(req, res) {

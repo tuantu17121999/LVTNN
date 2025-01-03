@@ -1,23 +1,14 @@
-const customerModel = require('../../models/customer.model')
+const customerModel = require('../../models/address.model')
 
 class CustomerController {
     getAll(req, res) {
-        res.send("HH")
-        // const foodGetAll = await foodModel
-        //   .find({})
-        //   .populate("foodtypeid") // Kết hợp bảng foodtypeid
-        //   .populate("promotionid") // Kết hợp bảng promotionid
-        //   .then((food) => {
-        //     // console.log(food.length)
-        //     res.render("food/index", {
-        //       food,
-        //       // count: food.length,
-        //       layout: "admin",
-        //     });
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+        customerModel.find({}).lean()
+            .then(customer => {
+                res.render('customer/cusIndex', {
+                    customer,
+                    layout: 'admin'
+                })
+            })
     }
 }
 

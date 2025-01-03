@@ -1,0 +1,59 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <center>
+            <h2 style="color: rgb(0, 0, 0)"><i class="fas fa-users"></i> Quản lý Khách hàng </h2>
+            {{!-- <a href="">So luong: ({{count}})</a> --}}
+        </center>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box" id="view">
+                    <div class="box-body">
+                        <div class="row" style="padding:0px; margin:0px;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">
+                                                <center>Stt</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Avatar</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Tên khách hàng</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Số điện thoại</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Địa chỉ</center>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="products-container">
+                                        {{#customer}}
+                                        <tr>
+                                            <th scope="row">
+                                                <center>{{sum @index 1}}</center>
+                                            </th>
+                                            <td>
+                                                <center><img src="/upload/{{image}}" alt="{{name}}"
+                                                        class="img-food-admin"></center>
+                                            </td>
+                                            <td>{{fullName}}</td>
+                                            <td><center>{{phone}}</center></td>
+                                            <td>{{address}}, {{wards}}, {{district}}, {{city}}</td>
+                                        </tr>
+                                        {{/customer}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
