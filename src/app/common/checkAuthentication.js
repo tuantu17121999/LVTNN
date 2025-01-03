@@ -10,7 +10,7 @@ exports.checkToken = async (req, res, next) => {
     }
     if (req.headers && req.headers.authorization) {
       const token = req.headers.authorization.split(" ")[1]; //lấy token từ tiêu đề
-      const decoded = await jwt.verify(token, 'abc123');
+      const decoded = await jwt.verify(token, process.env.SECRET_KEY);
       if (decoded) {
         next();
       } else {
@@ -31,7 +31,7 @@ exports.checkTokenAdmin = async (req, res, next) => {
     // }
     const token = req.cookies.adminAccessToken;
 
-    const decoded = await jwt.verify(token, 'abc123');
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     if (decoded) {
       next();
     } else {
@@ -51,7 +51,7 @@ exports.checkTokenStaff = async (req, res, next) => {
     // }
     const token = req.cookies.staffAccessToken;
 
-    const decoded = await jwt.verify(token, 'abc123');
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     if (decoded) {
       const id = decoded.payload.id;
       staffModel.findById(id).then(staff => {
@@ -78,7 +78,7 @@ exports.checkTokenCustomer = async (req, res, next) => {
     const token = req.cookies.customerAccessToken;
 
     if (token) {
-      const decoded = await jwt.verify(token, 'abc123');
+      const decoded = await jwt.verify(token, process.env.SECRET_KEY);
       const id = decoded.payload.id;
       customerModel.findById(id).then(customer => {
         if (!customer) {
