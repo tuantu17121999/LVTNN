@@ -14,6 +14,7 @@ passport.use(
       // clientID: "803563391879-011pu6ma02dc2ce2jd3sbaup51svdqgg.apps.googleusercontent.com",
       // clientSecret: "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",
       // callbackURL: "http://localhost:3000/customer/login/google/callback",
+      // ACCESS_TOKEN_CUSTOMER_SECRE = 'ABC'
     },
     async (accessToken, refreshToken, profile, done) => {
       //get the user data from google
