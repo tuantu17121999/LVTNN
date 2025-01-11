@@ -31,7 +31,7 @@ app.use(express.json());
 db.connect();
 
 
-app.listen(3000, () => console.log('listen on port 3000'))
+app.listen(3000, () => console.log('listen on port http://localhost:3000'))
 
 //cai dat handlebars
 app.engine('.hbs', engine({

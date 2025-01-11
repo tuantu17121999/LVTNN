@@ -44,6 +44,7 @@
             </ul>
         </div>
     </div>
+    <input type="text" name="customerId" value="{{customer.id}}" hidden id="customerId">
     <div class="col-left col-8 col-lg-8 offset-2">
         {{>order/address}}
         {{>order/payment}}
@@ -107,6 +108,7 @@
             const city = document.getElementById('inputCity').value;
 
             const paymentMethod = document.getElementById('paymentMethod').value;
+            const customerId = document.getElementById('customerId').value;
 
             // Lấy danh sách giỏ hàng từ localStorage
             const cartItems = JSON.parse(localStorage.getItem('ListItemCart')) || [];
@@ -127,6 +129,7 @@
                 district,
                 city,
                 paymentMethod,
+                customerId,
                 items: cartItems
             };
 

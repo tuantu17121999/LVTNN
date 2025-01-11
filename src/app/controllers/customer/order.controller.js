@@ -26,6 +26,7 @@ class OrderController {
             // Lưu lại đơn hàng
             const order = new Order({
                 idAddress: address._id,
+                idCustomer: req.body.customerId,
                 status: 'new',
                 moneyTotal: req.body.items.reduce((total, item) => total + item.amount * item.price, 0),
                 payment: req.body.paymentMethod,

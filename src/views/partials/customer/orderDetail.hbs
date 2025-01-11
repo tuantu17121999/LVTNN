@@ -1,0 +1,260 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="order-detail-container">
+    <button class="btn btn-success" onclick="history.back()">←Trở Lại</button>
+  <center><h2>Chi Tiết Đơn Hàng</h2></center>
+  {{#ifEquals status 'new'}}
+  <div class="order-status p-5">
+        <div class="step">
+      <p>Đặt hàng</p>
+      <div class="step-icon current">
+        <i class="fas fa-receipt"></i>
+      </div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step">
+      <p>Thực Hiện</p>
+      <div class="step-icon">
+        <i class="fas fa-hotdog"></i>
+      </div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <p>Giao Hàng</p>
+      <div class="step-icon">
+        <i class="fas fa-box"></i>
+      </div>
+    </div>
+  </div>
+  {{/ifEquals}}
+  {{#ifEquals status 'inProgress'}}
+  <div class="order-status p-5">
+        <div class="step">
+      <p>Đặt hàng</p>
+      <div class="step-icon current">
+        <i class="fas fa-receipt"></i>
+      </div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step">
+      <p>Thực Hiện</p>
+      <div class="step-icon current">
+        <i class="fas fa-hotdog"></i>
+      </div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step">
+      <p>Giao Hàng</p>
+      <div class="step-icon">
+        <i class="fas fa-box"></i>
+      </div>
+    </div>
+  </div>
+  {{/ifEquals}}
+  {{#ifEquals status 'completed'}}
+  <div class="order-status p-5">
+        <div class="step">
+      <p>Đặt hàng</p>
+      <div class="step-icon current">
+        <i class="fas fa-receipt"></i>
+      </div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step">
+      <p>Thực Hiện</p>
+      <div class="step-icon current">
+        <i class="fas fa-hotdog"></i>
+      </div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step">
+      <p>Giao Hàng</p>
+      <div class="step-icon current">
+        <i class="fas fa-box"></i>
+      </div>
+    </div>
+  </div>
+  {{/ifEquals}}
+  {{#ifEquals status 'cancel'}}
+  <center><button type="button" class="btn btn-outline-danger btn-sm" disabled>Đã hủy</button></center>
+  {{/ifEquals}}
+  
+  <div class="order-detail">
+    <div class="order-section">
+        <div class="bg-white border-radius-20">
+          <div class="col">
+            <div class="d-flex">
+              <i class="fas fa-map-marker-alt pr-2 pt-1"></i>
+              <div class="d-flex flex-column">
+                <div>
+                  <span id="customerNameDO" class="font-weight-bold">{{idAddress.fullName}}</span>
+                  <span id="customerPhoneDO" class="text-muted">{{idAddress.phone}}</span>
+                </div>
+                <span id="customerAddressDO">{{idAddress.address}}, {{idAddress.wards}}, {{idAddress.district}}, {{idAddress.city}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white border-radius-20 p-3 m-3">
+          <div class="">
+            Mã đơn hàng
+            <div class="float-right">
+              <span id="orderIdDO" class="font-weight-bold">{{_id}}</span>
+            </div>
+          </div>
+          <div>
+            Phương thức thanh toán
+            <div class="float-right">
+             <span id="paymentMethodDO" class="">{{payment}}</span>
+            </div>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <div>Thời gian đặt hàng:</div>
+            <div><span id="orderDateDO">{{formatDateTime createdAt}}</span></div>
+          </div>
+        </div>
+        <div class="bg-white border-radius-20 p-3 m-3">
+          <div class="d-flex justify-content-between">
+            <div>Tổng tiền hàng (<span id="amountDO">{{amount}}</span> món)</div>
+            <div><span id="totalMoneyDO">{{moneyTotal}}</span>.000 VND</div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>Phí giao hàng (chỉ áp dụng TP.HCM)</div>
+            <div><span id="shippingFeeDO">{{shippingFee}}</span>.000 VND</div>
+          </div>
+          <p id="promotion">Khuyến mãi <span id="promotionTextDO"> Không</span></p>
+          <hr>
+          <div class="">
+            <div class="float-right">
+              <p class="float-right">Thành tiền: <span id="finalMoneyDO" class="font-weight-bold">{{finalMoney}}.000 VND</span></p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="bg-white border-radius-20 m-3 p-3">
+        <ul id="productListDO" class="list-group">
+            {{#details}}
+            <li class="list-group-item product-item d-flex">
+                <div class="col-4">
+                    <img src="/upload/{{foodid.image}}" alt="{{name}}" class="img-thumbnail">
+                </div>
+                <div class="col-8">
+                    <div class="row">
+                    <div class="col-12">
+                        <span class="product-name">{{name}}</span>
+                    </div>
+                    <div class="col-12">
+                        <span class="product-quantity float-right">{{amount}}x</span>
+                    </div>
+                    <div class="col-12">
+                        <span class="product-price float-right">{{price}}.000 VND</span>
+                    </div>
+                    </div>
+                </div>
+            </li>
+            {{/details}}
+        </ul>
+    </div>
+  </div>
+</div>
+
+
+<style>
+.order-detail-container {
+  width: 80%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.order-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  text-align: center;
+  line-height: 40px;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.step-icon.completed {
+  background-color: #27ae60;
+}
+
+.step-icon.current {
+  background-color: #f16d00;
+}
+
+.step-line {
+  height: 2px;
+  width: 50px;
+  background-color: #ccc;
+}
+
+.step-line.completed {
+  background-color: #27ae60;
+}
+
+.order-detail h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.order-detail p {
+  font-size: 1rem;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.product-info img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.product-details {
+  color: #333;
+}
+
+.product-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1abc9c;
+}
+
+.order-total p {
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  color: #ff8c00;
+}
+</style>

@@ -1,0 +1,92 @@
+<div class="container bg-white">
+  <div class="row w-100 py-4">
+    <center>
+      <div class="img_user">
+        <a href="/customer/avatar/{{customer._id}}">
+          {{#if customer.avatar}}
+            <img class="border-radius" src="/upload/{{customer.avatar}}" />
+          {{else}}
+            <img class="border-radius" src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175421/Originals/avatar-la-gi-2.jpg" />
+          {{/if}}
+        </a>
+      </div>
+      <p><span class="text-danger">Xin chào!</span></p>
+      <p><strong class="text-body box_user_head">{{customer.name}}</strong></p>
+      <p>{{customer.phone}} {{#if 1}} | {{customer.sex}}{{/if}} {{#if 1}} | {{customer.email}}{{/if}}</p>
+    </center>
+  </div>
+  <div class="row w-100">
+    <div class="col-3">
+      <a class="dropdown-item" href="/customer" id="memberInfo">
+        <span class="icon"><i class="fas fa-user-alt"></i></span>
+        <span class="text">Thông tin tài khoản</span>
+      </a>
+      <a class="dropdown-item" href="/customer/history/{{customer._id}}" id="memberHistory">
+        <span class="icon"><i class="fas fa-history"></i></span>
+        <span class="text">Lịch sử đơn hàng</span>
+      </a>
+      <a class="dropdown-item active1" href="/customer/address/{{customer._id}}" id="memberAddress">
+        <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
+        <span class="text">Địa chỉ giao hàng</span>
+      </a>
+    </div>
+    <div class="col-9">
+      <div id="step1" class="">
+        <div class="form_top row bg-white rounded-lg">
+          <div class="form-group">
+            <input type="text" name="id" id="inputId" class="form-control rounded-pill" value="{{customer._id}}" readonly hidden />
+            <input type="text" name="name" id="inputFullname" class="form-control rounded-pill" placeholder="Họ và tên" value="{{address.fullName}}" required />
+          </div>
+          <div class="form-group">
+            <input type="tel" name="phone" id="inputPhone" class="form-control rounded-pill" maxlength="10" placeholder="Số điện thoại" value="{{address.phone}}" required />
+          </div>
+          <div class="form-group">
+            <label for="inputAddress"><small>Địa chỉ (Số nhà, Tên đường) <span class="text-danger">*</span></small></label>
+            <input type="text" name="address" id="inputAddress" class="form-control rounded-pill" placeholder="vd: 12/12A Cao Thắng" value="{{address.address}}" required />
+          </div>
+          <div class="form-group d-flex">
+            <input type="text" name="wards" id="inputWards" class="form-control rounded-pill" placeholder="Phường/Xã" value="{{address.wards}}" required />
+            <input type="text" name="district" id="inputDistrict" class="form-control rounded-pill" placeholder="Quận/Huyện" value="{{address.district}}" required />
+            <input type="text" name="city" id="inputCity" class="form-control rounded-pill" placeholder="Tỉnh/Thành Phố" value="{{address.city}}" required />
+          </div>
+        </div>
+        <div class="form-group col-12 text-center mt-4">
+          <button type="button" onclick="submitAddress()" class="btn btn-danger btn-lg rounded-pill px-5"> CẬP NHẬT </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function submitAddress() {
+  const customerId = document.getElementById("inputId").value;
+  const updatedAddress = {
+    fullName: document.getElementById("inputFullname").value,
+    phone: document.getElementById("inputPhone").value,
+    address: document.getElementById("inputAddress").value,
+    wards: document.getElementById("inputWards").value,
+    district: document.getElementById("inputDistrict").value,
+    city: document.getElementById("inputCity").value
+  };
+
+  try {
+    const response = await fetch(`/customer/address/${customerId}/update`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedAddress)
+    });
+
+    if (response.ok) {
+      window.location.href = `/customer/address/${customerId}`;
+    } else {
+      alert("Đã xảy ra lỗi khi cập nhật thông tin.");
+    }
+  } catch (error) {
+    console.error("Error updating address:", error);
+    alert("Đã xảy ra lỗi khi cập nhật thông tin.");
+  }
+}
+</script>

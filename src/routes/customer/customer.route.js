@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const addressController = require("../../app/controllers/customer/address.controller");
 const customerController = require("../../app/controllers/customer/customer.controller.js");
-const upload = require("../../app/middlewares/multer");
+const historyController = require("../../app/controllers/customer/history.controller.js");
+const addressController = require("../../app/controllers/customer/address.controller.js");
+const upload = require("../../app/middlewares/multer.js");
+const { route } = require("./food.route.js");
 
 router.get("/login", (req, res) =>
   res.render("customer/login", { layout: "login" })
@@ -25,7 +27,19 @@ router.get(
 
 router.get('/', customerController.index);
 router.get('/avatar', customerController.avatar);
-router.get('/address', addressController.customerAddressList);
+
+router.use('/address/create', addressController.create);
+router.use('/address/api/store', addressController.storeApi);
+
+router.use('/address/:id/edit', addressController.edit);
+router.use('/address/:id/update', addressController.updateApi);
+
+router.use('/address/setDefault/:id', addressController.setDefault);
+
+router.get('/address/:id', addressController.customerAddressList);
+
+router.get('/history/:id', historyController.customerHistory);
+router.get('/order/:id', historyController.customerOrder);
 
 router.get('/logout', customerController.logout);
 

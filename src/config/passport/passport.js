@@ -34,6 +34,7 @@ passport.use(
         } else {
           // if user is not preset in our database save user data to database.
           user = await customer.create(newUser);
+          customer.save(user);
           done(null, user);
         }
       } catch (err) {

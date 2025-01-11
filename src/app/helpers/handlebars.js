@@ -2,7 +2,6 @@ const Handlebars = require('handlebars')
 
 const moment = require('moment')
 
-
 module.exports = {
     sum: (a, b) => a + b,
     dateFormat: (date, options) => {
@@ -58,3 +57,4 @@ module.exports = {
         return `${hours}:${minutes} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     }
 }
+

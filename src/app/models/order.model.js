@@ -14,7 +14,11 @@ const orderSchema = new Schema({
     idAddress: { 
         type: Schema.Types.ObjectId, 
         ref: "Address", 
-        required: true},
+        required: true},   
+    idCustomer:{
+        type: Schema.Types.ObjectId, 
+        ref: "customer",
+    }
 }, {
     timestamps: true,
 });

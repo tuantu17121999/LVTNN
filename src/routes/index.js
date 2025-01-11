@@ -4,7 +4,7 @@ const customerRouter = require('./customer/');
 const { checkTokenCustomer } = require('../app/common/checkAuthentication.js')
 
 function router(app) {
-    app.use('/', checkTokenCustomer, customerRouter);
+    app.use('/', customerRouter);
     app.use('/admin', adminRouter);
     app.use('/staff', staffRouter);
 }

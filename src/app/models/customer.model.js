@@ -75,6 +75,15 @@ const customerSchema = new Schema({
     type: String,
     maxLength: 255,
   },
+  addressDefault: {
+    type: Schema.Types.ObjectId,
+    ref: "Address",
+    maxLength: 255,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 module.exports = mongoose.model("customer", customerSchema);

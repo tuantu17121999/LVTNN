@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const staffModel = require('../models/admin.model.js')
 const customerModel = require('../models/customer.model.js')
 
+const mongoose = require("mongoose");
+
 exports.checkToken = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
@@ -69,29 +71,37 @@ exports.checkTokenStaff = async (req, res, next) => {
     return res.redirect('/admin/login');
   }
 };
-
 exports.checkTokenCustomer = async (req, res, next) => {
   try {
-    // if(!req.headers.authorization){
-
-    // }
-    const token = req.cookies.customerAccessToken;
-
+    console.log('checkTokenCustomer')
+    const token = req.cookies.customerAccessToken;  // Lấy token từ cookies của khách hàng
     if (token) {
-      const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = await jwt.verify(token, process.env.SECRET_KEY);  // Xác thực token với JWT
+      console.log('decoded', decoded)
+      const email = decoded.payload.email;  // Lấy ID khách hàng từ token
+      console.log('email', email)
       const id = decoded.payload.id;
-      customerModel.findById(id).then(customer => {
-        if (!customer) {
-          return res.status(401).send('Invalid Token');
-        }
-        res.locals.customer = customer;
-      })
-      next();
-    } else {
-      next();
+      console.log('id', id)
+      let customer = null;  // Khai bao bien customer
+      if (email) {
+        customer = await customerModel.findOne({ email: email });
+      }
+      if (id) {
+        customer = await customerModel.findById(id);  // Chờ đợi truy vấn cơ sở dữ liệu
+      }
+
+      console.log(customer, 'customer')
+      
+      if (!customer) {
+        return res.status(401).send('Invalid Token');  // Gửi thông báo 'Invalid Token'
+      }
+      
+      res.locals.customer = customer;  // Lưu thông tin khách hàng vào response locals
     }
+    
+    next();  // Tiếp tục middleware tiếp theo
   } catch (error) {
-    console.log('error', error)
-    next();
+    console.error('Error verifying customer token:', error);  // Log lỗi chi tiết hơn
+    return res.status(500).send('Internal Server Error');  // Gửi thông báo lỗi máy chủ
   }
 };

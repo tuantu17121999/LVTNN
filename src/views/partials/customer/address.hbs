@@ -1,0 +1,113 @@
+<div class="col-3">
+  <a class="dropdown-item" href="/customer" id="memberInfo">
+    <span class="icon"><i class="fas fa-user-alt"></i></span>
+    <span class="text">Thông tin tài khoản</span>
+  </a>
+  <a
+    class="dropdown-item"
+    href="/customer/history/{{customer._id}}"
+    id="memberHistory"
+    :focus
+  >
+    <span class="icon"><i class="fas fa-history"></i></span>
+    <span class="text">Lịch sử đơn hàng</span>
+  </a>
+  <a
+    class="dropdown-item active1"
+    href="/customer/address/{{customer._id}}"
+    id="memberAddress"
+  >
+    <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
+    <span class="text">Địa chỉ giao hàng</span>
+  </a>
+</div>
+<div class="col-9">
+  <div class="order-history-container">
+    <h2 class="text-center mb-4">ĐỊA CHỈ CỦA TÔI</h2>
+    <div class="order-item shadow mt-4 p-4">
+      {{#address}}
+        <div class="form-group">
+          <div class="row">
+            <div class="col-7 ml-auto">
+              <div class="row">
+                <div class="col-12">
+                  <b>{{fullName}}</b>
+                  |
+                  <i class="fas fa-phone"></i>
+                  {{phone}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  {{address}},
+                  {{wards}},
+                  {{district}},
+                  {{city}}
+                </div>
+              </div>
+            </div>
+            <div class="col-3 mr-auto">
+              <div class="address" id="{{_id}}">
+                <a
+                  href="/customer/address/setDefault/{{_id}}"
+                  class="btn btn-outline-success btn-sm border-radius m-2"
+                  style="width: 100%"
+                >Đặt làm mặc định</a>
+              </div>
+              <a
+                href="/customer/address/{{_id}}/edit"
+                class="btn btn-outline-warning btn-sm border-radius m-2"
+                style="width: 100%"
+              >Sửa</a>
+            </div>
+          </div>
+        </div>
+        <hr />
+      {{else}}
+
+        <p class="text-center"><center><h5>Danh sách địa chỉ giao hàng hiện đang
+              trống, hãy tạo địa chỉ mới !</h5></center></p>
+      {{/address}}
+      <a href="/customer/address/create">
+        <button
+          class="btn btn-danger btn-lg border-radius"
+          style="width: 100%"
+        >THÊM ĐỊA CHỈ MỚI</button>
+      </a>
+    </div>
+  </div>
+  <div class="user" id="{{customer.addressDefault}}"></div>
+
+  <style>
+    /* Định dạng cho container */ .containeraddress { border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top: 20px; margin-bottom:
+    40px; padding: 20px; } /* Tiêu đề */ h2 { margin-bottom: 20px; text-align:
+    center; } /* Nút quay lại */ .text-left { text-align: left; margin-bottom:
+    15px; } /* Nút quay lại */ .btn-secondary { background-color: #6c757d;
+    border-color: #6c757d; color: white; padding: 10px 20px; border-radius: 5px;
+    text-decoration: none; } .btn-secondary:hover { background-color: #5a6268;
+    border-color: #545b62; color: white; text-decoration: none; }
+    .order-history-container { margin: 0 auto; background-color: #f5f5f5;
+    padding: 25px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); font-family:
+    Arial, sans-serif; } .order-item { display: flex ; flex-direction: column;
+    padding: 20px; margin-bottom: 20px; background-color: #fff; border-radius:
+    20px; text-decoration: none; color: #333; transition: transform 0.3s ease,
+    box-shadow 0.3s ease; position: relative; }
+  </style>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const idUser = document.querySelector('.user')?.id;
+    if (!idUser) return;
+
+    document.querySelectorAll('.address').forEach(address => {
+      if (address.id === idUser) {
+        address.innerHTML = `
+          <button class="btn btn-danger btn-sm border-radius m-2" style="width: 100%" disabled>
+            ĐỊA CHỈ MẶC ĐỊNH
+          </button>`;
+      }
+    });
+  });
+</script>
