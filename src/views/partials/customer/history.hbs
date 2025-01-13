@@ -20,49 +20,63 @@
     <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
     <span class="text">Địa chỉ giao hàng</span>
   </a>
+  <a class="dropdown-item" href="/customer/changedPassword/{{customer._id}}" id="memberPassword">
+    <span class="icon"><i class="fas fa-key"></i></span>
+    <span class="text">Đổi mật khẩu</span>
+  </a>
 </div>
 <div class="col-9">
-    <div class="order-history-container">
-        <div class="order-history">
-            <h2>Lịch Sử Đơn Hàng</h2>
-            <!-- Đơn hàng (lặp lại phần tử này theo số lượng đơn hàng) -->
-            {{#orders}}
-            <a href="/customer/order/{{_id}}" class="order-item">
-            {{#ifEquals status 'new'}}
-            <div class="status-tag new">{{status}}</div>
-            {{/ifEquals}}
-            {{#ifEquals status 'inProgress'}}
-            <div class="status-tag in-progress">{{status}}</div>
-            {{/ifEquals}}
-            {{#ifEquals status 'completed'}}
-            <div class="status-tag completed">{{status}}</div>
-            {{/ifEquals}}
-            {{#ifEquals status 'cancel'}}
-            <div class="status-tag cancel">{{status}}</div>
-            {{/ifEquals}}
-            <div class="order-header">
-                <p class="order-date">{{formatDateTime createdAt}}</p>
-            </div>
-            <div class="order-body">
-                <div class="order-summary">
-                <div class="order-image">
-                    <img src="/upload/{{details.[0].foodid.image}}" alt="Product Image">
-                </div>
-                <div class="order-details">
-                    <p class="product-name">{{details.[0].name}}</p>
-                </div>
-                </div>
-                <div class="order-summary-2">
-                <p class="product-quantity">Tổng Số Món: {{amount}}</p>
-                <p class="product-total">Tổng Số Tiền: {{finalMoney}},000 VND</p>
-                </div>
-                <button class="reorder-btn">Đặt Lại</button>
-            </div>
-            </a>
-            {{/orders}}
+  <div class="order-history-container">
+    <div class="order-history">
+      {{#if orders.length}}
+      <h2>Lịch Sử Đơn Hàng</h2>
+      <!-- Đơn hàng (lặp lại phần tử này theo số lượng đơn hàng) -->
+      {{#orders}}
+      <a href="/customer/order/{{_id}}" class="order-item">
+        {{#ifEquals status 'new'}}
+        <div class="status-tag new">{{status}}</div>
+        {{/ifEquals}}
+        {{#ifEquals status 'inProgress'}}
+        <div class="status-tag in-progress">{{status}}</div>
+        {{/ifEquals}}
+        {{#ifEquals status 'completed'}}
+        <div class="status-tag completed">{{status}}</div>
+        {{/ifEquals}}
+        {{#ifEquals status 'cancel'}}
+        <div class="status-tag cancel">{{status}}</div>
+        {{/ifEquals}}
+        <div class="order-header">
+          <p class="order-date">{{formatDateTime createdAt}}</p>
         </div>
+        <div class="order-body">
+          <div class="order-summary">
+            <div class="order-image">
+              <img src="/upload/{{details.[0].foodid.image}}" alt="Product Image">
+            </div>
+            <div class="order-details">
+              <p class="product-name">{{details.[0].name}}</p>
+            </div>
+          </div>
+          <div class="order-summary-2">
+            <p class="product-quantity">Tổng Số Món: {{amount}}</p>
+            <p class="product-total">Tổng Số Tiền: {{finalMoney}},000 VND</p>
+          </div>
+          <button class="reorder-btn">Đặt Lại</button>
+        </div>
+      </a>
+      {{/orders}}
+      {{else}}
+      <h2>Bạn chưa có đơn hàng</h2>
+      <a href="/">
+        <center><button style="width: 40%" class="btn btn-outline-dark btn-lg border-radius-20" type="button">Hãy đặt hàng nào</button></center>
+      </a>
+      {{/if}}
     </div>
+  </div>
 </div>
+
+</div>
+
 
 </div>
 <style>

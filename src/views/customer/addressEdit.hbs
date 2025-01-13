@@ -2,7 +2,7 @@
   <div class="row w-100 py-4">
     <center>
       <div class="img_user">
-        <a href="/customer/avatar/{{customer._id}}">
+        <a href="#">
           {{#if customer.avatar}}
             <img class="border-radius" src="/upload/{{customer.avatar}}" />
           {{else}}
@@ -12,7 +12,8 @@
       </div>
       <p><span class="text-danger">Xin chào!</span></p>
       <p><strong class="text-body box_user_head">{{customer.name}}</strong></p>
-      <p>{{customer.phone}} {{#if 1}} | {{customer.sex}}{{/if}} {{#if 1}} | {{customer.email}}{{/if}}</p>
+      <p>{{customer.phone}} {{#if 1}} | {{#ifEquals customer.sex "male"}}Nam{{else}}Nữ{{/ifEquals}}{{/if}} 
+        {{#if customer.email}} | {{customer.email}} {{else}} | {{customer.username}}{{/if}}</p>
     </center>
   </div>
   <div class="row w-100">
@@ -29,16 +30,21 @@
         <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
         <span class="text">Địa chỉ giao hàng</span>
       </a>
+        <a class="dropdown-item" href="/customer/changedPassword/{{customer._id}}" id="memberPassword">
+        <span class="icon"><i class="fas fa-key"></i></span>
+        <span class="text">Đổi mật khẩu</span>
+      </a>
     </div>
     <div class="col-9">
       <div id="step1" class="">
         <div class="form_top row bg-white rounded-lg">
           <div class="form-group">
             <input type="text" name="id" id="inputId" class="form-control rounded-pill" value="{{customer._id}}" readonly hidden />
+            <input type="text" name="idAddress" id="inputIdAddress" class="form-control rounded-pill" value="{{address._id}}" readonly hidden />
             <input type="text" name="name" id="inputFullname" class="form-control rounded-pill" placeholder="Họ và tên" value="{{address.fullName}}" required />
           </div>
           <div class="form-group">
-            <input type="tel" name="phone" id="inputPhone" class="form-control rounded-pill" maxlength="10" placeholder="Số điện thoại" value="{{address.phone}}" required />
+            <input type="tel" name="phone" id="inputPhone" class="form-control rounded-pill" maxlength="10" placeholder="Số điện thoại" value="{{address.phone}}" disabled/>
           </div>
           <div class="form-group">
             <label for="inputAddress"><small>Địa chỉ (Số nhà, Tên đường) <span class="text-danger">*</span></small></label>
@@ -61,6 +67,7 @@
 <script>
 async function submitAddress() {
   const customerId = document.getElementById("inputId").value;
+  const idAddress = document.getElementById("inputIdAddress").value;
   const updatedAddress = {
     fullName: document.getElementById("inputFullname").value,
     phone: document.getElementById("inputPhone").value,
@@ -71,7 +78,7 @@ async function submitAddress() {
   };
 
   try {
-    const response = await fetch(`/customer/address/${customerId}/update`, {
+    const response = await fetch(`/customer/address/${idAddress}/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

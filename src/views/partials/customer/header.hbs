@@ -21,7 +21,11 @@
                                 <div
                                     class="col-lg-3 align-items-center d-flex justify-content-lg-end justify-content-center">
                                     <div class="">
-                                        {{!-- <img src="/upload/{{user.avatar}}" alt="{{user.fullName}}"> --}}
+                                        {{#if customer.avatar}}
+                                            <img src="/upload/{{customer.avatar}}" alt="{{customer.name}}">
+                                        {{else}}
+                                            <img class="border-radius" src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175421/Originals/avatar-la-gi-2.jpg">
+                                        {{/if}}
                                     </div>
                                 </div>
                                 <div class="col-lg-9">
@@ -37,9 +41,22 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="/customer/address" id="memberAddress">
+                            <a class="dropdown-item" href="/customer/history/{{customer._id}}" id="memberAddress">
+                                <span class="icon"><i class="fas fa-history"></i></span>
+                                <span class="text">Lịch sử đơn hàng</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/customer/address/{{customer._id}}" id="memberAddress">
                                 <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
                                 <span class="text">Địa chỉ giao hàng</span>
+                            </a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a class="dropdown-item" href="/customer/changedPassword/{{customer._id}}" id="memberAddress">
+                                <span class="icon"><i class="fas fa-key"></i></span>
+                                <span class="text">Đổi mật khẩu</span>
                             </a>
                         </li>
                         <hr>

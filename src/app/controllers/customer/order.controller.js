@@ -2,6 +2,8 @@ const Address = require('../../models/address.model'); // Đảm bảo bạn đ�
 const Order = require('../../models/order.model'); // Đảm bảo bạn đã tạo mô hình Order
 const OrderDetails = require('../../models/orderDetail.model'); // Đảm bảo bạn đã tạo mô hình OrderDetails
 
+const nodemailer = require('nodemailer');
+
 
 class OrderController {
     //[GET] /address
@@ -51,6 +53,33 @@ class OrderController {
             // Cập nhật số lượng chi tiết đơn hàng trong đơn hàng
             order.amount = req.body.items.length;
             await order.save();
+
+            // Tạo đối tượng transporter
+            const transporter = nodemailer.createTransport({
+              service: 'gmail', // Sử dụng Gmail làm dịch vụ email
+              auth: {
+                user: process.env.NODEMAILER_USER, // Địa chỉ email Gmail của bạn
+                pass: process.env.NODEMAILER_PASS // Mật khẩu Gmail của bạn
+              }
+            });
+            
+            // Định nghĩa các tùy chọn email
+            const mailOptions = {
+              from: process.env.NODEMAILER_USER, // Địa chỉ email của người gửi
+              to: req.customer.email || req.customer.username, // Địa chỉ email của người nhận
+              subject: 'Cảm ơn', // Dòng tiêu đề
+              text: 'Bạn đã đặt hàng thành công, chúc bạn có một ngày vui vẻ' // Nội dung văn bản
+            };
+            
+            // Gửi email
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log('Email sent: ' + info.response);
+              }
+            });            
+
             res.status(201).json({ message: 'Đặt hàng thành công!', order });
         } catch (error) {
             console.log(error);

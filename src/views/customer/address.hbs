@@ -2,7 +2,7 @@
     <div class="row w-100 py-4">
         <center>
             <div class="img_user">
-                <a href="/customer/avatar/{{customer._id}}">
+                <a href="#">
                 {{#if customer.avatar}}
                     <img class="border-radius" src="/upload/{{customer.avatar}}">
                 {{else}}   
@@ -14,8 +14,8 @@
             <p><span class="text-danger">Xin chào!</span></p>
             <p><strong class="text-body box_user_head">{{customer.name}}</strong></p>
             <p>{{customer.phone}}
-                {{#if 1}} | {{customer.sex}}{{/if}}
-                {{#if 1}} | {{customer.email}}{{/if}}
+                {{#if 1}} | {{#ifEquals customer.sex "male"}}Nam{{else}}Nữ{{/ifEquals}}{{/if}}
+                {{#if customer.email}} | {{customer.email}} {{else}} | {{customer.username}}{{/if}}
             </p>
         </center>
     </div>

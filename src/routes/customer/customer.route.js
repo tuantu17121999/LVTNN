@@ -26,7 +26,11 @@ router.get(
 );
 
 router.get('/', customerController.index);
-router.get('/avatar', customerController.avatar);
+
+router.post('/:id/edit', upload.single('avatarInput'), customerController.editInfo);
+
+router.get('/changedPassword/:id', customerController.changePasswordForm);
+router.post('/changePassword/:id', customerController.changePassword);
 
 router.use('/address/create', addressController.create);
 router.use('/address/api/store', addressController.storeApi);
@@ -42,5 +46,8 @@ router.get('/history/:id', historyController.customerHistory);
 router.get('/order/:id', historyController.customerOrder);
 
 router.get('/logout', customerController.logout);
+
+router.get('/forgotPasswordForm', customerController.forgotPasswordForm);
+router.post('/forgotPassword', customerController.forgotPassword);
 
 module.exports = router;

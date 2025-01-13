@@ -19,7 +19,13 @@
                                                 <center>Stt</center>
                                             </th>
                                             <th scope="col">
+                                                <center>Hình ảnh</center>
+                                            </th>
+                                            <th scope="col">
                                                 <center>Tên khách hàng</center>
+                                            </th>
+                                            <th scope="col">
+                                                <center>Giới tính</center>
                                             </th>
                                             <th scope="col">
                                                 <center>Số điện thoại</center>
@@ -35,13 +41,19 @@
                                             <th scope="row">
                                                 <center>{{sum @index 1}}</center>
                                             </th>
-                                            {{!-- <td>
-                                                <center><img src="/upload/{{image}}" alt="{{name}}"
-                                                        class="img-food-admin"></center>
-                                            </td> --}}
-                                            <td>{{fullName}}</td>
+                                            {{#if avatar}}
+                                                <td>
+                                                    <center><img src="/upload/{{avatar}}" alt="{{name}}" class="img-food-admin"></center>
+                                                </td>   
+                                            {{else}}
+                                                <td>
+                                                    <center><img src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175421/Originals/avatar-la-gi-2.jpg" alt="{{name}}" class="img-food-admin"></center>
+                                                </td>                                                
+                                            {{/if}}                                       
+                                            <td>{{name}}</td>
+                                            <td>{{#ifEquals sex "male"}}Nam{{else}}Nữ{{/ifEquals}}</td>
                                             <td><center>{{phone}}</center></td>
-                                            <td>{{address}}, {{wards}}, {{district}}, {{city}}</td>
+                                            <td>{{addressDefault.address}}, {{addressDefault.wards}}, {{addressDefault.district}}, {{addressDefault.city}}</td>
                                         </tr>
                                         {{/customer}}
                                     </tbody>

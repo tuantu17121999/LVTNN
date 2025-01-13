@@ -20,9 +20,13 @@
     <span class="icon"><i class="fas fa-map-marked-alt"></i></span>
     <span class="text">Địa chỉ giao hàng</span>
   </a>
+  <a class="dropdown-item" href="/customer/changedPassword/{{customer._id}}" id="memberPassword">
+    <span class="icon"><i class="fas fa-key"></i></span>
+    <span class="text">Đổi mật khẩu</span>
+  </a>
 </div>
 <div class="col-8">
-  <form action="/customer/edit/{{customer._id}}" method="POST">
+  <form action="/customer/{{customer._id}}/edit" method="POST" enctype="multipart/form-data">
     <div class="head_3 bg-gray px-3 border-radius-20">
       Thông tin tài khoản
       <button
@@ -39,8 +43,10 @@
           name="fullName"
           placeholder="Họ và tên..."
           value="{{customer.name}}"
+          disabled
         />
       </div>
+      {{#if customer.email}}
       <div class="form-group">
         <input
           type="text"
@@ -49,7 +55,34 @@
           name="email"
           placeholder="Email..."
           value="{{customer.email}}"
+          disabled
         />
+      </div>
+      {{else}}
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control border-radius"
+          id="email"
+          name="email"
+          placeholder="Email..."
+          value="{{customer.username}}"
+          disabled
+        />
+      </div>
+      {{/if}}
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control border-radius"
+          id="phone"
+          name="phone"
+          placeholder="Số điện thoại..."
+          value="{{customer.phone}}"
+        />
+      </div>
+      <div class="form-group">
+          <input type="file" class="form-control" id="avatarInput" name="avatarInput" accept="image/*" />
       </div>
       <div
         class="btn-group"
@@ -61,10 +94,10 @@
           type="radio"
           class="btn-check"
           name="sex"
-          value="nam"
+          value="male"
           id="btnradio1"
           autocomplete="off"
-          checked
+          {{#ifEquals customer.sex 'male'}}checked{{/ifEquals}} checked
         />
         <label
           class="btn btn-outline-danger border-radius-left"
@@ -75,28 +108,38 @@
           type="radio"
           class="btn-check"
           name="sex"
-          value="nữ"
+          value="female"
           id="btnradio2"
           autocomplete="off"
+          {{#ifEquals customer.sex 'female'}}checked{{/ifEquals}}
         />
         <label
           class="btn btn-outline-warning border-radius-right"
           for="btnradio2"
         >Nữ</label>
-
-        <input
-          type="radio"
-          class="btn-check"
-          name="sex"
-          value="khác"
-          id="btnradio3"
-          autocomplete="off"
-        />
-        <label
-          class="btn btn-outline-success border-radius"
-          for="btnradio3"
-        >Khác</label>
       </div>
     </div>
   </form>
 </div>
+
+<script>
+  function validatePhoneNumber(input) {
+    var phonePattern = /^[0-9]{10}$/; // Mẫu cho chính xác 10 chữ số
+    if (input.length !== 10 || !phonePattern.test(input)) {
+      alert("Số điện thoại phải có đúng 10 chữ số");
+      //document.getElementById("phone").value = ''; // Xóa trường nhập liệu nếu không đúng
+    }
+  }
+
+  document.getElementById("phone").addEventListener("input", function() {
+    this.value = this.value.replace(/[^0-9]/g, ''); // Chỉ cho phép nhập số
+    if (this.value.length >= 10) {
+      this.value = this.value.slice(0, 10); // Giới hạn số nhập vào đúng 10 chữ số
+    }
+  });
+
+  document.getElementById("phone").addEventListener("blur", function() {
+    validatePhoneNumber(this.value); // Kiểm tra số điện thoại khi rời khỏi trường nhập liệu
+  });
+
+</script>
