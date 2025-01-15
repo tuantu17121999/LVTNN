@@ -111,7 +111,8 @@ class OrderController {
     }
 
     confirmation(req, res) {
-        res.render('order/thanks', {layout: 'main'});
+        const id = req.params.id;
+        res.redirect(`/customer/order/${id}`);
     }
 
     async getOrders(req, res) {

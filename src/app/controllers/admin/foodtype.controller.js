@@ -1,6 +1,7 @@
 const { Admin } = require("mongodb");
 const foodTypeModel = require('../../models/foodtype.model');
 const foodModel = require("../../models/food.model");
+const foodtypeModel = require("../../models/foodtype.model");
 
 class foodTypeController {
     // show index
@@ -27,11 +28,24 @@ class foodTypeController {
 
     //[POST] admin/foodtype/create
     store(req, res) {
-        const foodtype = new foodTypeModel({
-            nameType: req.body.nameType
-        })
-        foodtype.save()
-            .then(() => res.redirect('/admin/foodType/index'))
+        foodTypeModel.findOne({ nameType: req.body.nameType })
+            .then((foodtype) => {
+                if (foodtype) {
+                    res.render('foodtype/createForm', {
+                        layout: 'admin',
+                        message: 'Loại sản phẩm này đã tồn tại'
+                    });
+                } else {
+                    const newfoodtype = new foodTypeModel({
+                        nameType: req.body.nameType
+                    });
+                    newfoodtype.save()
+                        .then(() => res.redirect('/admin/foodType/index'))
+                        .catch(error => {
+                            console.log(error);
+                        })
+                }
+            })
             .catch(error => {
                 console.log(error);
             })
@@ -42,7 +56,7 @@ class foodTypeController {
         const id = req.params.id;
         foodTypeModel.findById(id)
             .then((foodtype) => {
-                res.render('foodtype/updateForm',{
+                res.render('foodtype/updateForm', {
                     foodtype,
                     layout: 'admin'
                 })
@@ -62,22 +76,22 @@ class foodTypeController {
             .catch(error => {
                 console.log(error);
             })
-    }   
+    }
 
     //[DELETE] admin/foodtype/:id
     async delete(req, res) {
         const id = req.params.id;
-        const existedFood = await foodModel.findOne({foodtypeid: id}).exec() //Kiem tra co san pham khong
-        if (existedFood === null){
+        const existedFood = await foodModel.findOne({ foodtypeid: id }).exec() //Kiem tra co san pham khong
+        if (existedFood === null) {
             foodTypeModel.findByIdAndDelete(id)
-            .then(() => res.redirect('/admin/foodType/index'))
-            .catch(error => {
-                console.log(error);
-            })
+                .then(() => res.redirect('/admin/foodType/index'))
+                .catch(error => {
+                    console.log(error);
+                })
         }
         else {
-            res.redirect('/admin/foodType/index?delete=false')      
-        }         
+            res.redirect('/admin/foodType/index?delete=false')
+        }
     }
 }
 

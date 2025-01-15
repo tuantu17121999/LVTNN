@@ -1,6 +1,7 @@
 const orderModel = require("../../models/order.model");
 const canceledOrderModel = require("../../models/canceledOrder.model");
 const orderDetailModel = require("../../models/orderDetail.model");
+const io = require("socket.io");
 
 class orderController {
     //[GET] /
@@ -26,15 +27,22 @@ class orderController {
 
     confirmOrder(req, res) {
         const id = req.body.id;
-        orderModel
-            .updateOne({ _id: id }, { status: "inProgress" })
+        try {
+            orderModel.updateOne({ _id: id }, { status: "inProgress" })
             .then((order) => {
                 res.json(order);
+                global.io.emit('confirmOrder', id); // Gửi thông báo sau khi cập nhật thành công
             })
             .catch((error) => {
                 console.log(error);
+                res.status(500).send("Có lỗi xảy ra khi cập nhật đơn hàng");
             });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Có lỗi xảy ra");
+        }
     }
+    
 
     complete(req, res) {
         const id = req.body.id;
@@ -42,6 +50,7 @@ class orderController {
             .updateOne({ _id: id }, { status: "completed" })
             .then((order) => {
                 res.json(order);
+                global.io.emit('completeOrder', id);
             })
             .catch((error) => {
                 console.log(error);
@@ -61,6 +70,7 @@ class orderController {
                     canceledOrderModel.create({ orderId: id, reason: reason })
                         .then((canceledOrder) => {
                             res.json(canceledOrder);
+                            global.io.emit('cancelOrder', id);
                         })
                 })
                 .catch((error) => {

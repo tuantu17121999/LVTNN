@@ -1,4 +1,5 @@
 <div class="container bg-white">
+    {{#if customer}}
     <div class="row w-100 py-4">
         <center>
             <div class="img_user">
@@ -19,6 +20,7 @@
             </p>
         </center>
     </div>
+    {{/if}}
     <div class="row w-100">
         {{#orderDetails}}
         {{>customer/orderDetail}}

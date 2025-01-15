@@ -69,12 +69,12 @@ class AdminController {
                 //Lưu token vào cookie               
                 if (admin.role === 'admin') {
                     res.cookie("adminAccessToken", accessToken, {
-                        maxAge: 900000, //end 15minutes
+                        maxAge: 1800000, //end 30minutes
                         httpOnly: true,
                     });
                 } else if (admin.role === 'staff') {
                     res.cookie("staffAccessToken", accessToken, {
-                        maxAge: 900000, //end 15minutes
+                        maxAge: 1800000, //end 30minutes
                         httpOnly: true,
                     });
                 }
