@@ -115,6 +115,7 @@
                     hideEditForm(); // Ẩn form sau khi cập nhật thành công
                     // Cập nhật hiển thị thông tin cá nhân
                     document.getElementById('profile-phone').textContent = phone;
+                    location.reload();
                 } else {
                     alert('Cập nhật thất bại. Vui lòng thử lại.');
                 }
@@ -153,6 +154,7 @@
                 if (data.success) {
                     alert('Đổi mật khẩu thành công!');
                     hideChangePasswordForm(); // Ẩn form sau khi đổi mật khẩu thành công
+                    location.reload();
                 } else {
                     alert('Đổi mật khẩu thất bại. Vui lòng thử lại.');
                 }

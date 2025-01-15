@@ -99,7 +99,7 @@
                       <div class="modal-footer">
                         <button type="button" class="btn btn-danger" id="btn-block-staff">Khóa
                         </button>
-                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" style="background-color: black;">Hủy</button>
                       </div>
                     </div>
                   </div>
@@ -120,7 +120,7 @@
                       <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="btn-unblock-staff">Mở khóa
                         </button>
-                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" style="background-color: black;">Hủy</button>
                       </div>
                     </div>
                   </div>
@@ -131,14 +131,12 @@
 
                 <script>
                   document.addEventListener('DOMContentLoaded', function () {
-                    console.log("Staff Index")
                     var staffId;
                     var deleteForm = document.forms['block-staff-form'];
                     var btnBlockStaff = document.getElementById('btn-block-staff');
                     var btnUnBlockStaff = document.getElementById('btn-unblock-staff');
 
                     $('#block-staff-modal').on('show.bs.modal', function (event) {
-                      console.log(event, "event")
                       var button = $(event.relatedTarget); //lấy nút đã nhấn để mở modal.
                       staffId = button.data('id');
                       btnBlockStaff.onclick = function () {

@@ -16,7 +16,6 @@ class OrderController {
             }) 
         } else {
             const addressDefault = await addressModel.findOne({ _id: req.customer.addressDefault }) 
-            console.log(addressDefault)
             res.render('order/placeOrder', {
                 addressDefault,
                 layout: 'main'

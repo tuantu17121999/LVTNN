@@ -12,9 +12,6 @@ exports.validateErrorHandler = (
     Object.keys(error.errors).forEach((field) => {
       errors[field] = error.errors[field].message;
     });
-    console.log(errors, "errors validateErrorHandler");
-    console.log(req.path.startsWith("admin"));
-    console.log(req.originalUrl, "req path");
 
     return res.render(template, {
       errors: errors,

@@ -68,7 +68,7 @@ class addressController {
             };
     
             const result = await addressModel.findByIdAndUpdate(id, updatedAddress, { new: true });
-            console.log('Update Result:', result); // Log kết quả cập nhật
+
             if (!result) {
                 return res.status(404).send('Address không tồn tại');
             }

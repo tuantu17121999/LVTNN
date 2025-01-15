@@ -197,7 +197,6 @@
                 const response = await fetch(`/staff/order/api/${orderId}`);
                 const orderDetailsJSON = await response.json();
                 const orderWithDetails = orderDetailsJSON.orderWithDetails;
-                console.log({ orderWithDetails })
                 const dateTimeOrder = new Date(orderWithDetails.createdAt);
 
                 // Hiển thị thẻ chi tiết đơn hàng
