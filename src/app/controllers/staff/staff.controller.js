@@ -1,6 +1,10 @@
 const orderModel = require('../../models/order.model');
 const OrderDetails = require('../../models/orderDetail.model');
 const canceledOrderModel = require('../../models/canceledOrder.model');
+const staffModel = require('../../models/admin.model');
+
+const bcrypt = require("bcryptjs");
+
 class staffController {
     getAll(req, res) {
         Promise.all([
@@ -47,6 +51,42 @@ class staffController {
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    async editInfo(req, res) {
+        const id = req.params.id;  
+        const updateData = { 
+            phone: req.body.phone,
+        };
+
+        if (req?.file?.filename) {
+            updateData.avatar = req.file.filename;
+        }
+
+        try {
+            const staff = await staffModel.findByIdAndUpdate(id, updateData, { new: true });
+            res.status(200).json({ message: 'Đã cập nhật thông tin thành công', success: true });
+        } catch (error) {
+            console.log('Error:', error);
+            res.status(500).send('Đã xảy ra lỗi khi cập nhật thông tin.');
+        }
+    }
+
+    async changePassword(req, res) {
+        try {
+            const id = req.params.id;
+            const { password } = req.body;
+
+            // Mã hóa mật khẩu mới
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+            const staff = await staffModel.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+            res.status(200).json({ message: 'Mật khẩu đã được thay đổi thành công.', success: true });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ message: 'Đã xảy ra lỗi khi thay đổi mật khẩu.' });
+        }
     }
     
     logout(req, res) {

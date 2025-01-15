@@ -5,12 +5,12 @@
             <div class="form-group">
                 <label for="inputFullname"><small>Họ và tên <span class="text-danger">*</span></small></label>
                 <input type="text" name="name" id="inputFullname" class="form-control rounded-pill"
-                    placeholder="Họ và tên" value="{{address.fullName}}" required>
+                    placeholder="Họ và tên" value="{{addressDefault.fullName}}" required>
             </div>
             <div class="form-group">
                 <label for="inputPhone"><small>Số điện thoại <span class="text-danger">*</span></small></label>
                 <input type="tel" name="phone" id="inputPhone" class="form-control rounded-pill" maxlength="10"
-                    placeholder="Số điện thoại" value="{{address.phone}}" required>
+                    placeholder="Số điện thoại" value="{{addressDefault.phone}}" required>
             </div>
         </div>
         <div class="col-md-6">
@@ -19,15 +19,15 @@
                 <label for="inputAddress"><small>Địa chỉ (Số nhà, Tên đường) <span
                             class="text-danger">*</span></small></label>
                 <input type="text" name="address" id="inputAddress" class="form-control rounded-pill"
-                    placeholder="vd: 12/12A Cao Thắng" value="{{address.address}}" required>
+                    placeholder="vd: 12/12A Cao Thắng" value="{{addressDefault.address}}" required>
             </div>
             <div class="form-group d-flex">
                 <input type="text" name="wards" id="inputWards" class="form-control rounded-pill"
-                    placeholder="Phường/Xã" value="{{address.wards}}" required>
+                    placeholder="Phường/Xã" value="{{addressDefault.wards}}" required>
                 <input type="text" name="district" id="inputDistrict" class="form-control rounded-pill"
-                    placeholder="Quận/Huyện" value="{{address.district}}" required>
+                    placeholder="Quận/Huyện" value="{{addressDefault.district}}" required>
                 <input type="text" name="city" id="inputCity" class="form-control rounded-pill"
-                    placeholder="Tỉnh/Thành Phố" value="{{address.city}}" required>
+                    placeholder="Tỉnh/Thành Phố" value="{{addressDefault.city}}" required>
             </div>
         </div>
         <div class="form-group col-12 text-center mt-4">

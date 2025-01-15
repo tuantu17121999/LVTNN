@@ -1,0 +1,111 @@
+<div class="container2">
+    <h1>Thông tin Admin</h1>
+    <div class="profile2">
+        {{#if admin.avatar}}
+            <img src="/upload/{{admin.avatar}}" alt="{{admin.name}}" class="avatar">
+        {{else}}
+            <img class="border-radius" src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175421/Originals/avatar-la-gi-2.jpg">
+        {{/if}}
+        <form action="/admin/profile/{{admin.id}}/update" method="POST" enctype="multipart/form-data">
+            <ul>
+                <li>
+                    <label for="name"><strong>Tên:</strong></label>
+                    <input type="text" id="name" name="name" value="{{admin.name}}" style="width: 70%;" required disabled>
+                </li>
+                <br>
+                <li>
+                    <label for="username"><strong>Tên đăng nhập:</strong></label>
+                    <input type="text" id="username" name="username" value="{{admin.username}}" required disabled>
+                </li>
+                <br>
+                <li>
+                    <label for="phone"><strong>Số điện thoại:</strong></label>
+                    <input type="text" id="phone" name="phone" value="{{admin.phone}}" required>
+                </li>
+                <br>
+                <li>
+                    <label for="phone"><strong>Giới tính:</strong></label>
+                    <input type="text" id="sex" name="sex" value="{{#ifEquals admin.sex "male"}}Nam{{else}}Nữ{{/ifEquals}}" required disabled>
+                </li>
+                <br>
+                <li>
+                    <label for="identity"><strong>Căn cước công dân:</strong></label>
+                    <input type="text" id="identity" name="identity" value="{{admin.identity}}" required disabled>
+                </li>
+                <br>
+                <li>
+                    <div class="form-group">
+                        <input type="file" class="form-control" id="avatarInput" name="avatarInput" accept="image/*" />
+                    </div>
+                </li>
+            </ul>
+            <br>
+            <div style="text-align: right;">
+                <button type="submit" class="btn btn-primary2">Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<style>
+.container2 {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.profile2 {
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input[type="text"]#name {
+    width: 70%;
+}
+
+button.btn-primary2 {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-primary2:hover {
+    background-color: #0056b3;
+}
+</style>

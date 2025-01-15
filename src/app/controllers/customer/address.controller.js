@@ -52,8 +52,6 @@ class addressController {
 
     async updateApi(req, res) {
         const id = req.params.id;
-        console.log('ID from URL in Controller:', id);
-        console.log('Updated Address:', req.body); // Log dữ liệu gửi lên server
         try {
             const address = await addressModel.findById(id);
             if (!address) {
@@ -80,20 +78,6 @@ class addressController {
             console.log('Error:', error);
             res.status(500).send('Đã xảy ra lỗi khi cập nhật thông tin.');
         }
-    }
-
-    //[GET] /cus/add/delete
-    delete(req, res) {
-        res.send('Xóa địa chỉ KH');
-    }
-
-    //[GET] /cus/add/update
-    update(req, res) {
-        res.send('Cập nhật địa chỉ KH');
-    }
-
-    oderconfirmed(req, res) {
-        res.send('Đơn hàng đc xác nhận');
     }
 
     customerAddressList(req, res) {
@@ -140,7 +124,7 @@ class addressController {
             .catch(error => {
                 console.log(error);
                 res.status(500).send('Internal Server Error');
-            });
+            });   
     }
 }
 

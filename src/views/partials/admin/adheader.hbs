@@ -1,8 +1,84 @@
 <nav class="navbar navbar-light bgcolor" style="height: 100px;">
-    <div class="logo-mini float-left" style="height: 100%;"><a class="navbar-brand" href="/admin"><img src="/img/logo.png" alt="logo-fastfood"></a></div>
+    <div class="logo-mini float-left" style="height: 100%;">
+        <a class="navbar-brand" href="/admin"><img src="/img/logo.png" alt="logo-fastfood"></a>
+    </div>
     <div class="float-right">
-        <a href="/admin/logout">
-            <button class="btn btn-danger border-radius">Đăng xuất <i class="fas fa-sign-in-alt"></i></button>
-        </a>
+        <div class="dropdown2">
+            <button class="btn2 btn-danger2 border-radius2 custom-dropdown-toggle2" type="button" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <b>Hello: </b>{{admin.name}}
+            </button>
+            <div class="dropdown-menu2" aria-labelledby="adminDropdown">
+                <a class="dropdown-item2" href="/admin/profile">Xem thông tin</a>
+                <a class="dropdown-item2" href="/admin/changedPassword/{{admin._id}}">Đổi mật khẩu</a>
+            </div>
+            <a href="/admin/logout">
+                <button class="btn2 btn-danger2 border-radius2">Đăng xuất <i class="fas fa-sign-in-alt"></i></button>
+            </a>
+        </div>
     </div>
 </nav>
+<style>
+.float-right {
+    float: right;
+}
+
+.dropdown2 {
+    position: relative;
+    display: inline-block;
+}
+
+.btn2 {
+    background-color: #dc3545; /* Màu đỏ */
+    color: #ffffff; /* Chữ màu trắng */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50px; /* Bo tròn nút */
+    text-transform: capitalize; /* Chữ cái đầu viết hoa */
+}
+
+.btn-danger2 {
+    background-color: #dc3545; /* Màu đỏ */
+    color: #ffffff; /* Chữ màu trắng */
+}
+
+.custom-dropdown-toggle2 {
+    background-color: #dc3545; /* Màu đỏ */
+    color: #ffffff; /* Chữ màu trắng */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50px; /* Bo tròn nút */
+    text-transform: capitalize; /* Chữ cái đầu viết hoa */
+    text-transform: capitalize; /* Chữ cái đầu viết hoa */
+}
+
+.dropdown-menu2 {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown2:hover .dropdown-menu2 {
+    display: block;
+}
+
+.dropdown-item2 {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-transform: capitalize; /* Chữ cái đầu viết hoa */
+}
+
+.dropdown-item2:hover {
+    background-color: #ddd;
+}
+
+</style>
+

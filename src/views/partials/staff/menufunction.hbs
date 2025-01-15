@@ -10,11 +10,293 @@
         </div>
     </div>
     <div class="user-info">
-        {{#staff}}
-        <img src="/upload/{{avatar}}" alt="Avatar">
-        <p>{{name}}</p>
+        <img src="/upload/{{staff.avatar}}" alt="Avatar">
+        <p>{{staff.name}} | {{#ifEquals staff.sex "male"}}Nam{{else}}Nữ{{/ifEquals}}</p>
         <p>Ngày: <span id="currentDate"></span></p>
+        <a href="#" class="profile-btn" onclick="showProfile()"><i class="fas fa-user"></i> Thông tin cá nhân</a>
         <a href="/staff/logout" class="profile-btn"><i class="fas fa-user"></i> Đăng xuất</a>
-        {{/staff}}
     </div>
 </div>
+
+<div id="profile-view" class="modal2">
+    <div class="modal-content2">
+        <span class="close-btn2" onclick="hideProfile()">&times;</span>
+        <center><h2>Thông tin cá nhân</h2></center>
+        <center><p style="width: 50%;"><img src="/upload/{{staff.avatar}}" alt="Avatar"></p></center>
+        <p>Tên: <span id="profile-name">{{staff.name}}</span></p>
+        <p>Tên đăng nhập: <span id="profile-username">{{staff.username}}</span></p>
+        <p>Số điện thoại: <span id="profile-phone">{{staff.phone}}</span></p>
+        <p>Giới tính: <span id="profile-sex">{{#ifEquals staff.sex "male"}}Nam{{else}}Nữ{{/ifEquals}}</span></p>
+        <p>Căn cước công dân: <span id="profile-identity">{{staff.identity}}</span></p>
+        <center>
+            <button class="btn btn-primary" onclick="editInfo()">Sửa thông tin</button>
+            <button class="btn btn-secondary" onclick="changePassword()">Đổi mật khẩu</button>
+        </center>
+    </div>
+</div>
+
+<!-- Thêm form sửa thông tin vào phần HTML -->
+<div id="edit-info-form" class="modal2">
+    <div class="modal-content2">
+        <span class="close-btn2" onclick="hideEditForm()">&times;</span>
+        <h2>Sửa thông tin</h2>
+        <form>
+            <input type="text" name="id" id="inputId" class="form-control rounded-pill" value="{{staff._id}}" readonly hidden />
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" value="{{staff.name}}" disabled>
+
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" value="{{staff.username}}" disabled>
+
+            <label for="phone">Số điện thoại:</label>
+            <input type="text" id="phone" name="phone" value="{{staff.phone}}">
+
+            <label for="identity">Căn cước công dân:</label>
+            <input type="text" id="identity" name="identity" value="{{staff.identity}}" disabled>
+
+            <label for="identity">Hình ảnh:</label>
+            <input type="file" id="avatarInput" name="avatarInput" accept="image/*" />
+
+            <button type="submit">Cập nhật</button>
+        </form>
+    </div>
+</div>
+
+<!-- Thêm form đổi mật khẩu vào phần HTML -->
+<div id="change-password-form" class="modal2">
+    <div class="modal-content2">
+        <span class="close-btn2" onclick="hideChangePasswordForm()">&times;</span>
+        <h2>Đổi mật khẩu</h2>
+        <form id="change-password-form-element">
+            <label for="new-password">Mật khẩu mới:</label>
+            <input type="password" id="new-password" name="new-password" required>
+
+            <label for="confirm-password">Xác nhận mật khẩu mới:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+
+            <button type="submit">Đổi mật khẩu</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ẩn modal form thông tin cá nhân, form sửa thông tin và form đổi mật khẩu khi trang được tải
+        document.getElementById('profile-view').style.display = "none";
+        document.getElementById('edit-info-form').style.display = "none";
+        document.getElementById('change-password-form').style.display = "none";
+        const id = document.getElementById('inputId').value;
+
+        // Xử lý sự kiện submit của form sửa thông tin
+        document.getElementById('edit-info-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+            // Lấy dữ liệu từ form
+            const phone = document.getElementById('phone').value;
+           
+            const formData = new FormData();
+            formData.append('phone', phone);
+            const avatarInput = document.getElementById('avatarInput').files[0];
+            if (avatarInput) {
+                formData.append('avatarInput', avatarInput);
+            }
+
+            // Gửi dữ liệu tới máy chủ
+            fetch(`/staff/profile/${id}/update`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý phản hồi từ máy chủ
+                if (data.success) {
+                    alert(data.message);
+                    hideEditForm(); // Ẩn form sau khi cập nhật thành công
+                    // Cập nhật hiển thị thông tin cá nhân
+                    document.getElementById('profile-phone').textContent = phone;
+                } else {
+                    alert('Cập nhật thất bại. Vui lòng thử lại.');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+            });
+        });
+
+        // Xử lý sự kiện submit của form đổi mật khẩu
+        document.getElementById('change-password-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+            // Lấy dữ liệu từ form
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+            if (newPassword !== confirmPassword) {
+                alert('Mật khẩu mới và xác nhận mật khẩu không khớp.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('new-password', newPassword);
+
+            // Gửi dữ liệu tới máy chủ
+            fetch(`/staff/changePassword/${id}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý phản hồi từ máy chủ
+                if (data.success) {
+                    alert('Đổi mật khẩu thành công!');
+                    hideChangePasswordForm(); // Ẩn form sau khi đổi mật khẩu thành công
+                } else {
+                    alert('Đổi mật khẩu thất bại. Vui lòng thử lại.');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+            });
+        });
+    });
+
+    function showProfile(id) {
+        document.getElementById('profile-view').style.display = "flex"; // Sử dụng flex để căn giữa
+    }
+
+    function hideProfile() {
+        document.getElementById('profile-view').style.display = "none";
+    }
+
+    // Hiển thị form sửa thông tin
+    function editInfo() {
+        document.getElementById('edit-info-form').style.display = "flex"; 
+    }
+
+    // Ẩn form sửa thông tin
+    function hideEditForm() {
+        document.getElementById('edit-info-form').style.display = "none";
+    }
+
+    // Hiển thị form đổi mật khẩu
+    function changePassword() {
+        document.getElementById('change-password-form').style.display = "flex"; 
+    }
+
+    // Ẩn form đổi mật khẩu
+    function hideChangePasswordForm() {
+        document.getElementById('change-password-form').style.display = "none";
+    }
+
+    // Lấy ngày hiện tại
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+</script>
+
+<style>
+/* Modal Styles */
+.modal2 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed positioning */
+    z-index: 1000; /* Ensure it is above other elements */
+    left: 50%; /* Center horizontally */
+    top: 50%; /* Center vertically */
+    transform: translate(-50%, -50%); /* Offset to center */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* Hide overflow */
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent dark background */
+    display: flex; /* Flexbox for centering content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+/* Modal Content Styles */
+.modal-content2 {
+    background-color: #ffffff; /* White background */
+    padding: 20px; /* Padding inside */
+    border: 1px solid #888; /* Light border */
+    width: 80%; /* 80% width */
+    max-width: 500px; /* Max width */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Shadow */
+    animation: fadeIn 0.3s ease; /* Fade-in animation */
+    box-sizing: border-box; /* Box sizing */
+    color: #333; /* Default text color */
+    font-family: 'Arial', sans-serif; /* Font */
+}
+
+/* Colorful Text in Modal */
+.modal-content2 p span {
+    display: inline-block;
+    background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Gradient color */
+    -webkit-background-clip: text; /* Clip background to text */
+    color: transparent; /* Transparent text */
+    font-weight: bold; /* Bold text */
+}
+
+/* Close Button */
+.close-btn2 {
+    color: #aaa; /* Text color */
+    float: right; /* Float to right */
+    font-size: 28px; /* Text size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor */
+}
+
+/* Close Button Hover & Focus */
+.close-btn2:hover,
+.close-btn2:focus {
+    color: #000; /* Change color on hover/focus */
+    text-decoration: none; /* Remove underline */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Form Styles */
+#edit-info-form form,
+#change-password-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#edit-info-form form label,
+#change-password-form form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#edit-info-form form input,
+#change-password-form form input {
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#edit-info-form form button,
+#change-password-form form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#edit-info-form form button:hover,
+#change-password-form form button:hover {
+    background-color: #218838;
+}
+</style>

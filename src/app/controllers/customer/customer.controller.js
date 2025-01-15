@@ -57,12 +57,12 @@ class CustomerController {
       .findOne({ username })
       .then(async (user) => {
         if (!user) {
-          return res.json("Tài khoản không tồn tại");
+          res.redirect("/customer/login?message=Tai khoan khong ton tai!")
         }
 
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
-          return res.json("Sai mật khẩu");
+          res.redirect("/customer/login?message=Sai mat khau!")
         }
 
         const token = await generateToken(
@@ -114,16 +114,6 @@ class CustomerController {
     }
 
     try {
-        if (req.body.password) {
-            // Mã hóa mật khẩu mới
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            updateData.password = hashedPassword;
-        } else {
-            // Nếu không có mật khẩu mới, giữ lại mật khẩu hiện tại
-            const customer = await customerModel.findById(id);
-            updateData.password = customer.password;
-        }
-
         const customer = await customerModel.findByIdAndUpdate(id, updateData, { new: true });
         res.redirect("/customer");
     } catch (error) {

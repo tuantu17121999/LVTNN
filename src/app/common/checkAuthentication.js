@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+const adminModel = require('../models/admin.model.js')
 const staffModel = require('../models/admin.model.js')
 const customerModel = require('../models/customer.model.js')
 
@@ -28,49 +29,55 @@ exports.checkToken = async (req, res, next) => {
 
 exports.checkTokenAdmin = async (req, res, next) => {
   try {
-    // if(!req.headers.authorization){
-
-    // }
     const token = req.cookies.adminAccessToken;
 
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     if (decoded) {
-      next();
+      const id = decoded.payload.id;
+      const admin = await adminModel.findById(id); // Chờ kết quả của truy vấn
+
+      if (!admin) {
+        return res.status(401).send('Invalid Token');
+      }
+
+      req.admin = admin;
+      res.locals.admin = admin;
+      next(); // Gọi next() sau khi giá trị đã được gán
     } else {
       return res.redirect('/admin/login');
     }
   } catch (error) {
-    console.log('error', error)
+    console.log('error', error);
     return res.redirect('/admin/login');
-
   }
 };
 
+
 exports.checkTokenStaff = async (req, res, next) => {
   try {
-    // if(!req.headers.authorization){
-
-    // }
     const token = req.cookies.staffAccessToken;
 
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     if (decoded) {
       const id = decoded.payload.id;
-      staffModel.findById(id).then(staff => {
-        if (!staff) {
-          return res.status(401).send('Invalid Token');
-        }
-        res.locals.staff = staff;
-      })
-      next();
+      const staff = await staffModel.findById(id); // Chờ kết quả của truy vấn
+
+      if (!staff) {
+        return res.status(401).send('Invalid Token');
+      }
+
+      req.staff = staff;
+      res.locals.staff = staff;
+      next(); // Gọi next() sau khi giá trị đã được gán
     } else {
       return res.redirect('/admin/login');
     }
   } catch (error) {
-    console.log('error', error)
+    console.log('error', error);
     return res.redirect('/admin/login');
   }
 };
+
 exports.checkTokenCustomer = async (req, res, next) => {
   try {
     const token = req.cookies.customerAccessToken;  // Lấy token từ cookies của khách hàng
