@@ -78,14 +78,14 @@ class staffController {
             const { password } = req.body;
 
             if (!password) {
-                return res.status(400).json({ message: 'Mật khật là bắt buộc' });
+                return res.status(400).json({ message: 'Mật khẩu là bắt buộc.' });
             }
-
             // Mã hóa mật khẩu mới
             const hashedPassword = await bcrypt.hash(password, 10);
-
+    
             // Cập nhật mật khẩu mới vào cơ sở dữ liệu
             const staff = await staffModel.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+    
             res.status(200).json({ message: 'Mật khẩu đã được thay đổi thành công.', success: true });
         } catch (error) {
             console.error('Error:', error);

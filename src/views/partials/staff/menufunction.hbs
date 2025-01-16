@@ -133,7 +133,6 @@
             // Lấy dữ liệu từ form
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-
             // Kiểm tra mật khẩu mới và xác nhận mật khẩu
             if (newPassword !== confirmPassword) {
                 alert('Mật khẩu mới và xác nhận mật khẩu không khớp.');
@@ -146,7 +145,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ password: newPassword })
+                body: JSON.stringify({ password: newPassword }) // Đảm bảo chuyển đổi thành định dạng JSON
             })
             .then(response => response.json())
             .then(data => {
