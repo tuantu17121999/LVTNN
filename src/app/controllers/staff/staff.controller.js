@@ -77,6 +77,10 @@ class staffController {
             const id = req.params.id;
             const { password } = req.body;
 
+            if (!password) {
+                return res.status(400).json({ message: 'Mật khật là bắt buộc' });
+            }
+
             // Mã hóa mật khẩu mới
             const hashedPassword = await bcrypt.hash(password, 10);
 

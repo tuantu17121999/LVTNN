@@ -140,13 +140,13 @@
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('new-password', newPassword);
-
             // Gửi dữ liệu tới máy chủ
             fetch(`/staff/changePassword/${id}`, {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: newPassword })
             })
             .then(response => response.json())
             .then(data => {
