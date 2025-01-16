@@ -18,7 +18,11 @@ const orderSchema = new Schema({
     idCustomer:{
         type: Schema.Types.ObjectId, 
         ref: "customer",
-    }
+    },
+    idStaff: {
+        type: Schema.Types.ObjectId, 
+        ref: "admin",
+    },
 }, {
     timestamps: true,
 });

@@ -143,11 +143,10 @@
                 });
 
                 const data = await response.json();
-
                 if (response.ok) {
                     alert('Đặt hàng thành công!');
                     localStorage.removeItem('ListItemCart'); // Xóa giỏ hàng sau khi đặt hàng thành công
-                    window.location.href = '/order/confirmation'; // Điều hướng tới trang xác nhận đơn hàng
+                    window.location.href = '/order/confirmation/'+ data.order._id; // Điều hướng tới trang xác nhận đơn hàng
                 } else {
                     alert('Lỗi khi đặt hàng: ' + data.message);
                 }

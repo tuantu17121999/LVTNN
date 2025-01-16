@@ -3,7 +3,8 @@
         <div class="order-header">
             <span class="order-time">Đặt: {{formatDateTime this.orderId.createdAt}}</span>
             <span class="order-time">Huỷ: {{formatDateTime this.createdAt}}</span>
-            <span>Lý do huỷ đơn: {{this.reason}}</span>
+            <span>Người hủy đơn: {{this.idStaff.name}}</span>
+            <span>Lý do: {{this.reason}}</span>
         </div>
     </div>
     <div class="order-body">

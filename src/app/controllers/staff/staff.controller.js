@@ -11,7 +11,7 @@ class staffController {
             orderModel.find({ status: 'new' }).populate('idAddress').lean(),
             orderModel.find({ status: 'inProgress' }).populate('idAddress').lean(),
             orderModel.find({ status: 'completed' }).populate('idAddress').lean(),
-            canceledOrderModel.find({}).populate('orderId').lean()
+            canceledOrderModel.find({}).populate('orderId').populate('idStaff').lean()
         ])
             .then(async ([ordersNew, ordersInProgress, ordersCompleted, ordersCancelled]) => {
                 const orderIdsNew = ordersNew.map(order => order._id);
@@ -77,11 +77,15 @@ class staffController {
             const id = req.params.id;
             const { password } = req.body;
 
+            if (!password) {
+                return res.status(400).json({ message: 'Mật khẩu là bắt buộc.' });
+            }
             // Mã hóa mật khẩu mới
             const hashedPassword = await bcrypt.hash(password, 10);
-
+    
             // Cập nhật mật khẩu mới vào cơ sở dữ liệu
             const staff = await staffModel.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+    
             res.status(200).json({ message: 'Mật khẩu đã được thay đổi thành công.', success: true });
         } catch (error) {
             console.error('Error:', error);

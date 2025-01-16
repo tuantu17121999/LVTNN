@@ -39,24 +39,3 @@
         <button class="btn-cancel" onclick="showCancelModal('{{this._id}}')">Huỷ</button>
     </div>
 </div>
-<script>
-    function completeOrder(id) {
-        // Gửi yêu cầu xác nhận đơn hàng đến server
-        fetch(`/staff/order/complete/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Xử lý kết quả từ server
-                alert('Đơn hàng đã được hoàn thành!');
-                window.location.reload(); // Reload lại trang sau khi xác nhận đơn hàng
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
-</script>

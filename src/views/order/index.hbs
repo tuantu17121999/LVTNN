@@ -24,6 +24,9 @@
                                 <center>Tên</center>
                             </th>
                             <th scope="col">
+                                <center>Người nhận đơn</center>
+                            </th>
+                            <th scope="col">
                                 <center>Trạng thái</center>
                             </th>
                             <th scope="col">
@@ -51,6 +54,9 @@
                             </th>
                             <td>
                                 <center>{{idAddress.fullName}}</center>
+                            </td>
+                            <td>
+                                <center>{{idStaff.name}}</center>
                             </td>
                             {{#ifEquals status 'new'}}
                             <td>

@@ -7,7 +7,7 @@ class adminController {
             orderModel.find({ status: 'new' }).populate('idAddress').lean(),
             orderModel.find({ status: 'inProgress' }).populate('idAddress').lean(),
             orderModel.find({ status: 'completed' }).populate('idAddress').lean(),
-            canceledOrderModel.find({}).populate('orderId').lean()
+            canceledOrderModel.find({}).populate('orderId').populate('idStaff').lean()
         ])
             .then(async ([ordersNew, ordersInProgress, ordersCompleted, ordersCancelled]) => {
                 const orderIdsNew = ordersNew.map(order => order._id);
