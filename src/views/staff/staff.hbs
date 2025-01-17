@@ -33,3 +33,15 @@
     </div>
     {{>order/orderDetail}}
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  socket.on('connect', function () {
+    console.log('Connected to server');
+  });
+  // Bạn có thể thêm các sự kiện khác ở đây, ví dụ:
+  socket.on('cancelOrderByCustomer', function (id) {
+    window.location.reload();
+  });
+</script>

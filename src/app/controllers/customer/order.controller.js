@@ -5,6 +5,7 @@ const Customer = require('../../models/customer.model');
 
 const nodemailer = require('nodemailer');
 const addressModel = require('../../models/address.model');
+const cancelOrderModel = require('../../models/canceledOrder.model');
 const Mongoose = require("mongoose");
 
 class OrderController {
@@ -124,5 +125,37 @@ class OrderController {
             res.status(500).json({ message: 'Lấy danh sách đơn hàng thất bại!' });
         }
     }
+
+    //[post] /order/api/cancel/:id
+    async cancelOrder(req, res) {
+        try {
+            const { reason } = req.body;
+            const { id } = req.params;
+    
+            // Kiểm tra đầu vào
+            if (!reason || !id) {
+                return res.status(400).json({ msg: "Không thể huỷ đơn hàng khi chưa nhập lý do" });
+            }
+    
+            const fullReason = `Đơn hàng hủy bởi khách hàng vì: ${reason}`;
+    
+            // Cập nhật trạng thái đơn hàng
+            const updateResult = await Order.updateOne({ _id: id }, { status: "cancel" });
+            if (updateResult.nModified === 0) {
+                return res.status(404).json({ msg: "Đơn hàng không tồn tại hoặc không thể cập nhật" });
+            }
+    
+            // Tạo bản ghi hủy đơn hàng
+            const canceledOrder = await cancelOrderModel.create({ orderId: id, reason: fullReason });
+    
+            // Trả về kết quả thành công
+            res.json(canceledOrder);
+            global.io.emit('cancelOrderByCustomer', canceledOrder);
+        } catch (error) {
+            console.error('Không thể hủy đơn hàng', error);
+            res.status(500).json({ msg: "Có lỗi xảy ra khi hủy đơn hàng" });
+        }
+    }
+    
 }
 module.exports = new OrderController();

@@ -24,52 +24,59 @@ class orderController {
             });
     }
 
-    confirmOrder(req, res) {
-        const id = req.body.id;
-        orderModel
-            .updateOne({ _id: id }, { status: "inProgress" })
-            .then((order) => {
-                res.json(order);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+    async confirmOrder(req, res) {
+        try {
+            const id = req.body.id;
+            if (!id) {
+                return res.status(400).send('Order ID is required');
+            }
+            await orderModel.updateOne({ _id: id }, { status: "inProgress" });
+            const order = await orderModel.findById(id); // Lấy lại đơn hàng sau khi cập nhật
+            res.json(order);
+            global.io.emit('confirmOrder', id); // Gửi thông báo sau khi cập nhật thành công
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error updating order');
+        }
+    } 
 
-    complete(req, res) {
-        const id = req.body.id;
-        orderModel
-            .updateOne({ _id: id }, { status: "completed" })
-            .then((order) => {
-                res.json(order);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    async complete(req, res) {
+        try {
+            const id = req.body.id;
+            if (!id) {
+                return res.status(400).send('Order ID is required');
+            }
+            await orderModel.updateOne({ _id: id }, { status: "completed" });
+            const order = await orderModel.findById(id); // Lấy lại đơn hàng sau khi cập nhật
+            res.json(order);
+            global.io.emit('completeOrder', id); // Gửi thông báo sau khi cập nhật thành công
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error updating order');
+        }
     }
+    
 
     //[POST] /oder/cancel/:id
-    cancel(req, res) {
+    async cancel(req, res) {
         try {
             const id = req.body.id;
             const reason = req.body.reason;
             if (!reason) {
-                return res.status(400).json({ msg: "Không thể huỷ đơn hàng khi chưa nhập lý do" });
+                return res.status(400).json({ msg: "Không thể huỷ đơn hàng khi chưa nhập lý do" });
             }
-            orderModel.updateOne({ _id: id }, { status: "cancel" })
-                .then((order) => {
-                    canceledOrderModel.create({ orderId: id, reason: reason })
-                        .then((canceledOrder) => {
-                            res.json(canceledOrder);
-                        })
-                })
-                .catch((error) => {
-                    console.log('không thể huỷ đơn hàng', error);
-                });
+            if (!id) {
+                return res.status(400).json({ msg: 'Order ID is required' });
+            }
+            await orderModel.updateOne({ _id: id }, { status: "cancel" });
+            const canceledOrder = await canceledOrderModel.create({ orderId: id, reason: reason });
+            res.json(canceledOrder);
+            global.io.emit('cancelOrder', id); // Gửi thông báo sau khi huỷ thành công
         } catch (error) {
-            console.log('không thể huỷ đơn hàng', error);
+            console.error('không thể huỷ đơn hàng', error);
+            res.status(500).json({ msg: 'Error canceling order' });
         }
-    }
+    }  
 
     //[GET] /api/orders
     async getOrders(req, res) {

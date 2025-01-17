@@ -7,5 +7,6 @@ router.post('/submit-order', orderController.submitOrder);
 router.get('/confirmation/:id', orderController.confirmation);
 
 router.get('/api/orders', orderController.getOrders);
+router.post('/api/cancel/:id', orderController.cancelOrder);
 
 module.exports = router;
